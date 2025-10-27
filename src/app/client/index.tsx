@@ -14,7 +14,7 @@ function Home_page() {
                 onKeyDown={async e => {
                     if (e.key !== 'Enter')
                         return
-                    const response = await fetch('/api/word?' + encodeURIComponent(word))
+                    const response = await fetch('/api/word?search=' + encodeURIComponent(word))
                     const data = await response.json()
                     console.log({ data })
                 }}

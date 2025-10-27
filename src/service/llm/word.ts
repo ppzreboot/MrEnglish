@@ -3,10 +3,11 @@ import { llm_client } from './_init'
 import { zodResponseFormat } from 'openai/helpers/zod'
 
 const word_details_schema = z.object({
-    explain: z.string().describe('Explanation of the word'),
+    explain: z.string().describe('Explain the word like in a dictionary entry in markdown format'),
 })
 
 const word_search_result_schema = z.object({
+    user_input: z.string().describe('The original string provided by the user'),
     is_valid_word: z.boolean().describe('Indicates if the provided string is a valid English word'),
     details: word_details_schema.nullable().describe('Details about the word, if it is valid; null otherwise'),
 })
@@ -25,7 +26,7 @@ Respond in JSON format as specified.`,
             },
             {
                 role: 'user',
-                content: word,
+                content: `Teach me this word: "${word}"`,
             },
         ],
         response_format: zodResponseFormat(word_search_result_schema, 'word search result'),
