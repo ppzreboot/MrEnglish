@@ -1,4 +1,4 @@
-import { match_route } from '../utils/match-route.ts'
+import { match_route } from '../utils/route.ts'
 
 export
 const route__lookup = match_route('GET', '/api/lookup',
