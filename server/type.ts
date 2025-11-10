@@ -26,3 +26,9 @@ type I_HTTP_method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS'
 
 export
 type I_route = (method: I_HTTP_method, url: URL) => null | I_http_handler
+
+export
+interface I_llm_client_opts {
+    base_url: string
+    api_key: string
+}

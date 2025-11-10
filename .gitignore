@@ -1,8 +1,7 @@
 deno.lock
-elm-stuff
 _env.ts
-_c
 _static
+.vscode
 
 dist
 node_modules
