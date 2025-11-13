@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { retrieve__auth_status, type I_auth_status } from '../api/auth'
-import { retrieve__lookup } from '../api/lookup'
+import { retrieve__lookup, type I_word_result } from '../api/lookup'
 
 export
 function App() {
@@ -24,10 +24,20 @@ function App() {
 
 function Main() {
   const [lookup, set_lookup] = useState('')
+  const [result, set_result] = useState<null | I_word_result>(null)
+  const [loading, set_loading] = useState(false)
 
   const go_lookup = async () => {
-    const [error, result] = await retrieve__lookup(lookup)
-    console.log({ error, result })
+    if (loading) return
+    try {
+      set_loading(true)
+      set_result(null)
+      const [error, _result] = await retrieve__lookup(lookup)
+      if (error === null)
+        set_result(_result)
+    } finally {
+      set_loading(false)
+    }
   }
   return <div>
     <input
@@ -38,6 +48,27 @@ function Main() {
           go_lookup()
       }}
     />
-    <button onClick={go_lookup}>Search</button>
+    <button
+      onClick={go_lookup}
+      disabled={loading}
+    >Search</button>
+
+    <div>
+      {result !== null && <>
+        <h3>Lookup Result</h3>
+        <Code
+          code={JSON.stringify(result, null, 4)}
+        />
+      </>}
+      {loading && '...'}
+    </div>
   </div>
+}
+
+function Code(props: { code: string }) {
+  const ref = useRef<HTMLPreElement | null>(null)
+  useEffect(() => {
+    ref.current!.innerHTML = props.code
+  }, [props.code])
+  return <pre ref={ref} />
 }
