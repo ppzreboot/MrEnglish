@@ -20,7 +20,8 @@ function init_server(port: number, service: I_app_service, route_list: I_route[]
             }
             console.error(`Not Found: ${req.method} ${req.url}`)
             return Response.json({
-                error: 'Not Found'
+                error: true,
+                key: 'Not Found',
             })
         },
     )
@@ -37,7 +38,8 @@ async function _handle(
     } catch(err) {
         console.error(err)
         return Response.json({
-            error: 'Unknown Error'
+            error: true,
+            key: 'Unknown Error',
         })
     }
 }
