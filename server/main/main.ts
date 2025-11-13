@@ -4,6 +4,7 @@ import { init_service__session_maker } from '../service/session.ts'
 import { init_server } from './init-server.ts'
 import { init_service__sign_up_in } from '../service/sign-up-in.ts'
 import { init_service__llm_client } from '../service/llm/mod.ts'
+import { init_service__word_mng } from '../service/word.ts'
 
 import { route__login } from '../handler/auth/oauth-login.ts'
 import { route__static } from '../handler/static-files.ts'
@@ -19,13 +20,14 @@ const llm = init_service__llm_client({
     api_key: env.llm_api_key,
     app_model,
 })
+const word_mng = init_service__word_mng(app_model)
 
 const service = {
-    env,
-    app_model,
     session,
     sign_up_in,
     llm,
+    env,
+    word_mng,
 }
 
 init_server(env.port, service, [

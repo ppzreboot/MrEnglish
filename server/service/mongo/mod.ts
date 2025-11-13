@@ -16,7 +16,7 @@ function init_service__mongo_db(connect_uri: string, db_name: string) {
         user: db.collection<I_user>('user'),
         user_oauth: db.collection<I_user_oauth>('user-oauth'),
         session: db.collection<I_session>('session'),
-        word: db.collection<I_lookup>('lookup'),
+        word: db.collection<I_lookup>('word'),
     }
 }
 
