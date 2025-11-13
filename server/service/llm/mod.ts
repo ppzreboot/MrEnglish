@@ -10,7 +10,7 @@ function init_service__llm_client(opts: {
     const llm_lookup = make_llm_lookup({
         base_url: opts.base_url,
         api_key: opts.api_key,
-        model: 'grok-4-fasting-reasoning',
+        model: 'grok-4-fast-reasoning',
     })
     const lookup: I_lookup = async (word: string) => {
         const [err, result] = await llm_lookup(word)
