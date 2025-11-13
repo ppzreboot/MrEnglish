@@ -17,6 +17,9 @@ const route__lookup = match_route('GET', '/api/lookup',
                 key: err === 'invalid word format' ? 'bad request' : 'unknown error',
             })
         await service.word_mng.add_word(userid, word)
-        return Response.json(result)
+        return Response.json({
+            error: false,
+            data: result,
+        })
     }
 )
