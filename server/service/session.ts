@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import type { I_app_model } from './mongo.ts'
+import type { I_app_model } from './mongo/mod.ts'
 import { parse_cookie } from '../utils/parse-cookie.ts'
 
 export
@@ -37,7 +37,22 @@ function init_service__session_maker(
         return {
             get_current_user_id,
             get_current_user,
-            rm_session_token: 'session_token=; Path=/; Max-Age=0',
+            async check() {
+                const userid = await get_current_user_id()
+                if (typeof(userid) === 'string')
+                    throw new Response(
+                        JSON.stringify({
+                            error: true,
+                            key: 'session expired',
+                        }),
+                        {
+                            headers: {
+                                'Set-Cookie': 'session_token=; Path=/; Max-Age=0',
+                            },
+                        },
+                    )
+                return userid
+            }
         }
     }
 }

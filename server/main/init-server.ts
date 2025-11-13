@@ -36,6 +36,8 @@ async function _handle(
     try {
         return await handler(req, service, other)
     } catch(err) {
+        if (err instanceof Response)
+            return err
         console.error(err)
         return Response.json({
             error: true,
