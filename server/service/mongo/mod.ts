@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb'
-import { I_session, I_user, I_user_oauth } from "./type.ts";
+import type { I_lookup, I_session, I_user, I_user_oauth } from './type.ts'
 
 export
 type I_llm_key
@@ -16,6 +16,7 @@ function init_service__mongo_db(connect_uri: string, db_name: string) {
         user: db.collection<I_user>('user'),
         user_oauth: db.collection<I_user_oauth>('user-oauth'),
         session: db.collection<I_session>('session'),
+        word: db.collection<I_lookup>('lookup'),
     }
 }
 

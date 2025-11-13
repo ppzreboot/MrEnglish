@@ -22,3 +22,10 @@ interface I_session {
     session_token: string
     created_at: Date
 }
+
+export
+interface I_lookup {
+    userid: ObjectId
+    word: string
+    count: number
+}

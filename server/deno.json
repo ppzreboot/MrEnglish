@@ -4,6 +4,7 @@
     "pro": "deno run -A main/main.ts"
   },
   "imports": {
+    "@ppz-ai/lookup": "jsr:@ppz-ai/lookup@^0.2.0",
     "@ppz/oauth-login": "jsr:@ppz/oauth-login@0.0.6",
     "@std/assert": "jsr:@std/assert@1",
     "@std/http": "jsr:@std/http@^1.0.21",
