@@ -4,11 +4,13 @@
     "pro": "deno run -A main/main.ts"
   },
   "imports": {
+    "@ppz-ai/ecdict-pgsql": "jsr:@ppz-ai/ecdict-pgsql@^0.0.0",
     "@ppz-ai/lookup": "jsr:@ppz-ai/lookup@^0.3.0",
     "@ppz/oauth-login": "jsr:@ppz/oauth-login@0.0.6",
     "@std/assert": "jsr:@std/assert@1",
     "@std/http": "jsr:@std/http@^1.0.21",
-    "mongodb": "npm:mongodb@^6.20.0"
+    "mongodb": "npm:mongodb@^6.20.0",
+    "postgres": "npm:postgres@^3.4.7"
   },
   "deploy": {
     "org": "ppz-ai",

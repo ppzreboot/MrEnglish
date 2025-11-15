@@ -5,6 +5,7 @@ import { init_server } from './init-server.ts'
 import { init_service__sign_up_in } from '../service/sign-up-in.ts'
 import { init_service__llm_client } from '../service/llm/mod.ts'
 import { init_service__word_mng } from '../service/word.ts'
+import { init_service__ecdict } from '../service/ecdict.ts'
 
 import { route__login } from '../handler/auth/oauth-login.ts'
 import { route__static } from '../handler/static-files.ts'
@@ -21,6 +22,7 @@ const llm = init_service__llm_client({
     app_model,
 })
 const word_mng = init_service__word_mng(app_model)
+const ecdict_lookup = init_service__ecdict(env.ecdict_db_uri)
 
 const service = {
     session,
@@ -28,6 +30,7 @@ const service = {
     llm,
     env,
     word_mng,
+    ecdict_lookup,
 }
 
 init_server(env.port, service, [

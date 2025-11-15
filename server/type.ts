@@ -9,6 +9,7 @@ interface I_app_env {
     llm_base_url: string
 
     mongo_db_uri: string
+    ecdict_db_uri: string
     github_oauth_client_secret: string
     llm_api_key: string
 }

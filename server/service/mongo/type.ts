@@ -26,6 +26,6 @@ interface I_session {
 export
 interface I_lookup {
     userid: ObjectId
-    word: string
+    canonical: string
     count: number
 }
