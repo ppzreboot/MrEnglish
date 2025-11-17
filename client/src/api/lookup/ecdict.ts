@@ -42,6 +42,7 @@ async function retrieve__ecdict_lookup(word: string): Promise<
     if (!check_en_word(word))
         return ['invalid word format', null]
     const response = await fetch('/api/lookup?source=ecdict&word=' + word, {
+    // const response = await fetch('/api/lookup?source=llm&word=' + word, {
       method: 'GET',
     })
     const data = await response.json() as I_response<I_word_ecdict_result>

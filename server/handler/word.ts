@@ -21,7 +21,7 @@ const route__lookup = match_route('GET', '/api/lookup',
                         detail: null,
                     }
                 })
-            await service.word_mng.add_word(userid, result.exchange['0'] || result.word)
+            await service.word_mng.add_word(userid, result.lemma?.lemma || result.word)
             return Response.json({
                 error: false,
                 data: {
