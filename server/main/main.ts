@@ -13,7 +13,7 @@ import { route__auth_status } from '../handler/auth/status.ts'
 import { route__lookup } from '../handler/word.ts'
 
 const env = parse_app_env()
-const app_model = init_service__mongo_db(env.mongo_db_uri, 'MrEnglish')
+const app_model = init_service__mongo_db(env.mongo_db_uri, env.mongo_db_name)
 const session = init_service__session_maker(app_model, env.session_duration)
 const sign_up_in = init_service__sign_up_in(app_model)
 const llm = init_service__llm_client({

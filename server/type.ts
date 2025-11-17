@@ -7,6 +7,7 @@ interface I_app_env {
     session_duration: number
     github_oauth_client_id: string
     llm_base_url: string
+    mongo_db_name: string
 
     mongo_db_uri: string
     ecdict_db_uri: string
