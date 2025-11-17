@@ -4,9 +4,9 @@ import { I_app_model } from './mongo/mod.ts'
 export
 function init_service__word_mng(app_model: I_app_model) {
     return {
-        async add_word(userid: ObjectId, word: string) {
+        async add_word(userid: ObjectId, canonical: string) {
             await app_model.word.updateOne(
-                { word, userid },
+                { canonical, userid },
                 {
                     $inc: { count: 1 },
                 },

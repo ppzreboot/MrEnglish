@@ -11,21 +11,37 @@ const route__lookup = match_route('GET', '/api/lookup',
                 error: true,
                 key: 'bad request',
             })
-        if (source === 'ecdict')
+        if (source === 'ecdict') {
+            const result = await service.ecdict_lookup(word)
+            if (result === null)
+                return Response.json({
+                    error: false,
+                    data: {
+                        is_valid: false,
+                        detail: null,
+                    }
+                })
+            await service.word_mng.add_word(userid, result.exchange['0'] || result.word)
             return Response.json({
                 error: false,
-                data: await service.ecdict_lookup(word),
+                data: {
+                    is_valid: true,
+                    detail: result,
+                },
             })
-        const [err, result] = await service.llm.lookup(word)
-        if (err)
+        } else {
+            const [err, result] = await service.llm.lookup(word)
+            if (err)
+                return Response.json({
+                    error: true,
+                    key: err === 'invalid word format' ? 'bad request' : 'unknown error',
+                })
+            if (result.is_valid)
+                await service.word_mng.add_word(userid, result.details[0].canonical)
             return Response.json({
-                error: true,
-                key: err === 'invalid word format' ? 'bad request' : 'unknown error',
+                error: false,
+                data: result,
             })
-        await service.word_mng.add_word(userid, word)
-        return Response.json({
-            error: false,
-            data: result,
-        })
+        }
     }
 )
