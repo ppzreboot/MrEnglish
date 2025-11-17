@@ -26,16 +26,17 @@ interface I_ecdict {
 export
 type I_word_ecdict_result = {
     is_valid: false
-    details: null
+    detail: null
 } | {
     is_valid: true
-    details: I_ecdict
+    detail: I_ecdict
 }
 
 export
 async function retrieve__ecdict_lookup(word: string): Promise<
-    [null, I_word_ecdict_result]
+    [null, I_ecdict]
     | ['invalid word format', null]
+    | ['invalid word', null]
 > {
     word = word.trim()
     if (!check_en_word(word))
@@ -46,5 +47,7 @@ async function retrieve__ecdict_lookup(word: string): Promise<
     const data = await response.json() as I_response<I_word_ecdict_result>
     if (data.error)
         throw API_error('retrieve__ecdict_lookup', data.key)
-    return [null, data.data]
+    if (data.data.is_valid)
+        return [null, data.data.detail]
+    return ['invalid word', null]
 }

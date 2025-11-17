@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { retrieve__auth_status, type I_auth_status } from '../api/auth'
 // import { retrieve__llm_lookup, type I_word_llm_result } from '../api/lookup/llm'
-import { retrieve__ecdict_lookup, type I_word_ecdict_result } from '../api/lookup/ecdict'
+import { retrieve__ecdict_lookup, type I_ecdict } from '../api/lookup/ecdict'
 
 export
 function App() {
@@ -25,7 +25,7 @@ function App() {
 
 function Main() {
   const [lookup, set_lookup] = useState('')
-  const [result, set_result] = useState<null | I_word_ecdict_result>(null)
+  const [result, set_result] = useState<null | I_ecdict>(null)
   const [loading, set_loading] = useState(false)
 
   const go_lookup = async () => {
