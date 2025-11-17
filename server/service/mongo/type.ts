@@ -27,5 +27,8 @@ export
 interface I_lookup {
     userid: ObjectId
     canonical: string
+    star: boolean
     count: number
+    last_lookup_at: Date
+    first_lookup_at: Date
 }
