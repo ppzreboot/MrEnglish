@@ -1,23 +1,8 @@
-import { API_error, type I_response } from './_base'
+import { check_en_word } from './_base'
+import { API_error, type I_response } from '../_base'
 
 export
-type I_auth_status = {
-    signed_in: true
-} | {
-    signed_in: false
-    oauth_list: {
-        key: 'github'
-        link: string
-    }[]
-}
-
-function check_en_word(word: string) {
-    if (word.length === 0 || word.length > 50) return false
-    return /^[A-Za-z]+(-[A-Za-z]+)*$/.test(word)
-}
-
-export
-type I_word_result = {
+type I_word_llm_result = {
     is_valid: false
     details: null
 } | {
@@ -47,8 +32,8 @@ type I_word_result = {
 }
 
 export
-async function retrieve__lookup(word: string): Promise<
-    [null, I_word_result]
+async function retrieve__llm_lookup(word: string): Promise<
+    [null, I_word_llm_result]
     | ['invalid word format', null]
 > {
     word = word.trim()
@@ -57,8 +42,8 @@ async function retrieve__lookup(word: string): Promise<
     const response = await fetch('/api/lookup?word=' + word, {
       method: 'GET',
     })
-    const data = await response.json() as I_response<I_word_result>
+    const data = await response.json() as I_response<I_word_llm_result>
     if (data.error)
-        throw API_error('retrieve__lookup', data.key)
+        throw API_error('retrieve__lookup_llm', data.key)
     return [null, data.data]
 }
