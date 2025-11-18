@@ -1,6 +1,7 @@
 import { check_en_word } from './_base'
 import { API_error, type I_response } from '../_base'
 
+export
 interface I_lookup_result__llm {
     canonical: string
     phonetic: string
@@ -42,7 +43,7 @@ async function retrieve__llm_lookup(word: string): Promise<
     word = word.trim()
     if (!check_en_word(word))
         return ['invalid word format', null]
-    const response = await fetch('/api/lookup?word=' + word, {
+    const response = await fetch('/api/lookup?source=llm&word=' + word, {
       method: 'GET',
     })
     const data = await response.json() as I_response<I_word_llm_result>
