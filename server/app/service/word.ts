@@ -1,12 +1,12 @@
 import type { ObjectId } from 'mongodb'
-import { I_app_model } from './mongo/mod.ts'
+import { I_app_db } from '../app-model/service/mod.ts'
 
 export
-function init_service__word_mng(app_model: I_app_model) {
+function init_service__word_mng(app_db: I_app_db) {
     return {
-        async add_word(userid: ObjectId, canonical: string) {
+        async add(userid: ObjectId, canonical: string) {
             const now = new Date()
-            await app_model.word.updateOne(
+            await app_db.word.updateOne(
                 { canonical, userid },
                 {
                     $set: {

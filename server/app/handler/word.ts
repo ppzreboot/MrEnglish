@@ -1,47 +1,26 @@
-import { match_route } from '../utils/route.ts'
+import { simple_match } from '@ppz-http/router'
+import { I_app_service } from '@mr-english/app-model'
+import { check_en_word } from '../utils/type-checker.ts'
 
 export
-const route__lookup = match_route('GET', '/api/lookup',
-    async (req, service, { url }) => {
-        const userid = await service.session(req).check()
-        const word = url.searchParams.get('word')
-        const source = url.searchParams.get('source')
-        if (word === null || (source !== 'ecdict' && source !== 'llm'))
+const route__lookup = simple_match<I_app_service>({
+    method: 'GET',
+    path: '/api/lookup',
+    async handler(ctx) {
+        // await ctx.service.session(ctx.request).check()
+        const word = ctx.url.searchParams.get('word')
+        if (word === null || !check_en_word(word))
             return Response.json({
                 error: true,
                 key: 'bad request',
             })
-        if (source === 'ecdict') {
-            const result = await service.ecdict_lookup(word)
-            if (result === null)
-                return Response.json({
-                    error: false,
-                    data: {
-                        is_valid: false,
-                        detail: null,
-                    }
-                })
-            await service.word_mng.add_word(userid, result.lemma?.lemma || result.word)
-            return Response.json({
-                error: false,
-                data: {
-                    is_valid: true,
-                    detail: result,
-                },
-            })
-        } else {
-            const [err, result] = await service.llm.lookup(word)
-            if (err)
-                return Response.json({
-                    error: true,
-                    key: err === 'invalid word format' ? 'bad request' : 'unknown error',
-                })
-            if (result.is_valid)
-                await service.word_mng.add_word(userid, result.details[0].canonical)
-            return Response.json({
-                error: false,
-                data: result,
-            })
-        }
-    }
-)
+        const result = await ctx.service.lookup(word)
+        return Response.json({
+            error: false,
+            data: {
+                is_valid: result !== null,
+                detail: result,
+            }
+        })
+    },
+})

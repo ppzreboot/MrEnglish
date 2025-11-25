@@ -1,0 +1,34 @@
+# 开发文档 - 后端
+
+## 数据与服务
+### 字典数据来源
++ [ECDICT](https://github.com/skywind3000/ECDICT): 英中, Lemma, Inflection, 例句
++ [Meriam Webster](https://www.dictionaryapi.com/): 英英, 音标, audio
+
+### 数据库
+共三个数据库
+
+##### ECDICT - sqlite3
+ECDICT 有原作者制作的 sqlite3 数据库
+
+##### Meriam Webster - mongodb
+Meriam Webster 由于有访问限制，所以一定要做缓存（当前是“懒缓存”）:
+
++ 每次请求时，先查询缓存是否有数据
++ 如果有，直接返回缓存数据
++ 如果没有，访问 Meriam Webster 网站，获取数据后，缓存到本地数据库
+
+缓存数据存储于 mongodb 中专门的 Database 中（此 Database 只存储 Meriam Webster 的缓存数据），
+并限制只能通过专门的用户访问（此用户只能访问这一个 Database）。
+这样达到“查词业务”与主体业务解耦。
+
+##### 主体数据
+主体数据存放在 mongodb 中
+
+### Audio 文件
++ 单词发音
++ 用户小短文
+
+利用 Cloudflare 的 CDN 缓存，提升下载速度。
+
+Audio files is placed in the Server's hard disk, served by nginx, cached by cloudflare.

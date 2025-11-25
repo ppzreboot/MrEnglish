@@ -1,35 +1,29 @@
-import type { ObjectId } from 'mongodb'
-import type { I_app_model } from './mongo/mod.ts'
+import type { I_app_db, I_service__session_maker, I_service__session } from '@mr-english/app-model'
 import { parse_cookie } from '../utils/parse-cookie.ts'
 
 export
 function init_service__session_maker(
-    app_model: I_app_model,
+    app_db: I_app_db,
     session_duration_ms: number,
-) {
-    return function session(req: Request) {
-        async function get_current_user_id(): Promise<ObjectId
-            | 'no session token'
-            | 'invalid/expired session'
-            >
-        {
+): I_service__session_maker {
+    return function session(req: Request): I_service__session {
+        async function get_current_user_id() {
             const now = Date.now() // 提前取 now 的值
             const session_token = read_session_token(req)
             if (session_token === null)
-                return 'no session token'
-            const doc = await app_model.session.findOne({ session_token })
-            if (doc === null)
-                return 'invalid/expired session'
-            if (now - doc.created_at.getTime() > session_duration_ms)
-                return 'invalid/expired session'
+                return null
+            const doc = await app_db.session.findOne({ session_token })
+            if (doc === null
+                || now - doc.created_at.getTime() > session_duration_ms)
+                return null
             return doc.userid
         }
         async function get_current_user() {
             const user_id = await get_current_user_id()
-            if (typeof(user_id) === 'string')
-                return user_id
+            if (user_id === null)
+                return null
 
-            const user = await app_model.user.findOne({ _id: user_id })
+            const user = await app_db.user.findOne({ _id: user_id })
             if (!user)
                 throw Error(`Session Service: user (${user_id}) not found`)
             return user
@@ -39,7 +33,7 @@ function init_service__session_maker(
             get_current_user,
             async check() {
                 const userid = await get_current_user_id()
-                if (typeof(userid) === 'string')
+                if (userid === null)
                     throw new Response(
                         JSON.stringify({
                             error: true,

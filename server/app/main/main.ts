@@ -1,44 +1,47 @@
-import { init_service__mongo_db } from '../service/mongo/mod.ts'
-import { parse_app_env } from '../service/env.ts'
-import { init_service__session_maker } from '../service/session.ts'
-import { init_server } from './init-server.ts'
-import { init_service__sign_up_in } from '../service/sign-up-in.ts'
-import { init_service__llm_client } from '../service/llm/mod.ts'
-import { init_service__word_mng } from '../service/word.ts'
-import { init_service__ecdict } from '../service/ecdict.ts'
+import { I_handler, I_HTTP_method, I_handler_input } from '@ppz-http/router'
+import { I_app_service } from '@mr-english/app-model'
+import { read_env } from './env.ts'
+import { init } from './init.ts'
 
-import { route__login } from '../handler/auth/oauth-login.ts'
-import { route__static } from '../handler/static-files.ts'
-import { route__auth_status } from '../handler/auth/status.ts'
-import { route__lookup } from '../handler/word.ts'
+const app_env = read_env()
+const { service, route_list } = init(app_env)
 
-const env = parse_app_env()
-const app_model = init_service__mongo_db(env.mongo_db_uri, env.mongo_db_name)
-const session = init_service__session_maker(app_model, env.session_duration)
-const sign_up_in = init_service__sign_up_in(app_model)
-const llm = init_service__llm_client({
-    base_url: env.llm_base_url,
-    api_key: env.llm_api_key,
-    app_model,
-})
-const word_mng = init_service__word_mng(app_model)
-const ecdict_lookup = init_service__ecdict(env.ecdict_db_uri)
+Deno.serve(
+    {
+        port: app_env.port,
+        onListen: () => {
+            console.log('HTTP Server is listening on ' + app_env.port)
+        },
+    },
+    request => {
+        const url = new URL(request.url)
+        for (const route of route_list) {
+            const handler = route(request.method as I_HTTP_method, url)
+            if (handler !== null) {
+                return _handle({ request, service, url }, handler)
+            }
+        }
+        console.error(`Not Found: ${request.method} ${request.url}`)
+        return Response.json({
+            error: true,
+            key: 'Not Found',
+        })
+    },
+)
 
-const service = {
-    session,
-    sign_up_in,
-    llm,
-    env,
-    word_mng,
-    ecdict_lookup,
+async function _handle(
+    input: I_handler_input<I_app_service>,
+    handler: I_handler<I_app_service>,
+): Promise<Response> {
+    try {
+        return await handler(input)
+    } catch(err) {
+        if (err instanceof Response)
+            return err
+        console.error(err)
+        return Response.json({
+            error: true,
+            key: 'Unknown Error',
+        })
+    }
 }
-
-init_server(env.port, service, [
-    route__static,
-    route__auth_status,
-    route__login,
-    route__lookup,
-])
-
-export
-type I_app_service = typeof service

@@ -1,4 +1,4 @@
-import type { I_app_model } from '../mongo/mod.ts'
+import type { I_app_model } from '../db.ts'
 import { make_llm_lookup, I_word } from '@ppz-ai/lookup'
 
 export

@@ -1,10 +1,10 @@
-import type { I_app_model } from './mongo/mod.ts'
+import type { I_app_db } from '@mr-english/app-model'
 import type { ObjectId } from 'mongodb'
 
 export
-function init_service__sign_up_in(app_model: I_app_model) {
+function init_service__sign_up_in(app_db: I_app_db) {
     return async function(provider: 'github', oauth_id: string): Promise<string> {
-        const user_oauth = await app_model.user_oauth.findOne({
+        const user_oauth = await app_db.user_oauth.findOne({
             provider,
             oauth_id,
         })
@@ -13,12 +13,12 @@ function init_service__sign_up_in(app_model: I_app_model) {
         const session_token = crypto.randomUUID()
         if (user_oauth === null) {
             // sign up
-            const inserted_user = await app_model.user.insertOne({
+            const inserted_user = await app_db.user.insertOne({
                 is_friend: false,
                 created_at: now,
                 updated_at: now,
             })
-            await app_model.user_oauth.insertOne({
+            await app_db.user_oauth.insertOne({
                 provider,
                 oauth_id,
                 userid: inserted_user.insertedId,
@@ -26,21 +26,21 @@ function init_service__sign_up_in(app_model: I_app_model) {
             })
             userid = inserted_user.insertedId
             // insert session on sign-up
-            await app_model.session.insertOne({
+            await app_db.session.insertOne({
                 userid,
                 session_token,
                 created_at: now,
             })
         } else {
             // sign in
-            const user = await app_model.user.findOne({
+            const user = await app_db.user.findOne({
                 _id: user_oauth.userid,
             })
             if (user === null)
                 throw new Error('user not found during sign-in')
             userid = user._id
             // update session on sign-in
-            const result = await app_model.session.updateOne(
+            const result = await app_db.session.updateOne(
                 { userid },
                 { $set: {
                     session_token,

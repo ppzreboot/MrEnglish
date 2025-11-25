@@ -1,0 +1,5 @@
+{
+    "name": "@ppz-http/router",
+    "version": "0.0.0",
+    "exports": "./mod.ts"
+}
