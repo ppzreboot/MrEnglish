@@ -10,7 +10,7 @@ import {
 } from '@mr-english/meriam-webster'
 import type { I_lookup_result, I_service__lookup } from '@mr-english/app-model'
 
-interface I_collection__raw_mw_cache {
+interface I_doc__raw_mw_cache {
     word: string
     raw?: I_raw_mw_entry[]
 }
@@ -31,7 +31,7 @@ function init_service__lookup(opts: {
     )
     const mw_cache = new MongoClient(opts.mw_cache_mongo_uri)
         .db('mw-cache')
-        .collection<I_collection__raw_mw_cache>('raw')
+        .collection<I_doc__raw_mw_cache>('raw')
 
     return async function lookup(word: string): Promise<null | I_lookup_result> {
         const ecdict_result = await lookup_from_ecdict(word)
