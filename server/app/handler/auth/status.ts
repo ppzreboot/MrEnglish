@@ -10,7 +10,7 @@ const route__auth_status: I_route<I_app_service> = (method, url) =>
 
 const auth_status: I_handler<I_app_service> = async ctx => {
     const user_id = await ctx.service.session(ctx.request).get_current_user_id()
-    const signed_in = typeof(user_id) !== 'string'
+    const signed_in = user_id !== null
     const oauth_list = signed_in
         ? null
         : [

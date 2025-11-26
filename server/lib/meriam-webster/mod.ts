@@ -21,6 +21,9 @@ export
 async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_result> {
     const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/learners/json/${word}?key=${apikey}`)
     const raw_body = await response.text()
+    if (raw_body === 'Invalid API key. Not subscribed for this reference.')
+        throw Error('Meriam Webster API key is not valid')
+
     const json_body = JSON.parse(raw_body)
     if (json_body instanceof Array && json_body.every(item => typeof(item) === 'string'))
         return {
