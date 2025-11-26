@@ -12,7 +12,7 @@ interface I_mw_error__zod {
 interface I_mw_error__not_a_word {
     error: true
     type: 'not a word'
-    json_body: string[]
+    raw_body: string
 }
 export type I_mw_error = I_mw_error__zod | I_mw_error__not_a_word
 

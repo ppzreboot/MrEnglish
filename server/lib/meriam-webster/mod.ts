@@ -6,12 +6,14 @@ import {
 } from './schema.ts'
 
 export type {
-    I_formatted_meriam_webster_entry
+    I_mw_error,
+    I_formatted_meriam_webster_entry,
 }
 
 type I_lookup_result = I_mw_error | {
     error: false
     data: I_formatted_meriam_webster_entry[]
+    raw: I_raw_mw_entry[]
 }
 
 export
@@ -23,13 +25,14 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_re
         return {
             error: true,
             type: 'not a word',
-            json_body,
+            raw_body,
         }
     const parsed = schema__mw_entries.safeParse(json_body)
     if (parsed.success)
         return {
             error: false,
             data: format_raw(word, parsed.data),
+            raw: json_body,
         }
     else
         return {
@@ -54,13 +57,3 @@ function format_raw(word: string, raw: I_raw_mw_entry[]) {
             shortdef: item.shortdef,
         }))
 }
-
-// export
-// function format_raw_error(err: I_mw_error) {
-//     return `raw error on requesting meriam-webster:
-// http status: ${err.response.status}
-// http status text: ${err.response.statusText}
-// zod error: ${err.zod_err.issues}
-// raw body: ${err.raw_body}
-// `
-// }

@@ -1,6 +1,5 @@
 import { assert } from '@std/assert'
 import { lookup_from_mw } from './mod.ts'
-import z from 'zod'
 
 Deno.test('lookup_from_mw', async t => {
     const apikey = Deno.env.get('mw_apikey')

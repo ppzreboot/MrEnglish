@@ -19,10 +19,12 @@ export
 type I_service__sign_up_in = (provider: 'github', oauth_id: string) => Promise<string>
 
 export
-type I_service__lookup = (word: string) => Promise<null | {
+interface I_lookup_result {
     ecdict: I_ecdict
-    mw: I_formatted_meriam_webster_entry[] | null
-}>
+    mw?: I_formatted_meriam_webster_entry[]
+}
+export
+type I_service__lookup = (word: string) => Promise<null | I_lookup_result>
 
 export
 interface I_service__word_mng {
