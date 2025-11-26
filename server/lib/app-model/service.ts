@@ -1,9 +1,8 @@
 import type { ObjectId } from 'mongodb'
-import type { I_app_env } from '../env.ts'
-import type { I_doc__user } from '../db.ts'
-import type { I_lookup_result } from './lookup.ts'
-
-export * from './lookup.ts'
+import type { I_app_env } from './env.ts'
+import type { I_doc__user } from './db.ts'
+import type { I_ecdict } from '@ppz-ai/ecdict-sqlite3'
+import type { I_formatted_meriam_webster_entry } from '@mr-english/meriam-webster'
 
 export
 interface I_service__session {
@@ -20,7 +19,10 @@ export
 type I_service__sign_up_in = (provider: 'github', oauth_id: string) => Promise<string>
 
 export
-type I_service__lookup = (word: string) => Promise<null | I_lookup_result>
+type I_service__lookup = (word: string) => Promise<null | {
+    ecdict: I_ecdict
+    mw: I_formatted_meriam_webster_entry[] | null
+}>
 
 export
 interface I_service__word_mng {
