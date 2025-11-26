@@ -1,0 +1,4 @@
+{
+	"name": "@mr-english-client/api",
+	"exports": "./mod.ts"
+}

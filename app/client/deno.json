@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "compilerOptions": {
+    "lib": ["es2022", "dom"],
+    "jsxImportSource": "react",
+    "jsx": "react-jsx"
+  }
+}
