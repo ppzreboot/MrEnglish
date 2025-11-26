@@ -8,6 +8,7 @@ import {
 export type {
     I_mw_error,
     I_formatted_meriam_webster_entry,
+    I_raw_mw_entry,
 }
 
 type I_lookup_result = I_mw_error | {
@@ -44,6 +45,7 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_re
         }
 }
 
+export
 function format_raw(word: string, raw: I_raw_mw_entry[]) {
     return raw
         .filter(item => item.hwi.hw === word)

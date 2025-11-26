@@ -1,14 +1,27 @@
 import { Database } from '@db/sqlite'
-import type { I_lookup_result, I_meriam_webster } from '@mr-english/app-model'
+import { MongoClient } from 'mongodb'
+import { z } from 'zod'
 import { make_ecdict_sqlite3 } from '@ppz-ai/ecdict-sqlite3'
-import { make_lfmw } from './meriam-webster/retrieve-raw.ts'
+import {
+    type I_mw_error,
+    type I_raw_mw_entry,
+    lookup_from_mw,
+    format_raw,
+} from '@mr-english/meriam-webster'
+import type { I_lookup_result, I_service__lookup } from '@mr-english/app-model'
+
+interface I_collection__raw_mw_cache {
+    word: string
+    raw?: I_raw_mw_entry[]
+}
 
 export
 function init_service__lookup(opts: {
     ecdict_sqlite3: string
     mw_cache_mongo_uri: string
-    mw_api_key: string
-}) {
+    mw_apikey: string
+}): I_service__lookup {
+    console.log('connecting ecdict sqlite3 at', opts.ecdict_sqlite3)
     const lookup_from_ecdict = make_ecdict_sqlite3(
         new Database(opts.ecdict_sqlite3, {
             readonly: true,
@@ -16,55 +29,51 @@ function init_service__lookup(opts: {
             memory: false,
         })
     )
-    const lookup_from_mw = make_lfmw(opts.mw_api_key)
+    const mw_cache = new MongoClient(opts.mw_cache_mongo_uri)
+        .db('mw-cache')
+        .collection<I_collection__raw_mw_cache>('raw')
 
     return async function lookup(word: string): Promise<null | I_lookup_result> {
         const ecdict_result = await lookup_from_ecdict(word)
         if (ecdict_result === null) return null
 
-        const mw_raw_result = await lookup_from_mw(word)
-        if (mw_raw_result.error) {
-            console.error(`error on looking up from meriam-webster: ${word}`)
-            switch(mw_raw_result.type) {
-                case 'unknown':
-                    console.error(`type: unknown;
-                        http_status: ${mw_raw_result.response.status};
-                        http_status_text: ${mw_raw_result.response.statusText};
-                    `)
-                    if (mw_raw_result.response.ok)
-                        console.error('http body', await mw_raw_result.response.text())
-                    break
-                case 'zod':
-                    console.error('type: zod;')
-                    console.error(mw_raw_result.zod_err.issues)
-                    break
-            }
-            return {
-                ecdict: ecdict_result,
-                mw: null,
-            }
+        // 尝试从缓存读取
+        const cached_mw_result = await mw_cache.findOne({ word })
+        if (cached_mw_result !== null) {
+            if (cached_mw_result.raw === undefined)
+                return { ecdict: ecdict_result }
+            else
+                return {
+                    ecdict: ecdict_result,
+                    mw: format_raw(word, cached_mw_result.raw),
+                }
         }
+
+        console.log('lookup meriam-webster:', word)
+        const mw_result = await lookup_from_mw(opts.mw_apikey, word)
+        if (mw_result.error) {
+            console.log(`cache meriam-webster "${word}" as not found`)
+            await mw_cache.insertOne({ word }) // “不存在”也是数据
+            console.error(format_mw_error(word, mw_result))
+            return { ecdict: ecdict_result }
+        }
+        console.log(`cache meriam-webster "${word}"`)
+        await mw_cache.insertOne({ word, raw: mw_result.raw })
         return {
             ecdict: ecdict_result,
-            mw: mw_raw_result.data
-                .filter(item => {
-                    console.log(item.hwi, word,
-                        item.hwi.hw === word,
-                        item.fl !== undefined,
-                    )
-                    return item.hwi.hw === word
-                    && item.fl !== undefined
-                }
-                )
-                .map<I_meriam_webster>(item => ({
-                    hw: item.hwi.hw,
-                    prs: item.hwi.prs?.map(prs => ({
-                        ipa: prs.ipa,
-                        audio: prs.sound?.audio,
-                    })),
-                    fl: item.fl!,
-                    shortdef: item.shortdef,
-                }))
+            mw: mw_result.data,
         }
     }
+}
+
+export
+function format_mw_error(word: string, err: I_mw_error) {
+    if (err.type === 'not a word')
+        return `meriam-webster error (${word}): ${err.raw_body}`
+    return `meriam-webster error (${word}):
+http status: ${err.response.status}
+http status text: ${err.response.statusText}
+zod error: ${z.prettifyError(err.zod_err)}
+raw body: ${err.raw_body}
+`
 }

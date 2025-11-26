@@ -14,7 +14,7 @@ function read_env(): I_app_env {
 
     const raw_session_duration_d = Deno.env.get('session_duration_d')
     const session_duration_d = Number(raw_session_duration_d)
-    if (session_duration_d < 1 || session_duration_d > 365)
+    if (session_duration_d < 0.1 || session_duration_d > 365)
         throw Error('ENV Error: session_duration_d - ' + raw_session_duration_d)
     const session_duration_ms = session_duration_d * 24 * 60 * 60 * 1000
 
@@ -38,9 +38,9 @@ function read_env(): I_app_env {
     const mw_cache_mongo_uri = Deno.env.get('mw_cache_mongo_uri')
     if (!is_real_string(mw_cache_mongo_uri))
         throw Error('ENV Error: mw_cache_mongo_uri - ' + mw_cache_mongo_uri)
-    const mw_api_key = Deno.env.get('mw_api_key')
-    if (!is_real_string(mw_api_key))
-        throw Error('ENV Error: mw_api_key - ' + mw_api_key)
+    const mw_apikey = Deno.env.get('mw_apikey')
+    if (!is_real_string(mw_apikey))
+        throw Error('ENV Error: mw_apikey - ' + mw_apikey)
 
     return {
         app_mode,
@@ -55,6 +55,6 @@ function read_env(): I_app_env {
 
         ecdict_sqlite3,
         mw_cache_mongo_uri,
-        mw_api_key,
+        mw_apikey,
     }
 }

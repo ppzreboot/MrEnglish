@@ -15,5 +15,5 @@ interface I_app_env {
 
     ecdict_sqlite3: string
     mw_cache_mongo_uri: string
-    mw_api_key: string
+    mw_apikey: string
 }

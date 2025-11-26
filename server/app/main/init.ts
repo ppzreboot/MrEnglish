@@ -23,7 +23,7 @@ function init(env: I_app_env): {
     const lookup = init_service__lookup({
         ecdict_sqlite3: env.ecdict_sqlite3,
         mw_cache_mongo_uri: env.mw_cache_mongo_uri,
-        mw_api_key: env.mw_api_key,
+        mw_apikey: env.mw_apikey,
     })
 
     return {
