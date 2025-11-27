@@ -17,11 +17,11 @@ interface I_doc__raw_mw_cache {
 }
 
 export
-function init_service__lookup(opts: {
+async function init_service__lookup(opts: {
     ecdict_sqlite3: string
     mw_cache_mongo_uri: string
     mw_apikey: string
-}): I_service__lookup {
+}): Promise<I_service__lookup> {
     console.log('connecting ecdict sqlite3 at', opts.ecdict_sqlite3)
     const lookup_from_ecdict = make_ecdict_sqlite3(
         new Database(opts.ecdict_sqlite3, {
@@ -30,7 +30,11 @@ function init_service__lookup(opts: {
             memory: false,
         })
     )
-    const mw_cache = new MongoClient(opts.mw_cache_mongo_uri)
+
+    console.log('connecting to meriam-webster cache db')
+    const mongo = await new MongoClient(opts.mw_cache_mongo_uri).connect()
+    console.log('connnected to meriam-webster cache db')
+    const mw_cache = mongo
         .db('mw-cache')
         .collection<I_doc__raw_mw_cache>('raw')
 

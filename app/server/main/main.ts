@@ -4,7 +4,7 @@ import { read_env } from './env.ts'
 import { init } from './init.ts'
 
 const app_env = read_env()
-const { service, route_list } = init(app_env)
+const { service, route_list } = await init(app_env)
 
 Deno.serve(
     {
@@ -15,6 +15,7 @@ Deno.serve(
     },
     request => {
         const url = new URL(request.url)
+        console.log(`${request.method} ${url.pathname}`)
         for (const route of route_list) {
             const handler = route(request.method as I_HTTP_method, url)
             if (handler !== null) {

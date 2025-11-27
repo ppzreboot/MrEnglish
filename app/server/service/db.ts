@@ -2,8 +2,10 @@ import { MongoClient } from 'mongodb'
 import { I_app_db } from '@mr-english-server/schema'
 
 export
-function init_service__mongo_db(connect_uri: string, db_name: string): I_app_db {
-    const client = new MongoClient(connect_uri)
+async function init_service__mongo_db(connect_uri: string, db_name: string): Promise<I_app_db> {
+    console.log('connecting to mongo db')
+    const client = await new MongoClient(connect_uri).connect()
+    console.log('connected to mongo db')
     const db = client.db(db_name)
 
     return {

@@ -12,15 +12,15 @@ import { route__lookup } from '../handler/word.ts'
 import { init_service__lookup } from '../service/lookup/mod.ts'
 
 export
-function init(env: I_app_env): {
+async function init(env: I_app_env): Promise<{
     service: I_app_service
     route_list: I_route<I_app_service>[]
-} {
-    const app_model = init_service__mongo_db(env.mongo_db_uri, env.mongo_db_name)
+}> {
+    const app_model = await init_service__mongo_db(env.mongo_db_uri, env.mongo_db_name)
     const session = init_service__session_maker(app_model, env.session_duration_ms)
     const sign_up_in = init_service__sign_up_in(app_model)
     // const word_mng = init_service__word_mng(app_model)
-    const lookup = init_service__lookup({
+    const lookup = await init_service__lookup({
         ecdict_sqlite3: env.ecdict_sqlite3,
         mw_cache_mongo_uri: env.mw_cache_mongo_uri,
         mw_apikey: env.mw_apikey,

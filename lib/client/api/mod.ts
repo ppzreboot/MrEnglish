@@ -29,8 +29,11 @@ async function output<Data>(api_name: string, response: Response, schema: z.ZodT
 	const raw_body = await read_body()
 	const json_body = parse_body()
 	const parsed = schema__api_output(schema).safeParse(json_body)
-	if (parsed.error)
-		throw new API_error(api_name, `zod validate\n ${z.prettifyError(parsed.error)}`)
+	if (parsed.error) {
+		// console.error(z.prettifyError(parsed.error))
+		console.error('zod error', z.treeifyError(parsed.error))
+		throw new API_error(api_name, `zod validate`)
+	}
 	if (parsed.data.error)
 		throw new API_error(api_name, `server error -- ${parsed.data.msg}`)
 	return parsed.data.data

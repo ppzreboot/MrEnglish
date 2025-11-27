@@ -1,7 +1,6 @@
 {
   "tasks": {
-    "dev": "vite",
-    "build": "vite build"
+    "dev": "deno run -A --unstable-bundle --watch=src ./build/dev.ts"
   },
   "compilerOptions": {
     "lib": ["es2022", "dom"],
