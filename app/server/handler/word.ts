@@ -19,10 +19,7 @@ const route__lookup = simple_match<I_app_service>({
         const result = await ctx.service.lookup(word)
         return Response.json({
             error: false,
-            data: {
-                is_valid: result !== null,
-                detail: result,
-            }
+            data: result,
         })
     },
 })

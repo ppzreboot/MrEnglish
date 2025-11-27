@@ -51,7 +51,9 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_re
 export
 function format_raw(word: string, raw: I_raw_mw_entry[]) {
     return raw
-        .filter(item => item.hwi.hw === word)
+        .filter(item =>
+            item.hwi.hw.split('*').join('') === word
+        )
         .map<I_formatted_meriam_webster_entry>(item => ({
             hw: item.hwi.hw,
             prs: item.hwi.prs?.map(prs => ({
