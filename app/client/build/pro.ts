@@ -3,7 +3,11 @@
 
 import { copy } from '@std/fs'
 
-await Deno.remove('./dist', { recursive: true })
+try {
+	await Deno.remove('./dist', { recursive: true,  })
+} catch {
+	console.log('看起来是第一次前端打包')
+}
 await copy('./public', './dist')
 
 const result = await Deno.bundle({
