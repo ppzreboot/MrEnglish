@@ -43,7 +43,10 @@ async function init_service__lookup(opts: {
         if (ecdict_result === null) return null
 
         // 尝试从缓存读取
-        const cached_mw_result = await mw_cache.findOne({ word })
+        const cached_mw_result = await mw_cache.findOne(
+            { word },
+            { collation: { locale: 'en', strength: 2 } },
+        )
         if (cached_mw_result !== null) {
             if (cached_mw_result.raw === undefined)
                 return { ecdict: ecdict_result }
