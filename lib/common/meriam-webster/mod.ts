@@ -50,9 +50,10 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_re
 
 export
 function format_raw(word: string, raw: I_raw_mw_entry[]) {
+    word = word.toLowerCase()
     return raw
         .filter(item =>
-            item.hwi.hw.split('*').join('') === word
+            item.hwi.hw.split('*').join('').toLowerCase() === word
         )
         .map<I_formatted_meriam_webster_entry>(item => ({
             hw: item.hwi.hw,
