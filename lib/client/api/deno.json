@@ -1,4 +1,7 @@
 {
 	"name": "@mr-english-client/api",
-	"exports": "./mod.ts"
+	"exports": "./mod.ts",
+	"imports": {
+    "zod": "npm:zod@^4.1.12"
+	}
 }

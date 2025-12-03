@@ -1,0 +1,20 @@
+{
+  "tasks": {
+    "dev": "deno run -A --unstable-bundle --watch=src,../../lib/client,../../lib/common ./build/dev.ts",
+    "pro": "deno run -A --unstable-bundle ./build/pro.ts"
+  },
+  "imports": {
+    "@std/fs": "jsr:@std/fs@^1.0.20", // used in build
+    "@ppz/oauth-login": "jsr:@ppz/oauth-login@0.0.6",
+    "@types/react": "npm:@types/react@^19.2.7",
+    "@types/react-dom": "npm:@types/react-dom@^19.2.3",
+    "react": "npm:react@^19.2.0",
+    "react-dom": "npm:react-dom@^19.2.0",
+    "zod": "npm:zod@^4.1.12"
+  },
+  "compilerOptions": {
+    "lib": ["es2022", "dom"],
+    "jsxImportSource": "react",
+    "jsx": "react-jsx"
+  }
+}

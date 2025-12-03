@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
-import { retrieve__auth_status } from '../api/auth.ts'
 import { I_api_output__auth_status, I_lookup_result } from '@mr-english/schema'
-import { retrieve__lookup } from '../api/lookup.ts'
 import { get_github_login_url } from '@ppz/oauth-login/github'
+import { retrieve__auth_status } from '../api/auth.ts'
+import { retrieve__lookup } from '../api/lookup.ts'
 
 export
 function App() {

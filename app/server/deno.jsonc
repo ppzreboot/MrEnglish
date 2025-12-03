@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "test": "deno test --env-file -A",
+    "dev": "deno run --env-file -A --watch main/main.ts",
+    "compile": "deno compile --env-file -A --output=dist/serve--mr-english main/main.ts"
+  },
+  "imports": {
+    "@db/sqlite": "jsr:@db/sqlite@^0.13.0",
+    "@ppz/oauth-login": "jsr:@ppz/oauth-login@0.0.6",
+    "@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.2",
+    "mongodb": "npm:mongodb@^7.0.0",
+    "zod": "npm:zod@^4.1.12"
+  }
+}
