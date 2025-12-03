@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run -A --unstable-bundle --watch=src ./build/dev.ts",
+    "dev": "deno run -A --unstable-bundle --watch=src,../../lib/client,../../lib/common ./build/dev.ts",
     "pro": "deno run -A --unstable-bundle ./build/pro.ts"
   },
   "compilerOptions": {
