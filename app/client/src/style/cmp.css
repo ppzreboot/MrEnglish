@@ -9,7 +9,9 @@
 	}
 
 	@media (max-width: 600px) {
-		margin-top: calc(var(--fs) * 2.5);
+		&:has(> h5:first-child) {
+			margin-top: calc(var(--fs) * 2.5);
+		}
 		padding: var(--fs-x-sm) var(--fs);
 		& > h5:first-child {
 			position: absolute;
@@ -51,6 +53,7 @@ ul.list li {
 	margin-bottom: calc(var(--fs) / 3);
 	&::before {
 		content: '';
+		flex-shrink: 0;
 		display: block;
 		width: calc(var(--fs) / 3);
 		height: calc(var(--fs) / 3);
