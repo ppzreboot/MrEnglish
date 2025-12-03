@@ -11,7 +11,7 @@ try {
 await copy('./public', './dist')
 
 const result = await Deno.bundle({
-	entrypoints: ['index.html'],
+	entrypoints: ['src/index.html'],
 	outputDir: 'dist',
 	format: 'esm',
 	platform: 'browser',
