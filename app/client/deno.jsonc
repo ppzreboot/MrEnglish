@@ -9,6 +9,7 @@
     "@types/react-dom": "npm:@types/react-dom@^19.2.3",
     "react": "npm:react@^19.2.0",
     "react-dom": "npm:react-dom@^19.2.0",
+    "react-hot-toast": "npm:react-hot-toast@^2.6.0",
     "wouter": "npm:wouter@^3.8.1",
     "zod": "npm:zod@^4.1.12"
   },

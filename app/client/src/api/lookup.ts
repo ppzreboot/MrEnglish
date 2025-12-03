@@ -4,9 +4,8 @@ import { type I_lookup_result, schema__api_output__lookup_result } from '@mr-eng
 
 export
 async function retrieve__lookup(word: string):
-    I_api_output<I_lookup_result
+    I_api_output<I_lookup_result | null
         , 'invalid word format'
-        | 'word not found'
         >
 {
     word = word.trim()
@@ -16,7 +15,5 @@ async function retrieve__lookup(word: string):
       method: 'GET',
     })
     const data = await output('retrieve__lookup', response, schema__api_output__lookup_result)
-    if (data === null)
-        return ['word not found', null]
     return [null, data]
 }

@@ -1,55 +1,96 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState } from 'react'
+import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_result } from '@mr-english/schema'
 import { retrieve__lookup } from '../../api/lookup.ts'
 
+type I_state = {
+  word: string
+  status: 'before lookup' | 'loading'
+} | {
+  word: string
+  status: 'success'
+  result: I_lookup_result | null
+} | {
+  word: string
+  status: 'error'
+  error: string
+}
+
 export
 function Home_page() {
-  const [lookup, set_lookup] = useState('')
-  const [result, set_result] = useState<null | I_lookup_result>(null)
-  const [loading, set_loading] = useState(false)
+  const [state, update] = useState<I_state>({
+    word: '',
+    status: 'before lookup',
+  })
 
   const go_lookup = async () => {
-    if (loading) return
-    try {
-      set_loading(true)
-      set_result(null)
-      const [error, _result] = await retrieve__lookup(lookup)
-      if (error === null)
-        set_result(_result)
-    } finally {
-      set_loading(false)
-    }
-  }
-  return <div>
-    <input
-      value={lookup}
-      onChange={evt => set_lookup(evt.target.value)}
-      onKeyDown={evt => {
-        if (evt.key === 'Enter')
-          go_lookup()
-      }}
-    />
-    <button
-      onClick={go_lookup}
-      disabled={loading}
-    >Search</button>
+    if (state.status === 'loading')
+      throw Error('上个单词还没查完')
 
-    <div>
-      {result !== null && <>
-        <h3>Lookup Result</h3>
-        <Code
-          code={JSON.stringify(result, null, 4)}
-        />
-      </>}
-      {loading && '...'}
+    update(old => ({
+      word: old.word,
+      status: 'loading',
+    }))
+
+    const [error, result] = await retrieve__lookup(state.word)
+    if (error === null)
+      update(old => ({
+        word: old.word,
+        status: 'success',
+        result: result,
+      }))
+    else
+      update(old => ({
+        word: old.word,
+        status: 'error',
+        error: '现在还不能查短语、句子',
+      }))
+  }
+
+  return <div>
+    <div className='main-input'>
+      <input
+        value={state.word}
+        onChange={evt => {
+          update(old => {
+            if (old.status === 'error' || (
+              old.status === 'success' && old.result === null
+            ))
+              return {
+                word: evt.target.value,
+                status: 'before lookup',
+              }
+            else
+              return { ...state, word: evt.target.value }
+          })
+        }}
+        onKeyDown={evt => {
+          if (evt.key === 'Enter')
+            go_lookup()
+        }}
+      />
+      <button
+        onClick={go_lookup}
+        disabled={state.status === 'loading'}
+      >
+        <Icon_search />
+      </button>
     </div>
+
+    {state.status === 'success' &&
+      (state.result === null
+        ? <p className='not-a-word'>
+            <span className='word'>{state.word}</span>
+            <span>好像不是个正经单词</span>
+          </p>
+        : <Viewer {...state.result} />
+      )
+    }
   </div>
 }
 
-function Code(props: { code: string }) {
-  const ref = useRef<HTMLPreElement | null>(null)
-  useEffect(() => {
-    ref.current!.innerHTML = props.code
-  }, [props.code])
-  return <pre ref={ref} />
+function Viewer({ ecdict, mw }: I_lookup_result) {
+  return <div>
+    {ecdict.translation.join('\n')}
+  </div>
 }
