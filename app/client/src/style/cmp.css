@@ -58,3 +58,24 @@ ul.list li {
 		opacity: .5;
 	}
 }
+
+.mr-english-svg {
+  width: 24px;
+  height: 24px;
+}
+
+p, h5, li, .txt-item, .list {
+	line-height: 1.5;
+	margin: 0;
+	&:not(:last-child) {
+		margin-bottom: calc(var(--fs) * 0.5);
+	}
+}
+
+a {
+	color: var(--link-color);
+	text-decoration: none;
+	&:hover {
+		text-decoration: underline;
+	}
+}

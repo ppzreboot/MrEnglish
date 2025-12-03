@@ -110,7 +110,7 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
     ])
   return <div className='lookup-result'>
     <article className='main-content basic'>
-      <h5>基本释义</h5>
+      <h5>简明释义</h5>
       <ul className='list'>
         {ecdict.translation.map(item =>
           <li key={item}>{item}</li>
@@ -126,6 +126,24 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
           )}
         </ul>
       }
+    </article>
+
+    {mw &&
+      <article className='main-content e2e'>
+        <h5>英英释义</h5>
+        {mw.map((entry, index) =>
+          <ul key={index} className='list'>
+            {entry.shortdef.map(def => <li key={def}>{def}</li>)}
+          </ul>
+        )}
+      </article>
+    }
+
+    <article className='main-content e2e'>
+      <h5>其他字典</h5>
+      <p>
+        <a href={'https://youdao.com/result?lang=en&word=' + ecdict.word} target='_blank'>有道</a>
+      </p>
     </article>
   </div>
 }

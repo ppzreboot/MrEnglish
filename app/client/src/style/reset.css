@@ -30,13 +30,6 @@ h5, label {
 	margin: 0;
 }
 
-p, h5, li, .txt-item, .list {
-	line-height: 1.5;
-	&:not(:last-child) {
-		margin-bottom: calc(var(--fs) * 0.5);
-	}
-}
-
 ul, li {
 	list-style: none;
 	padding: 0;
