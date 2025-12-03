@@ -1,28 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
-import { I_api_output__auth_status, I_lookup_result } from '@mr-english/schema'
-import { get_github_login_url } from '@ppz/oauth-login/github'
-import { retrieve__auth_status } from '../api/auth.ts'
-import { retrieve__lookup } from '../api/lookup.ts'
+import { I_lookup_result } from '@mr-english/schema'
+import { retrieve__lookup } from '../../api/lookup.ts'
 
 export
-function App() {
-  const [state, set_state] = useState<I_api_output__auth_status | null>(null)
-  useEffect(() => {
-    retrieve__auth_status().then(set_state)
-  }, [])
-
-  return state === null
-    ? <div>Loading Auth Status</div>
-    : (
-      state.signed_in
-        ? <Main />
-        : <a
-          href={get_github_login_url(state.github_oauth_client_id)}
-        >Login with Github</a>
-    )
-}
-
-function Main() {
+function Home_page() {
   const [lookup, set_lookup] = useState('')
   const [result, set_result] = useState<null | I_lookup_result>(null)
   const [loading, set_loading] = useState(false)

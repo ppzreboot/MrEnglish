@@ -1,5 +1,6 @@
 import { I_handler, I_route } from '@mr-english-server/router'
 import { I_app_service } from '@mr-english-server/schema'
+import { get_github_login_url } from '@ppz/oauth-login/github'
 
 export
 const route__auth_status: I_route<I_app_service> = (method, url) =>
@@ -14,9 +15,9 @@ const auth_status: I_handler<I_app_service> = async ctx => {
         error: false,
         data: {
             signed_in,
-            github_oauth_client_id: signed_in
+            github_oauth_link: signed_in
                 ? undefined
-                : ctx.service.env.github_oauth_client_id,
+                : get_github_login_url(ctx.service.env.github_oauth_client_id),
         },
     })
 }

@@ -1,10 +1,19 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { App } from './ui/app.tsx'
+import { Switch, Route } from 'wouter'
+import { Auth } from './ctx/auth.tsx'
 import './style/index.css'
+
+import { Login_page } from './page/login/page.tsx'
+import { Home_page } from './page/home/page.tsx'
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Auth login={Login_page}>
+      <Switch>
+        <Route path='/' component={Home_page} />
+      </Switch>
+    </Auth>
   </StrictMode>,
 )
