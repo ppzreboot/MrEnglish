@@ -96,6 +96,12 @@ function Home_page() {
 }
 
 function Viewer({ ecdict, mw }: I_lookup_result) {
+  const inf_list = Object.entries(ecdict.inflection)
+    .filter(([_, v]) => v)
+    .map(([k, v]) => [
+      inflection_label[k as I_inflection_type],
+      v,
+    ])
   return <div className='lookup-result'>
     <article className='main-content basic'>
       <h5>基本释义</h5>
@@ -104,17 +110,16 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
           <li key={item}>{item}</li>
         )}
       </ul>
-      <ul className='txt-item inflection-list'>
-        {Object.entries(ecdict.inflection)
-          .filter(([_, v]) => v)
-          .map(([k, v]) =>
+      {Boolean(inf_list.length) &&
+        <ul className='txt-item inflection-list'>
+          {inf_list.map(([k, v]) =>
             <li key={k}>
-              <label>{inflection_label[k as I_inflection_type]}</label>
+              <label>{k}</label>
               <span> {v}</span>
             </li>
-          )
-        }
-      </ul>
+          )}
+        </ul>
+      }
     </article>
   </div>
 }
