@@ -33,7 +33,12 @@
 	padding: calc(var(--fs) / 2);
 	width: var(--size);
 	height: var(--size);
-	cursor: pointer;
+	&:not([disabled]) {
+		cursor: pointer;
+	}
+	&[disabled] {
+		opacity: .5;
+	}
 	svg {
 		width: var(--size);
 		height: var(--size);

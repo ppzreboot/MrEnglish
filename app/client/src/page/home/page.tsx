@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'wouter'
 import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_result } from '@mr-english/schema'
 import type { I_inflection_type } from '@ppz-ai/ecdict-common'
@@ -21,63 +22,68 @@ type I_state = {
 
 export
 function Home_page() {
+  const q = useQ()
+  useEffect(() => {
+    if (q.val)
+      go_lookup(q.val)
+  }, [q.val])
+
   const [state, update] = useState<I_state>({
-    word: '',
+    word: q.val,
     status: 'before lookup',
   })
 
-  const go_lookup = async () => {
+  const go_lookup = async (word: string) => {
     if (state.status === 'loading')
       throw Error('上个单词还没查完')
 
-    update(old => ({
-      word: old.word,
+    update({
+      word,
       status: 'loading',
-    }))
+    })
 
-    const [error, result] = await retrieve__lookup(state.word)
+    const [error, result] = await retrieve__lookup(word)
     if (error === null)
-      update(old => ({
-        word: old.word,
+      update({
+        word, // loading 期间，不允许输入，可用旧 word
         status: 'success',
         result: result,
-      }))
+      })
     else
-      update(old => ({
-        word: old.word,
+      update({
+        word,
         status: 'error',
-        error: '现在还不能查短语、句子',
-      }))
+        error: '现在还不能查短语、句子', // todo: 特殊字符
+      })
   }
 
   return <div className='home-page'>
     <div className='main-content main-input'>
       <input
         autoFocus
+        disabled={state.status === 'loading'}
         value={state.word}
         placeholder='输入单词'
         onChange={evt => {
-          update(old => {
-            if (old.status === 'error' || (
-              old.status === 'success' && old.result === null
-            ))
-              return {
-                word: evt.target.value,
-                status: 'before lookup',
-              }
-            else
-              return { ...state, word: evt.target.value }
+          if (state.status === 'loading')
+            throw Error('loading 时不让输入')
+          update({
+            word: evt.target.value,
+            status: 'before lookup',
           })
         }}
         onKeyDown={evt => {
           if (evt.key === 'Enter')
-            go_lookup()
+            q.set(state.word)
         }}
       />
       <button
         className='icon-btn'
-        onClick={go_lookup}
-        disabled={state.status === 'loading'}
+        onClick={() => q.set(state.word)}
+        disabled={
+          state.status === 'loading'
+          || state.word.trim().length === 0
+        }
       >
         <Icon_search />
       </button>
@@ -132,4 +138,17 @@ const inflection_label: Record<I_inflection_type, string> = {
   er: '比较级',
   est: '最高级',
   s: '复数',
+}
+
+function useQ() {
+  // `?q=xxx` 中的 q 是常规搜索业务中使用的查询参数
+  const [params, set_params] = useSearchParams()
+  return {
+    val: params.get('q') ?? '',
+    set: (val: string) => {
+      val = val.trim()
+      if (val.length)
+        set_params({ q: val })
+    }
+  }
 }
