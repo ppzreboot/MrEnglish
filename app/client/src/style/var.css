@@ -1,0 +1,26 @@
+html {
+	--bg: 255,255,255;
+	--text: 0,0,0;
+	--content-bg-color: rgb(var(--bg));
+
+	--fs: 16px;
+	--fs-sm: 14px;
+	--fs-x-sm: 12px;
+	--fs-lg: 10px;
+	--fs-xl: 26px;
+
+	--br: 4px;
+
+	background-color: #eee;
+	color: rgb(var(--text));
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --bg: 0,0,0;
+    --text: 255,255,255;
+		--content-bg-color: rgba(var(--text), .1);
+
+		background-color: rgb(var(--bg));
+  }
+}

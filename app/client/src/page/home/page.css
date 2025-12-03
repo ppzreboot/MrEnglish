@@ -1,0 +1,30 @@
+.home-page {
+	max-width: 800px;
+	padding: 0 12px;
+	margin: calc(var(--fs-xl) * 2) auto;
+	@media (max-width: 500px) {
+		margin: calc(var(--fs-xl) * 1) auto;
+	}
+
+	.main-input {
+		display: flex;
+		align-items: center;
+		gap: var(--fs);
+		input {
+			flex: 1;
+			@media (min-width: 600px) {
+				text-align: center;
+				font-size: calc(var(--fs) * 2);
+				height: calc(var(--fs) * 2);
+			}
+			@media (max-width: 600px) {
+				font-size: var(--fs-lg);
+				height: var(--fs-lg);
+			}
+		}
+		button {
+			--size: calc(var(--fs) * 1.5);
+			margin-right: calc(var(--fs) * -0.5);
+		}
+	}
+}

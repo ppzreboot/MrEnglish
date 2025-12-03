@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_result } from '@mr-english/schema'
+import './page.css'
+
 import { retrieve__lookup } from '../../api/lookup.ts'
 
 type I_state = {
@@ -47,10 +49,12 @@ function Home_page() {
       }))
   }
 
-  return <div>
-    <div className='main-input'>
+  return <div className='home-page'>
+    <div className='main-content main-input'>
       <input
+        autoFocus
         value={state.word}
+        placeholder='输入单词'
         onChange={evt => {
           update(old => {
             if (old.status === 'error' || (
@@ -70,6 +74,7 @@ function Home_page() {
         }}
       />
       <button
+        className='icon-btn'
         onClick={go_lookup}
         disabled={state.status === 'loading'}
       >
