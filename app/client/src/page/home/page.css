@@ -37,7 +37,8 @@
 		article.basic {
 			.inflection-list {
 				display: flex;
-				gap: var(--fs);
+				flex-wrap: wrap;
+				column-gap: var(--fs);
 				label {
 					font-size: var(--fs-sm);
 					opacity: .6;	

@@ -9,7 +9,7 @@
 	}
 
 	@media (max-width: 600px) {
-		margin-top: calc(var(--fs) * 2);
+		margin-top: calc(var(--fs) * 2.5);
 		padding: var(--fs-x-sm) var(--fs);
 		& > h5:first-child {
 			position: absolute;
@@ -20,7 +20,7 @@
 	}
 
 	@media (min-width: 500px) {
-		margin-top: var(--fs);
+		margin-top: calc(var(--fs) * 2);
 		& > h5:first-child {
 			float: right;
 			font-weight: bold;
@@ -47,12 +47,14 @@
 
 ul.list li {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
+	margin-bottom: calc(var(--fs) / 3);
 	&::before {
 		content: '';
 		display: block;
 		width: calc(var(--fs) / 3);
 		height: calc(var(--fs) / 3);
+		margin-top: calc(var(--fs) * 0.7);
 		margin-right: calc(var(--fs) / 2);
 		background-color: currentColor;
 		opacity: .5;
@@ -64,11 +66,11 @@ ul.list li {
   height: 24px;
 }
 
-p, h5, li, .txt-item, .list {
+p, h5, .txt-item, .list {
 	line-height: 1.5;
 	margin: 0;
 	&:not(:last-child) {
-		margin-bottom: calc(var(--fs) * 0.5);
+		margin-bottom: var(--fs);
 	}
 }
 

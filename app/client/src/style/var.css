@@ -2,7 +2,7 @@ html {
 	--bg: 255,255,255;
 	--text: 0,0,0;
 	--content-bg-color: rgb(var(--bg));
-	--link-color: #99c3ff;
+	--link-color: #1a0dab;
 
 	--fs: 16px;
 	--fs-sm: 14px;
@@ -22,6 +22,7 @@ html {
     --bg: 0,0,0;
     --text: 255,255,255;
 		--content-bg-color: rgba(var(--text), .1);
+		--link-color: #99c3ff;
 
 		background-color: rgb(var(--bg));
   }
