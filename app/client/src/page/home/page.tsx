@@ -91,12 +91,12 @@ function Home_page() {
 
     {state.status === 'success' &&
       (state.result === null
-        ? <p className='not-a-word'>
-            <span className='word'>{state.word}</span>
-            <span>好像不是个正经单词</span>
-          </p>
+        ? <p className='lookup-error'>{state.word} 好像不是个正经单词</p>
         : <Viewer {...state.result} />
       )
+    }
+    {state.status === 'error' &&
+      <p className='lookup-error'>{state.error}</p>
     }
   </div>
 }

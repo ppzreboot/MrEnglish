@@ -30,6 +30,9 @@
 			}
 		}
 	}
+	.lookup-error {
+		color: red;
+	}
 	.lookup-result {
 		article.basic {
 			.inflection-list {
