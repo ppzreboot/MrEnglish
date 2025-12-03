@@ -4,7 +4,7 @@
 import { copy } from '@std/fs'
 
 try {
-	await Deno.remove('./dist', { recursive: true,  })
+	await Deno.remove('./dist', { recursive: true })
 } catch {
 	console.log('看起来是第一次前端打包')
 }
