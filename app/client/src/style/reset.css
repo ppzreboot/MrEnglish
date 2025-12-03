@@ -9,4 +9,7 @@ html, body {
 
 input, button {
 	outline: none;
+	color: inherit;
+	font-size: inherit;
+	background-color: transparent;
 }
