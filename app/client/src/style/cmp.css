@@ -1,7 +1,31 @@
 .main-content {
+	position: relative;
 	background-color: var(--content-bg-color);
 	border-radius: var(--br);
-	padding: 12px 16px;
+	padding: calc(var(--fs) * 1.5) calc(var(--fs) * 2.5);
+
+	& > h5:first-child {
+		opacity: .6;
+	}
+
+	@media (max-width: 600px) {
+		margin-top: calc(var(--fs) * 2);
+		padding: var(--fs-x-sm) var(--fs);
+		& > h5:first-child {
+			position: absolute;
+			bottom: 100%;
+			font-size: var(--fs-x-sm);
+			margin-bottom: calc(var(--fs) / 3);
+		}
+	}
+
+	@media (min-width: 500px) {
+		margin-top: var(--fs);
+		& > h5:first-child {
+			float: right;
+			font-weight: bold;
+		}
+	}
 }
 
 .icon-btn {
@@ -13,5 +37,19 @@
 	svg {
 		width: var(--size);
 		height: var(--size);
+	}
+}
+
+ul.list li {
+	display: flex;
+	align-items: center;
+	&::before {
+		content: '';
+		display: block;
+		width: calc(var(--fs) / 3);
+		height: calc(var(--fs) / 3);
+		margin-right: calc(var(--fs) / 2);
+		background-color: currentColor;
+		opacity: .5;
 	}
 }

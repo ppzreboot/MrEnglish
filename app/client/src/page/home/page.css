@@ -15,16 +15,31 @@
 			@media (min-width: 600px) {
 				text-align: center;
 				font-size: calc(var(--fs) * 2);
-				height: calc(var(--fs) * 2);
+				height: calc(var(--fs) * 3);
 			}
 			@media (max-width: 600px) {
 				font-size: var(--fs-lg);
-				height: var(--fs-lg);
+				height: calc(var(--fs-lg) * 1.5);
 			}
 		}
 		button {
 			--size: calc(var(--fs) * 1.5);
 			margin-right: calc(var(--fs) * -0.5);
+			@media (max-width: 500px) {
+				--size: var(--fs);
+			}
+		}
+	}
+	.lookup-result {
+		article.basic {
+			.inflection-list {
+				display: flex;
+				gap: var(--fs);
+				label {
+					font-size: var(--fs-sm);
+					opacity: .6;	
+				}
+			}
 		}
 	}
 }

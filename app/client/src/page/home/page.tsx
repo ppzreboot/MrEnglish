@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_result } from '@mr-english/schema'
+import type { I_inflection_type } from '@ppz-ai/ecdict-common'
 import './page.css'
 
 import { retrieve__lookup } from '../../api/lookup.ts'
@@ -95,7 +96,35 @@ function Home_page() {
 }
 
 function Viewer({ ecdict, mw }: I_lookup_result) {
-  return <div>
-    {ecdict.translation.join('\n')}
+  return <div className='lookup-result'>
+    <article className='main-content basic'>
+      <h5>基本释义</h5>
+      <ul className='list'>
+        {ecdict.translation.map(item =>
+          <li key={item}>{item}</li>
+        )}
+      </ul>
+      <ul className='txt-item inflection-list'>
+        {Object.entries(ecdict.inflection)
+          .filter(([_, v]) => v)
+          .map(([k, v]) =>
+            <li key={k}>
+              <label>{inflection_label[k as I_inflection_type]}</label>
+              <span> {v}</span>
+            </li>
+          )
+        }
+      </ul>
+    </article>
   </div>
+}
+
+const inflection_label: Record<I_inflection_type, string> = {
+  did: '过去式',
+  done: '过去分词',
+  ing: '进行时',
+  does: '第三人称单数',
+  er: '比较级',
+  est: '最高级',
+  s: '复数',
 }

@@ -6,13 +6,14 @@ html {
 	--fs: 16px;
 	--fs-sm: 14px;
 	--fs-x-sm: 12px;
-	--fs-lg: 10px;
+	--fs-lg: 20px;
 	--fs-xl: 26px;
 
 	--br: 4px;
 
 	background-color: #eee;
 	color: rgb(var(--text));
+	font-size: var(--fs);
 }
 
 @media (prefers-color-scheme: dark) {

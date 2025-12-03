@@ -4,6 +4,7 @@
     "pro": "deno run -A --unstable-bundle ./build/pro.ts"
   },
   "imports": {
+    "@ppz-ai/ecdict-common": "jsr:@ppz-ai/ecdict-common@^0.3.1",
     "@std/fs": "jsr:@std/fs@^1.0.20", // used in build
     "@types/react": "npm:@types/react@^19.2.7",
     "@types/react-dom": "npm:@types/react-dom@^19.2.3",
