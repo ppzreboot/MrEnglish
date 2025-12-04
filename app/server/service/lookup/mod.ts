@@ -67,6 +67,7 @@ async function init_service__lookup(opts: {
         }
         console.log(`cache meriam-webster "${word}"`)
         await mw_cache.insertOne({ word, raw: mw_result.raw })
+        // 如果有两个人查同一个单词，这里会报错
         return {
             ecdict: ecdict_result,
             mw: mw_result.data,
