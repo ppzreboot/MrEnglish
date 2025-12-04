@@ -1,5 +1,6 @@
 import {
     schema__mw_entries,
+    type I_formatted_meriam_webster_prs,
     type I_mw_error,
     type I_formatted_meriam_webster_entry,
     type I_raw_mw_entry,
@@ -7,6 +8,7 @@ import {
 
 export type {
     I_mw_error,
+    I_formatted_meriam_webster_prs,
     I_formatted_meriam_webster_entry,
     I_raw_mw_entry,
 }
@@ -16,6 +18,8 @@ type I_lookup_result = I_mw_error | {
     data: I_formatted_meriam_webster_entry[]
     raw: I_raw_mw_entry[]
 }
+
+export * from './audio-url.ts'
 
 export
 async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_result> {

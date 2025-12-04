@@ -4,8 +4,8 @@ export
 function make_audio_url(filename: string, format: 'mp3' | 'wav' | 'ogg' = 'ogg') {
 	const sub_dir = filename.startsWith('bix') ? 'bix'
 		: filename.startsWith('gg') ? 'gg'
-		: is_alpha(filename) ? 'number'
-		: filename[0]
+		: is_alpha(filename) ? filename[0]
+		: 'number'
 	return `https://media.merriam-webster.com/audio/prons/en/us/${
 		format}/${sub_dir}/${filename}.${format}`
 }

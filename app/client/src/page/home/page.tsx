@@ -3,9 +3,11 @@ import { useSearchParams } from 'wouter'
 import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_result } from '@mr-english/schema'
 import type { I_inflection_type } from '@ppz-ai/ecdict-common'
+import { Read_word } from '@mr-english-client/ui'
 import './page.css'
 
 import { retrieve__lookup } from '../../api/lookup.ts'
+import { I_formatted_meriam_webster_prs } from '@mr-english/meriam-webster'
 
 type I_state = {
   word: string
@@ -108,9 +110,25 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
       inflection_label[k as I_inflection_type],
       v,
     ])
+
+  // 音标与读音
+  const read_list = mw === undefined ? [] :
+    mw.flatMap(entry => entry.prs)
+      .filter(prns => prns) as I_formatted_meriam_webster_prs[]
+
   return <div className='lookup-result'>
     <article className='main-content basic'>
       <h5>简明释义</h5>
+
+      {read_list.length &&
+        <ul className='pronunciation-list'>
+          {read_list.map((prn, i) =>
+            <li key={i}>
+              <Read_word {...prn} />
+            </li>
+          )}
+        </ul>
+      }
       <ul className='list'>
         {ecdict.translation.map(item =>
           <li key={item}>{item}</li>

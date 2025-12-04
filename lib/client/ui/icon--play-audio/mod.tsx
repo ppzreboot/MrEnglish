@@ -8,13 +8,16 @@ function Icon__play_audio(props: {
 }) {
 	const [type, set_type] = useState<1 | 2 | 3>(3)
 	useEffect(() => {
-		const timeid = setInterval(() => {
-			set_type(val =>
-				(val === 3 ? 1 : val + 1) as 1 | 2 | 3
-			)
-		}, 200)
-		return () => clearInterval(timeid)
-	})
+		if (props.playing) {
+			const timeid = setInterval(() => {
+				set_type(val =>
+					(val === 3 ? 1 : val + 1) as 1 | 2 | 3
+				)
+			}, 150)
+			return () => clearInterval(timeid)
+		} else
+			set_type(3)
+	}, [props.playing])
 	return <Icon__speak
 		className={props.className}
 		type={type}
