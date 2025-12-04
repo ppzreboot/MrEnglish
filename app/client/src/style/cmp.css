@@ -50,7 +50,9 @@
 ul.list li {
 	display: flex;
 	align-items: flex-start;
-	margin-bottom: calc(var(--fs) / 3);
+	&:not(:last-child) {
+		margin-bottom: calc(var(--fs) / 3);
+	}
 	&::before {
 		content: '';
 		flex-shrink: 0;
