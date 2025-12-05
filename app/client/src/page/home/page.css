@@ -61,5 +61,12 @@
 				}
 			}
 		}
+		article.other-dict {
+			p {
+				a {
+					margin-right: var(--fs);
+				}
+			}
+		}
 	}
 }

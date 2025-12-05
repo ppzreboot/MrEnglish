@@ -163,10 +163,12 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
       </article>
     }
 
-    <article className='main-content e2e'>
+    <article className='main-content other-dict'>
       <h5>其他字典</h5>
       <p>
-        <a href={'https://youdao.com/result?lang=en&word=' + ecdict.word} target='_blank'>有道</a>
+        <a href={'https://youdao.com/result?lang=en&word=' + ecdict.word} target='_blank'>有道词典</a>
+        <a href={'https://dict.eudic.net/dicts/en/' + ecdict.word} target='_blank'>欧路词典</a>
+        <a href={`https://translate.google.com/?sl=en&tl=zh-CN&text=${ecdict.word}&op=translate`} target='_blank'>谷歌翻译</a>
       </p>
     </article>
   </div>
