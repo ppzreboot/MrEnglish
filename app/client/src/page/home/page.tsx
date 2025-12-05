@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'wouter'
 import { Icon_search } from '@mr-english-client/icon'
-import { I_lookup_result } from '@mr-english/schema'
+import { I_lookup_output, I_lookup_result } from '@mr-english/schema'
 import type { I_inflection_type } from '@ppz-ai/ecdict-common'
-import { Read_word } from '@mr-english-client/ui'
+import { Read_word, Star } from '@mr-english-client/ui'
+import { I_formatted_meriam_webster_prs } from '@mr-english/meriam-webster'
 import './page.css'
 
 import { retrieve__lookup } from '../../api/lookup.ts'
-import { I_formatted_meriam_webster_prs } from '@mr-english/meriam-webster'
+import { post__star_word } from '../../api/word.ts'
 
 type I_state = {
   word: string
@@ -15,7 +16,7 @@ type I_state = {
 } | {
   word: string
   status: 'success'
-  result: I_lookup_result | null
+  output: null | I_lookup_output
 } | {
   word: string
   status: 'error'
@@ -44,12 +45,12 @@ function Home_page() {
       status: 'loading',
     })
 
-    const [error, result] = await retrieve__lookup(word)
+    const [error, output] = await retrieve__lookup(word)
     if (error === null)
       update({
         word, // loading 期间，不允许输入，可用旧 word
         status: 'success',
-        result: result,
+        output,
       })
     else
       update({
@@ -58,6 +59,40 @@ function Home_page() {
         error: '现在还不能查短语、句子', // todo: 特殊字符
       })
   }
+
+  const right_btn = (() => {
+    if (state.status === 'success' && state.output !== null) {
+      const output = state.output
+      return <Star
+        value={output.star}
+        on_click={async () => {
+          await post__star_word(output.result.ecdict.word, !output.star)
+          update(current => {
+            if (current.word !== state.word) return current
+
+            return {
+              status: 'success',
+              word: current.word,
+              output: {
+                result: output.result,
+                star: !output.star,
+              }
+            }
+          })
+        }}
+      />
+    }
+    return <button
+      className='icon-btn'
+      onClick={() => q.set(state.word)}
+      disabled={
+        state.status === 'loading'
+        || state.word.trim().length === 0
+      }
+    >
+      <Icon_search />
+    </button>
+  })()
 
   return <div className='home-page'>
     <div className='main-content main-input'>
@@ -80,22 +115,13 @@ function Home_page() {
             q.set(state.word)
         }}
       />
-      <button
-        className='icon-btn'
-        onClick={() => q.set(state.word)}
-        disabled={
-          state.status === 'loading'
-          || state.word.trim().length === 0
-        }
-      >
-        <Icon_search />
-      </button>
+      {right_btn}
     </div>
 
     {state.status === 'success' &&
-      (state.result === null
+      (state.output === null
         ? <p className='lookup-error'>{state.word} 好像不是个正经单词</p>
-        : <Viewer {...state.result} />
+        : <Viewer {...state.output.result} />
       )
     }
     {state.status === 'error' &&

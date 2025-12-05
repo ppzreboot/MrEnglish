@@ -5,11 +5,11 @@ import { init_service__mongo_db } from '../service/db.ts'
 import { init_service__session_maker } from '../service/session.ts'
 import { init_service__sign_up_in } from '../service/sign-up-in.ts'
 import { init_service__word_mng } from '../service/word.ts'
+import { init_service__lookup } from '../service/lookup/mod.ts'
 
 import { route__login } from '../handler/auth/oauth-login.ts'
 import { route__auth_status } from '../handler/auth/status.ts'
-import { route__lookup } from '../handler/word.ts'
-import { init_service__lookup } from '../service/lookup/mod.ts'
+import { route__lookup, route__star_word } from '../handler/word.ts'
 
 export
 async function init(env: I_app_env): Promise<{
@@ -38,6 +38,7 @@ async function init(env: I_app_env): Promise<{
             route__auth_status,
             route__login,
             route__lookup,
+            route__star_word,
         ]
     }
 }

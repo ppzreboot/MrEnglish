@@ -37,6 +37,8 @@
 		article.basic {
 			.pronunciation-list {
 				margin-bottom: var(--fs);
+				display: flex;
+				gap: var(--fs);
 			}
 			.inflection-list {
 				display: flex;
