@@ -1,7 +1,33 @@
 .mr-en-cmp--read-word {
+	--size: var(--fs-sm);
+
+	font-size: var(--size);
+	height: calc(var(--size) * 2);
+	line-height: calc(var(--size) * 1.5);
+	border-radius: var(--size);
+	border: 1px solid rgba(var(--font-color), .1);
+	padding: 0 calc(var(--size) / 2 + 1px) 0 calc(var(--size) / 2);
+
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+
+	&:active {
+		background-color: rgba(var(--font-color), .05);
+	}
+
 	span {
-		font-family:
-			Times New Roman,
-			sans-serif;
+		font-family: Times New Roman, sans-serif;
+		margin-right: .2em;
+		transform: translateY(1px);
+		&::before, &::after {
+			content: '/';
+			font-size: var(--fs);
+			opacity: .6;
+			margin: 0 .3em;
+		}
+	}
+	svg {
+		--size: var(--fs-sm);
 	}
 }

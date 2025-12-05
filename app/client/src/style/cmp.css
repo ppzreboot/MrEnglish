@@ -67,8 +67,9 @@ ul.list li {
 }
 
 .mr-english-svg {
-  width: 24px;
-  height: 24px;
+	--size: calc(val(--fs) * 1.5);
+  width: var(--size);
+  height: var(--size);
 }
 
 p, h5, .txt-item, .list {

@@ -120,7 +120,7 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
     <article className='main-content basic'>
       <h5>简明释义</h5>
 
-      {read_list.length &&
+      {Boolean(read_list.length) &&
         <ul className='pronunciation-list'>
           {read_list.map((prn, i) =>
             <li key={i}>
