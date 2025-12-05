@@ -38,7 +38,7 @@ async function init_service__lookup(opts: {
         .db('mw-cache')
         .collection<I_doc__raw_mw_cache>('raw')
 
-    return async function lookup(word: string): Promise<null | I_lookup_result> {
+    async function lookup(word: string): Promise<null | I_lookup_result> {
         const ecdict_result = await lookup_from_ecdict(word)
         if (ecdict_result === null) return null
 
@@ -72,6 +72,11 @@ async function init_service__lookup(opts: {
             ecdict: ecdict_result,
             mw: mw_result.data,
         }
+    }
+
+    return {
+        ecdict: lookup_from_ecdict,
+        full: lookup,
     }
 }
 

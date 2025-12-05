@@ -16,7 +16,7 @@ const route__lookup = simple_match<I_app_service>({
                 key: 'bad request',
             })
         }
-        const result = await ctx.service.lookup(word)
+        const result = await ctx.service.lookup.full(word)
         return Response.json({
             error: false,
             data: result,

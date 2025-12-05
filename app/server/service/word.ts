@@ -1,18 +1,17 @@
 import type { ObjectId } from 'mongodb'
-import { I_app_db } from '@mr-english-server/schema'
+import { I_app_db, I_service__lookup, I_service__word_mng } from '@mr-english-server/schema'
 
 export
-function init_service__word_mng(app_db: I_app_db) {
+function init_service__word_mng(app_db: I_app_db, lookup: I_service__lookup): I_service__word_mng {
     return {
-        async add(userid: ObjectId, canonical: string) {
+        async add(userid: ObjectId, word: string) {
             const now = new Date()
             await app_db.word.updateOne(
-                { canonical, userid },
+                { word, userid },
                 {
                     $set: {
                         last_lookup_at: now,
                     },
-                    $inc: { count: 1 },
                     $setOnInsert: {
                         star: false,
                         first_lookup_at: now,
@@ -20,6 +19,9 @@ function init_service__word_mng(app_db: I_app_db) {
                 },
                 { upsert: true },
             )
-        }
+        },
+        async is_in_ecdict(word: string) {
+            return null !== await lookup.ecdict(word)
+        },
     }
 }

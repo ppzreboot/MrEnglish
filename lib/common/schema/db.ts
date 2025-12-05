@@ -23,6 +23,7 @@ interface I_doc__word<ID> {
     userid: ID
     word: string
     star: boolean
+    // count: number // count 很难统计（因为在回溯历史、刷新页面时都会触发搜索）
     last_lookup_at: Date
     first_lookup_at: Date
 }
