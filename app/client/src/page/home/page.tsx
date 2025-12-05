@@ -135,12 +135,20 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
           <li key={item}>{item}</li>
         )}
       </ul>
-      {Boolean(inf_list.length) &&
+      {(Boolean(inf_list.length) || ecdict.lemma) &&
         <ul className='txt-item inflection-list'>
+          {ecdict.lemma &&
+            <li>
+              <label>原型 </label>
+              <a href={'./?q=' + ecdict.lemma.lemma}>
+                <span className='special-font'>{ecdict.lemma.lemma}</span>
+              </a>
+            </li>
+          }
           {inf_list.map(([k, v]) =>
             <li key={k}>
-              <label>{k}</label>
-              <span className='special-font'> {v}</span>
+              <label>{k} </label>
+              <span className='special-font'>{v}</span>
             </li>
           )}
         </ul>
