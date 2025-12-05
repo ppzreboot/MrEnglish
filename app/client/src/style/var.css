@@ -10,8 +10,6 @@ html {
 	--fs-lg: 20px;
 	--fs-xl: 26px;
 
-	--br: 4px;
-
 	background-color: #eee;
 	color: rgb(var(--font-color));
 	font-size: var(--fs);

@@ -48,5 +48,18 @@
 				}
 			}
 		}
+		article.e2e {
+			.entry {
+				&:not(:last-child) {
+					margin-bottom: var(--fs);
+				}
+				h5.fl {
+					opacity: .8;
+					margin-bottom: calc(var(--fs) / 2);
+					line-height: 1.2;
+					font-family: serif, Times New Roman;
+				}
+			}
+		}
 	}
 }

@@ -151,9 +151,14 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
       <article className='main-content e2e'>
         <h5>英英释义</h5>
         {mw.map((entry, index) =>
-          <ul key={index} className='list'>
-            {entry.shortdef.map(def => <li key={def}>{def}</li>)}
-          </ul>
+          <div key={index} className='entry'>
+            {entry.fl &&
+              <h5 className='fl'>{entry.fl}</h5>
+            }
+            <ul className='list'>
+              {entry.shortdef.map(def => <li key={def}>{def}</li>)}
+            </ul>
+          </div>
         )}
       </article>
     }
