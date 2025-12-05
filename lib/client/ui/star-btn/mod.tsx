@@ -12,6 +12,9 @@ function Star(props: {
 	return <button
 		className={props.className + ' icon-btn'}
 		disabled={loading}
+		style={
+			props.value ? { color: '#eac54f' } : undefined
+		}
 		onClick={async () => {
 			try {
 				set_loading(true)
