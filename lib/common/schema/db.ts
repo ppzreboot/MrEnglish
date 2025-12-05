@@ -21,9 +21,8 @@ interface I_doc__session<ID> {
 export
 interface I_doc__word<ID> {
     userid: ID
-    canonical: string
+    word: string
     star: boolean
-    count: number
     last_lookup_at: Date
     first_lookup_at: Date
 }

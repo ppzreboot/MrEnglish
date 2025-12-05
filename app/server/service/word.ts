@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { I_app_db } from '../app-model/service/mod.ts'
+import { I_app_db } from '@mr-english-server/schema'
 
 export
 function init_service__word_mng(app_db: I_app_db) {
