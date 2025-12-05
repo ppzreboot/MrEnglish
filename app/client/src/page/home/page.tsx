@@ -120,12 +120,15 @@ function Home_page() {
 
     {state.status === 'success' &&
       (state.output === null
-        ? <p className='lookup-error'>{state.word} 好像不是个正经单词</p>
+        ? <p className='home-tip error'>{state.word} 好像不是个正经单词</p>
         : <Viewer {...state.output.result} />
       )
     }
     {state.status === 'error' &&
-      <p className='lookup-error'>{state.error}</p>
+      <p className='home-tip error'>{state.error}</p>
+    }
+    {state.status === 'before lookup' &&
+      <p className='home-tip hi special-font'>Hi, I'm MrEnglish</p>
     }
   </div>
 }

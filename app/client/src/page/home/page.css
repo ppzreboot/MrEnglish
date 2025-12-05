@@ -30,8 +30,15 @@
 			}
 		}
 	}
-	.lookup-error {
-		color: red;
+	.home-tip {
+		margin-top: 30vh;
+		text-align: center;
+		&.error {
+			color: red;
+		}
+		&.hi {
+			opacity: .7;
+		}
 	}
 	.lookup-result {
 		article.basic {
