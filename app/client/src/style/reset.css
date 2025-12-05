@@ -3,10 +3,6 @@ html, body {
 	padding: 0;
 }
 
-html {
-	font-family: 'Comic Sans MS'; /* 英文自动生效，中文用系统默认的 */
-}
-
 * {
 	box-sizing: border-box;
 }

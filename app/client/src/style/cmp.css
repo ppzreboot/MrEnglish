@@ -87,3 +87,7 @@ a {
 		text-decoration: underline;
 	}
 }
+
+.special-font {
+	font-family: 'Comic Sans MS';
+}

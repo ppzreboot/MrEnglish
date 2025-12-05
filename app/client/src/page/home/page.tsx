@@ -62,6 +62,7 @@ function Home_page() {
   return <div className='home-page'>
     <div className='main-content main-input'>
       <input
+        className='special-font'
         autoFocus
         disabled={state.status === 'loading'}
         value={state.word}
@@ -139,7 +140,7 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
           {inf_list.map(([k, v]) =>
             <li key={k}>
               <label>{k}</label>
-              <span> {v}</span>
+              <span className='special-font'> {v}</span>
             </li>
           )}
         </ul>

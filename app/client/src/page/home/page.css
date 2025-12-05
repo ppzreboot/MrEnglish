@@ -35,6 +35,9 @@
 	}
 	.lookup-result {
 		article.basic {
+			.pronunciation-list {
+				margin-bottom: var(--fs);
+			}
 			.inflection-list {
 				display: flex;
 				flex-wrap: wrap;
