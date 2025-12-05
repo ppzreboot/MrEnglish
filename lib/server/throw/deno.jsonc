@@ -1,0 +1,5 @@
+{
+	"name": "@mr-english-server/throw",
+	"version": "0.0.0",
+	"exports": "./mod.ts"
+}

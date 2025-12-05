@@ -20,6 +20,13 @@ function init_service__word_mng(app_db: I_app_db, lookup: I_service__lookup): I_
                 { upsert: true },
             )
         },
+        async star(userid: ObjectId, word: string, star: boolean) {
+            const count = await app_db.word.updateOne({ word, userid }, {
+                $set: { star }
+            })
+            if (count.matchedCount !== 1)
+                throw Error(`staring word: no word "${word}" found for user ${userid}`)
+        },
         async is_in_ecdict(word: string) {
             return null !== await lookup.ecdict(word)
         },
