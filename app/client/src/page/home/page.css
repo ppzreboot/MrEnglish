@@ -1,5 +1,5 @@
 .home-page {
-	max-width: 800px;
+	max-width: 1000px;
 	padding: 0 12px;
 	margin: calc(var(--fs-xl) * 2) auto;
 	@media (max-width: 500px) {
@@ -10,6 +10,10 @@
 		display: flex;
 		align-items: center;
 		gap: var(--fs);
+		@media (min-width: 600px) {
+			padding-top: var(--fs-xl);
+			padding-bottom: var(--fs-xl);
+		}
 		input {
 			flex: 1;
 			@media (min-width: 600px) {
@@ -74,6 +78,7 @@
 			p {
 				a {
 					margin-right: var(--fs);
+					font-size: var(--fs-sm);
 				}
 			}
 		}

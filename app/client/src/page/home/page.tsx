@@ -161,7 +161,7 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
       }
       <ul className='list'>
         {ecdict.translation.map(item =>
-          <li key={item}>{item}</li>
+          <li key={item} className='txt-item'>{item}</li>
         )}
       </ul>
       {(Boolean(inf_list.length) || ecdict.lemma) &&
@@ -193,7 +193,9 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
               <h5 className='fl'>{entry.fl}</h5>
             }
             <ul className='list'>
-              {entry.shortdef.map(def => <li key={def}>{def}</li>)}
+              {entry.shortdef.map(def =>
+                <li key={def} className='txt-item'>{def}</li>
+              )}
             </ul>
           </div>
         )}
