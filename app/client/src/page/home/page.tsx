@@ -3,7 +3,7 @@ import { useSearchParams } from 'wouter'
 import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_output, I_lookup_result } from '@mr-english/schema'
 import type { I_inflection_type } from '@ppz-ai/ecdict-common'
-import { Read_word, Star } from '@mr-english-client/ui'
+import { En_p, Read_word, Star } from '@mr-english-client/ui'
 import { I_formatted_meriam_webster_prs } from '@mr-english/meriam-webster'
 import './page.css'
 
@@ -184,7 +184,7 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
       }
     </article>
 
-    {mw &&
+    {mw && (mw.length > 0) &&
       <article className='main-content e2e'>
         <h5>英英释义</h5>
         {mw.map((entry, index) =>
@@ -194,7 +194,11 @@ function Viewer({ ecdict, mw }: I_lookup_result) {
             }
             <ul className='list'>
               {entry.shortdef.map(def =>
-                <li key={def} className='txt-item'>{def}</li>
+                <li key={def} className='txt-item'>
+                  <div title={def}>
+                    <En_p text={def} />
+                  </div>
+                </li>
               )}
             </ul>
           </div>
