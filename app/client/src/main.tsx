@@ -6,7 +6,7 @@ import './style/index.css'
 
 import { Login_page } from './page/login/page.tsx'
 import { Home_page } from './page/home/page.tsx'
-import { History_page } from './page/home/history/page.tsx'
+import { History_page } from './page/history/page.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
