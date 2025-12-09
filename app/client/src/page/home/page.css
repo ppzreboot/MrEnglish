@@ -1,11 +1,4 @@
-.home-page {
-	max-width: 1000px;
-	padding: 0 12px;
-	margin: calc(var(--fs-xl) * 2) auto;
-	@media (max-width: 500px) {
-		margin-top: calc(var(--fs) / 2);
-	}
-
+.page.home {
 	.main-input {
 		display: flex;
 		align-items: center;

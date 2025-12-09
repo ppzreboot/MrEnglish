@@ -96,7 +96,7 @@ function Home_page() {
     </button>
   })()
 
-  return <div className='home-page'>
+  return <div className='page home no-header'>
     <Main_nav />
 
     <div className='main-content main-input'>

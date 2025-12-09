@@ -1,4 +1,6 @@
 export
 function History_page() {
-	return <div>history</div>
+	return <div className='page no-header history'>
+		history
+	</div>
 }
