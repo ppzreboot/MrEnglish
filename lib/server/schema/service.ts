@@ -1,13 +1,13 @@
 import type { ObjectId } from 'mongodb'
-import type { I_lookup_result, I_doc__user } from '@mr-english/schema'
-import type { I_app_env } from './env.ts'
+import type { I_lookup_result, I_doc__user, I_doc__word } from '@mr-english/schema'
 import type { I_ecdict } from '@ppz-ai/ecdict-sqlite3'
+import type { I_app_env } from './env.ts'
 
 export
 interface I_service__session {
     check: () => Promise<ObjectId>
     get_current_user_id: () => Promise<null | ObjectId>
-    get_current_user: () => Promise<null | I_doc__user>
+    get_current_user: () => Promise<null | I_doc__user<Date>>
 }
 
 export
@@ -28,6 +28,10 @@ interface I_service__word_mng {
     add_history_and_get_star(user_id: ObjectId, word: string): Promise<boolean>
     star(user_id: ObjectId, word: string, star: boolean): Promise<void>
     is_in_ecdict(word: string): Promise<boolean>
+    get_history(userid: ObjectId, limit: number, last: null | {
+        update_at: Date
+        id: ObjectId
+    }): Promise<I_doc__word<ObjectId, Date>[]>
 }
 
 export

@@ -9,7 +9,7 @@ import { init_service__lookup } from '../service/lookup/mod.ts'
 
 import { route__login } from '../handler/auth/oauth-login.ts'
 import { route__auth_status } from '../handler/auth/status.ts'
-import { route__lookup, route__star_word } from '../handler/word.ts'
+import { route__get_history, route__lookup, route__star_word } from '../handler/word.ts'
 
 export
 async function init(env: I_app_env): Promise<{
@@ -39,6 +39,7 @@ async function init(env: I_app_env): Promise<{
             route__login,
             route__lookup,
             route__star_word,
+            route__get_history,
         ]
     }
 }

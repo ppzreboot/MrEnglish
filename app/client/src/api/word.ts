@@ -1,5 +1,5 @@
 import { output } from '@mr-english-client/api'
-import { schema__api_output__star_word } from '@mr-english/schema'
+import { schema__api_output__star_word, schema__api_output__get_lookup_history } from '@mr-english/schema'
 
 export
 async function post__star_word(word: string, star: boolean) {
@@ -9,5 +9,17 @@ async function post__star_word(word: string, star: boolean) {
 			method: 'POST',
 		}),
 		schema__api_output__star_word,
+	)
+}
+
+export
+async function retrieve__history(last: null | { update_at: number, id: string }) {
+	const search = last === null
+		? ''
+		: `?update_at=${last.update_at}&id=${last.id}`
+	return await output(
+		'retieve__history',
+		await fetch('/api/word/history' + search),
+		schema__api_output__get_lookup_history,
 	)
 }

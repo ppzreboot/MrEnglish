@@ -15,21 +15,21 @@ function init_service__sign_up_in(app_db: I_app_db) {
             // sign up
             const inserted_user = await app_db.user.insertOne({
                 is_friend: false,
-                created_at: now,
-                updated_at: now,
+                create_at: now,
+                update_at: now,
             })
             await app_db.user_oauth.insertOne({
                 provider,
                 oauth_id,
                 userid: inserted_user.insertedId,
-                created_at: now,
+                create_at: now,
             })
             userid = inserted_user.insertedId
             // insert session on sign-up
             await app_db.session.insertOne({
                 userid,
                 session_token,
-                created_at: now,
+                create_at: now,
             })
         } else {
             // sign in
@@ -44,7 +44,7 @@ function init_service__sign_up_in(app_db: I_app_db) {
                 { userid },
                 { $set: {
                     session_token,
-                    created_at: now,
+                    create_at: now,
                 }},
             )
             if (result.matchedCount !== 1) {

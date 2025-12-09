@@ -1,29 +1,34 @@
+import type { ObjectId } from 'mongodb'
+
+type I_time = Date | number
+type I_id = ObjectId | string
+
 export
-interface I_doc__user {
+interface I_doc__user<Time extends I_time> {
     name?: string
     is_friend: boolean
-    created_at: Date
-    updated_at: Date
+    create_at: Time
+    update_at: Time
 }
 export
-interface I_doc__user_oauth<ID> {
+interface I_doc__user_oauth<ID extends I_id, Time extends I_time> {
     userid: ID
     provider: 'github'
     oauth_id: string
-    created_at: Date
+    create_at: Time
 }
 export
-interface I_doc__session<ID> {
+interface I_doc__session<ID extends I_id, Time extends I_time> {
     userid: ID
     session_token: string
-    created_at: Date
+    create_at: Time
 }
 export
-interface I_doc__word<ID> {
+interface I_doc__word<ID extends I_id, Time extends I_time> {
     userid: ID
     word: string
     star: boolean
     // count: number // count 很难统计（因为在回溯历史、刷新页面时都会触发搜索）
-    last_lookup_at: Date
-    first_lookup_at: Date
+    last_lookup_at: Time
+    first_lookup_at: Time
 }

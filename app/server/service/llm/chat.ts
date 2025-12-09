@@ -57,7 +57,7 @@ async function create_chat(msg: string) {
     const title = await title_chat(msg)
     const chat_record = await app_model.chat.insertOne({
         title,
-        created_at: now,
+        create_at: now,
     })
     
     // insert new msg
@@ -65,7 +65,7 @@ async function create_chat(msg: string) {
         chat_id: chat_record.insertedId,
         model_type: 'grok-4-fast-reasoning',
         user: msg,
-        created_at: now,
+        create_at: now,
     })
 
     // send to llm

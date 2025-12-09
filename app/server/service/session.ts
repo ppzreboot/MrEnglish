@@ -14,7 +14,7 @@ function init_service__session_maker(
                 return null
             const doc = await app_db.session.findOne({ session_token })
             if (doc === null
-                || now - doc.created_at.getTime() > session_duration_ms)
+                || now - doc.create_at.getTime() > session_duration_ms)
                 return null
             return doc.userid
         }
