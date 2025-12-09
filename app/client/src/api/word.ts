@@ -13,7 +13,13 @@ async function post__star_word(word: string, star: boolean) {
 }
 
 export
-async function retrieve__history(last: null | { update_at: number, id: string }) {
+interface I_cursor__word {
+	id: string
+	update_at: number
+}
+
+export
+async function retrieve__history(last: null | I_cursor__word) {
 	const search = last === null
 		? ''
 		: `?update_at=${last.update_at}&id=${last.id}`

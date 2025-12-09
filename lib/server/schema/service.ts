@@ -1,4 +1,4 @@
-import type { ObjectId } from 'mongodb'
+import type { ObjectId, WithId } from 'mongodb'
 import type { I_lookup_result, I_doc__user, I_doc__word } from '@mr-english/schema'
 import type { I_ecdict } from '@ppz-ai/ecdict-sqlite3'
 import type { I_app_env } from './env.ts'
@@ -31,7 +31,7 @@ interface I_service__word_mng {
     get_history(userid: ObjectId, limit: number, last: null | {
         update_at: Date
         id: ObjectId
-    }): Promise<I_doc__word<ObjectId, Date>[]>
+    }): Promise<WithId<I_doc__word<ObjectId, Date>>[]>
 }
 
 export

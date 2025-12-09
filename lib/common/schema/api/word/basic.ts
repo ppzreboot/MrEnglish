@@ -1,8 +1,13 @@
 import { z } from 'zod'
 import type { I_doc__word } from '../../db.ts'
+import type { I_obj_id } from '../../util.ts'
 
 export
-const schema__word: z.ZodType<I_doc__word<string, number>> = z.object({
+type I_item__word = I_obj_id<I_doc__word<string, number>>
+
+export
+const schema__word: z.ZodType<I_item__word> = z.strictObject({
+	_id: z.string().min(1),
 	userid: z.string().min(1),
 	word: z.string().min(1),
 	star: z.boolean(),
