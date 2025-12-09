@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'wouter'
 import { Icon_search } from '@mr-english-client/icon'
-import { I_lookup_output, I_lookup_result } from '@mr-english/schema'
-import type { I_inflection_type } from '@ppz-ai/ecdict-common'
-import { En_p, Read_word, Star } from '@mr-english-client/ui'
-import { I_formatted_meriam_webster_prs } from '@mr-english/meriam-webster'
-import './page.css'
+import { I_lookup_output } from '@mr-english/schema'
+import { Star } from '@mr-english-client/ui'
 
+import './page.css'
 import { retrieve__lookup } from '../../api/lookup.ts'
 import { post__star_word } from '../../api/word.ts'
+import { Basic_explain } from './block/basic.tsx'
+import { EE_explain } from './block/ee.tsx'
+import { Other_explain } from './block/other.tsx'
 
 type I_state = {
   word: string
@@ -121,7 +122,14 @@ function Home_page() {
     {state.status === 'success' &&
       (state.output === null
         ? <p className='home-tip error'>{state.word} 好像不是个正经单词</p>
-        : <Viewer {...state.output.result} />
+        : <div className='lookup-result'>
+          <Basic_explain lookup_result={state.output.result} />
+          {Boolean(state.output.result.mw?.length) &&
+            // @ts-ignore:
+            <EE_explain mw={state.output.result.mw} />
+          }
+          <Other_explain word={q.val} />
+        </div>
       )
     }
     {state.status === 'error' &&
@@ -131,100 +139,6 @@ function Home_page() {
       <p className='home-tip hi special-font'>Hi, I'm MrEnglish</p>
     }
   </div>
-}
-
-function Viewer({ ecdict, mw }: I_lookup_result) {
-  const inf_list = Object.entries(ecdict.inflection)
-    .filter(([_, v]) => v)
-    .map(([k, v]) => [
-      inflection_label[k as I_inflection_type],
-      v,
-    ])
-
-  // 音标与读音
-  const read_list = mw === undefined ? [] :
-    mw.flatMap(entry => entry.prs)
-      .filter(prns => prns) as I_formatted_meriam_webster_prs[]
-
-  return <div className='lookup-result'>
-    <article className='main-content basic'>
-      <h5>简明释义</h5>
-
-      {Boolean(read_list.length) &&
-        <ul className='pronunciation-list'>
-          {read_list.map((prn, i) =>
-            <li key={i}>
-              <Read_word {...prn} />
-            </li>
-          )}
-        </ul>
-      }
-      <ul className='list'>
-        {ecdict.translation.map(item =>
-          <li key={item} className='txt-item'>{item}</li>
-        )}
-      </ul>
-      {(Boolean(inf_list.length) || ecdict.lemma) &&
-        <ul className='txt-item inflection-list'>
-          {ecdict.lemma &&
-            <li>
-              <label>原型 </label>
-              <a href={'./?q=' + ecdict.lemma.lemma}>
-                <span className='special-font'>{ecdict.lemma.lemma}</span>
-              </a>
-            </li>
-          }
-          {inf_list.map(([k, v]) =>
-            <li key={k}>
-              <label>{k} </label>
-              <span className='special-font'>{v}</span>
-            </li>
-          )}
-        </ul>
-      }
-    </article>
-
-    {mw && (mw.length > 0) &&
-      <article className='main-content e2e'>
-        <h5>英英释义</h5>
-        {mw.map((entry, index) =>
-          <div key={index} className='entry'>
-            {entry.fl &&
-              <h5 className='fl'>{entry.fl}</h5>
-            }
-            <ul className='list'>
-              {entry.shortdef.map(def =>
-                <li key={def} className='txt-item'>
-                  <div title={def}>
-                    <En_p text={def} />
-                  </div>
-                </li>
-              )}
-            </ul>
-          </div>
-        )}
-      </article>
-    }
-
-    <article className='main-content other-dict'>
-      <h5>其他字典</h5>
-      <p>
-        <a href={'https://youdao.com/result?lang=en&word=' + ecdict.word} target='_blank'>有道词典</a>
-        <a href={'https://dict.eudic.net/dicts/en/' + ecdict.word} target='_blank'>欧路词典</a>
-        <a href={`https://translate.google.com/?sl=en&tl=zh-CN&text=${ecdict.word}&op=translate`} target='_blank'>谷歌翻译</a>
-      </p>
-    </article>
-  </div>
-}
-
-const inflection_label: Record<I_inflection_type, string> = {
-  did: '过去式',
-  done: '过去分词',
-  ing: '进行时',
-  does: '第三人称单数',
-  er: '比较级',
-  est: '最高级',
-  s: '复数',
 }
 
 function useQ() {
