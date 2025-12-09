@@ -7,6 +7,7 @@ import { Star } from '@mr-english-client/ui'
 import './page.css'
 import { retrieve__lookup } from '../../api/lookup.ts'
 import { post__star_word } from '../../api/word.ts'
+import { Main_nav } from './nav/index.tsx'
 import { Basic_explain } from './block/basic.tsx'
 import { EE_explain } from './block/ee.tsx'
 import { Other_explain } from './block/other.tsx'
@@ -96,6 +97,8 @@ function Home_page() {
   })()
 
   return <div className='home-page'>
+    <Main_nav />
+
     <div className='main-content main-input'>
       <input
         className='special-font'
