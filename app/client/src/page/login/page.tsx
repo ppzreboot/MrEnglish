@@ -2,7 +2,7 @@ export
 function Login_page(props: { github_oauth_link: string }) {
 	return <a
 		href={props.github_oauth_link}
-		className='special-font'
+		className='en-font'
 		style={{
 			position: 'absolute',
 			top: '35%',

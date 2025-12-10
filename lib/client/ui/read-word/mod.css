@@ -1,12 +1,10 @@
 .mr-en-cmp--read-word {
-	--size: var(--fs-sm);
-
-	font-size: var(--size);
-	height: calc(var(--size) * 2);
-	line-height: calc(var(--size) * 1.5);
+	font-size: var(--fs-sm);
+	height: 2em;
+	line-height: 1.5em;
 	border-radius: 8px;
 	background-color: rgba(var(--font-color), .05);
-	padding: 0 calc(var(--size) / 2 + 1px) 0 calc(var(--size) / 2);
+	padding: 0 .5em;
 
 	display: inline-flex;
 	align-items: center;
@@ -26,6 +24,6 @@
 		}
 	}
 	svg {
-		--size: var(--fs-sm);
+		font-size: var(--fs-sm);
 	}
 }

@@ -21,7 +21,6 @@
 		}
 		button {
 			--size: calc(var(--fs) * 1.5);
-			margin-right: calc(var(--fs) * -0.5);
 			@media (max-width: 500px) {
 				--size: var(--fs);
 			}

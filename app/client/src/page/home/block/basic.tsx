@@ -52,14 +52,14 @@ function Basic_explain(props: {
 					<li>
 						<label>原型 </label>
 						<a href={'./?q=' + ecdict.lemma.lemma}>
-							<span className='special-font'>{ecdict.lemma.lemma}</span>
+							<span className='en-font'>{ecdict.lemma.lemma}</span>
 						</a>
 					</li>
 				}
 				{inf_list.map(([k, v]) =>
 					<li key={k}>
 						<label>{k} </label>
-						<span className='special-font'>{v}</span>
+						<span className='en-font'>{v}</span>
 					</li>
 				)}
 			</ul>

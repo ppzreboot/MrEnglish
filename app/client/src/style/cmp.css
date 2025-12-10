@@ -32,9 +32,10 @@
 
 .icon-btn {
 	box-sizing: content-box;
-	padding: calc(var(--fs) / 2);
-	width: var(--size);
-	height: var(--size);
+	padding: .5em;
+	margin: -.5em;
+	width: 1.5em;
+	height: 1.5em;
 	&:not([disabled]) {
 		cursor: pointer;
 	}
@@ -42,8 +43,7 @@
 		opacity: .5;
 	}
 	svg {
-		width: var(--size);
-		height: var(--size);
+		font-size: 1.5em;
 	}
 }
 
@@ -69,7 +69,7 @@ ul.list {
 }
 
 .mr-english-svg {
-	--size: calc(val(--fs) * 1.5);
+	--size: 1em;
   width: var(--size);
   height: var(--size);
 }
@@ -90,6 +90,6 @@ a {
 	}
 }
 
-.special-font {
+.en-font {
 	font-family: 'Comic Sans MS';
 }

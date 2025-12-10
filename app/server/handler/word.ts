@@ -72,7 +72,7 @@ const route__get_history = simple_match<I_app_service>({
             }
             return [false, 'all null or all not null']
         })
-        const list = await ctx.service.word_mng.get_history(userid, 5, last)
+        const list = await ctx.service.word_mng.get_history(userid, 50, last)
         return Response.json({
             error: false,
             data: list.map(item => ({

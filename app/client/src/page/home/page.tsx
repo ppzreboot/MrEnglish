@@ -101,7 +101,7 @@ function Home_page() {
 
     <div className='main-content main-input'>
       <input
-        className='special-font'
+        className='en-font'
         autoFocus
         disabled={state.status === 'loading'}
         value={state.word}
@@ -139,7 +139,7 @@ function Home_page() {
       <p className='home-tip error'>{state.error}</p>
     }
     {state.status === 'before lookup' &&
-      <p className='home-tip hi special-font'>Hi, I'm MrEnglish</p>
+      <p className='home-tip hi en-font'>Hi, I'm MrEnglish</p>
     }
   </div>
 }

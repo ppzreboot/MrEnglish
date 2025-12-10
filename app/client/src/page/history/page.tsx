@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Loading } from '@mr-english-client/ui'
-import { retrieve__history, type I_cursor__word } from '../../api/word.ts'
 import type { I_item__word } from '@mr-english/schema'
+import { Loading } from '@mr-english-client/ui'
+import { Icon__close } from '@mr-english-client/icon'
+
+import './page.css'
+import { retrieve__history, type I_cursor__word } from '../../api/word.ts'
 
 export
 function History_page() {
@@ -35,9 +38,16 @@ function List(props: {
 	load_more: (cursor: I_cursor__word) => void
 }) {
 	const last = props.list.at(-1)!
-	return <ul>
+	return <ul className='word-list'>
 		{props.list.map(item =>
-			<li key={item.word}>{item.word}</li>
+			<li key={item.word}>
+				<div className='word-wrapper'>
+					<label className='en-font'>{item.word}</label>
+					<button className='icon-btn'>
+						<Icon__close />
+					</button>
+				</div>
+			</li>
 		)}
 		<li
 			onClick={() =>
