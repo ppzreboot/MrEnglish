@@ -7,14 +7,14 @@ import './page.css'
 import { retrieve__history, type I_cursor__word } from '../../api/word.ts'
 
 export
-function History_page() {
+function Word_page() {
 	const [list, set_list] = useState<I_item__word[] | null>(null)
 	useEffect(() => {
 		retrieve__history(null)
 			.then(set_list)
 	}, [])
 
-	return <div className='page no-header history'>
+	return <div className='page no-header word'>
 		{list === null ? <Loading />
 			: list.length === 0 ? <div>暂无记录</div>
 			: <List
@@ -41,12 +41,19 @@ function List(props: {
 	return <ul className='word-list'>
 		{props.list.map(item =>
 			<li key={item.word}>
-				<div className='word-wrapper'>
+				<a
+					className='word-wrapper reset'
+					href={'/?q=' + item.word}
+				>
 					<label className='en-font'>{item.word}</label>
-					<button className='icon-btn'>
+					<button
+						className='icon-btn'
+						onClickCapture={e => {
+							e.preventDefault()
+						}}>
 						<Icon__close />
 					</button>
-				</div>
+				</a>
 			</li>
 		)}
 		<li

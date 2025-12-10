@@ -82,7 +82,7 @@ ul.list {
 	}
 }
 
-a {
+a:not(.reset) {
 	color: var(--link-color);
 	text-decoration: none;
 	&:hover {

@@ -1,4 +1,4 @@
-.history.page {
+.word.page {
 	ul.word-list {
 		@media (min-width: 400px) {
 			display: flex;
@@ -13,6 +13,9 @@
 				display: flex;
 				align-items: center;
 
+				color: inherit;
+				text-decoration: none;
+
 				@media (min-width: 460px) {
 					gap: 1em;
 
@@ -25,8 +28,8 @@
 				}
 
 				.icon-btn {
-					opacity: .5;
-					font-size: .8em;
+					opacity: .3;
+					font-size: .6em;
 					&:hover, &:active {
 						opacity: 1;
 					}

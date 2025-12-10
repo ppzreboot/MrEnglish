@@ -6,7 +6,7 @@ import './style/index.css'
 
 import { Login_page } from './page/login/page.tsx'
 import { Home_page } from './page/home/page.tsx'
-import { History_page } from './page/history/page.tsx'
+import { Word_page } from './page/word/page.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')!).render(
     <Auth login={Login_page}>
       <Switch>
         <Route path='/' component={Home_page} />
-        <Route path='/history' component={History_page} />
+        <Route path='/word' component={Word_page} />
       </Switch>
     </Auth>
   </StrictMode>,

@@ -7,7 +7,7 @@ function Main_nav() {
 		<h1>MrEnglish</h1>
 		<ul>
 			<li>
-				<Link href='/history'>查询历史</Link>
+				<Link href='/word'>我的单词</Link>
 			</li>
 		</ul>
 	</nav>
