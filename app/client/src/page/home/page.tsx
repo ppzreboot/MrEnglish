@@ -121,17 +121,18 @@ function Home_page() {
       </div>
 
       {state.status === 'success' &&
-        (state.output === null
-          ? <p className='home-tip error'>{state.word} 好像不是个正经单词</p>
-          : <div className='lookup-result'>
-            <Basic_explain lookup_result={state.output.result} />
-            {Boolean(state.output.result.mw?.length) &&
-              // @ts-ignore:
-              <EE_explain mw={state.output.result.mw} />
-            }
-            <Other_explain word={q.val} />
-          </div>
-        )
+        <div className='lookup-result'>
+          {state.output !== null &&
+            <>
+              <Basic_explain lookup_result={state.output.result} />
+              {Boolean(state.output.result.mw?.length) &&
+                // @ts-ignore:
+                <EE_explain mw={state.output.result.mw} />
+              }
+            </>
+          }
+          <Other_explain word={q.val} />
+        </div>
       }
       {state.status === 'error' &&
         <p className='home-tip error'>{state.error}</p>
