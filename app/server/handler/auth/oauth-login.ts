@@ -40,7 +40,7 @@ const login_with_code: I_handler<I_app_service> = async ctx => {
     return new Response(null, {
         status: 302,
         headers: {
-            Location: '/',
+            Location: '/', // TODO: 此处跳转到专门的“跳转界面”
             'Set-Cookie': cookie_str,
         },
     })

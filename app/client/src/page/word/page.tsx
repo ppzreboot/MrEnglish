@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { I_item__word } from '@mr-english/schema'
 import { Loading } from '@mr-english-client/ui'
 import { Icon__close } from '@mr-english-client/icon'
+import { make_route__home } from '@mr-english-client/biz'
 
 import './page.css'
 import { retrieve__history, type I_cursor__word } from '../../api/word.ts'
@@ -14,7 +15,7 @@ function Word_page() {
 			.then(set_list)
 	}, [])
 
-	return <div className='page no-header word'>
+	return <div className='page word'>
 		{list === null ? <Loading />
 			: list.length === 0 ? <div>暂无记录</div>
 			: <List
@@ -43,7 +44,7 @@ function List(props: {
 			<li key={item.word}>
 				<a
 					className='word-wrapper reset'
-					href={'/?q=' + item.word}
+					href={make_route__home(item.word)}
 				>
 					<label className='en-font'>{item.word}</label>
 					<button

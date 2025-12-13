@@ -3,6 +3,7 @@
 	"version": "0.0.0",
 	"exports": "./mod.ts",
 	"imports": {
+    "wouter": "npm:wouter@^3.8.1",
     "react": "npm:react@^19.2.0"
 	},
   "compilerOptions": {

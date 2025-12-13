@@ -1,6 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Switch, Route } from 'wouter'
+import {
+  route_meta__home,
+  route_meta__ai_translate,
+  route_meta__vocabulary_book,
+} from '@mr-english-client/biz'
 import { Auth } from './ctx/auth.tsx'
 import './style/index.css'
 
@@ -13,8 +18,8 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Auth login={Login_page}>
       <Switch>
-        <Route path='/' component={Home_page} />
-        <Route path='/word' component={Word_page} />
+        <Route path={route_meta__home.path} component={Home_page} />
+        <Route path={route_meta__vocabulary_book.path} component={Word_page} />
       </Switch>
     </Auth>
   </StrictMode>,

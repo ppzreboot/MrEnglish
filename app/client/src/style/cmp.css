@@ -2,7 +2,7 @@
 	position: relative;
 	background-color: var(--content-bg-color);
 	border-radius: 8px;
-	padding: calc(var(--fs) * 3) calc(var(--fs) * 4);
+	padding: 2.5em 3.5em;
 
 	& > h5:first-child {
 		opacity: .6;
@@ -22,7 +22,7 @@
 	}
 
 	@media (min-width: 600px) {
-		margin-top: calc(var(--fs) * 2);
+		margin-bottom: calc(var(--fs) * 2);
 		& > h5:first-child {
 			float: right;
 			font-weight: bold;

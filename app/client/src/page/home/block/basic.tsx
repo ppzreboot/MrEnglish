@@ -50,7 +50,7 @@ function Basic_explain(props: {
 			<ul className='txt-item inflection-list'>
 				{ecdict.lemma &&
 					<li>
-						<label>原型 </label>
+						<label>原型</label>
 						<a href={'./?q=' + ecdict.lemma.lemma}>
 							<span className='en-font'>{ecdict.lemma.lemma}</span>
 						</a>
@@ -58,7 +58,7 @@ function Basic_explain(props: {
 				}
 				{inf_list.map(([k, v]) =>
 					<li key={k}>
-						<label>{k} </label>
+						<label>{k}</label>
 						<span className='en-font'>{v}</span>
 					</li>
 				)}

@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'wouter'
 import { Icon_search } from '@mr-english-client/icon'
 import { I_lookup_output } from '@mr-english/schema'
-import { Star } from '@mr-english-client/ui'
+import { Star, Layout } from '@mr-english-client/ui'
 
 import './page.css'
 import { retrieve__lookup } from '../../api/lookup.ts'
 import { post__star_word } from '../../api/word.ts'
-import { Main_nav } from './nav/index.tsx'
 import { Basic_explain } from './block/basic.tsx'
 import { EE_explain } from './block/ee.tsx'
 import { Other_explain } from './block/other.tsx'
@@ -96,52 +95,49 @@ function Home_page() {
     </button>
   })()
 
-  return <div className='page home no-header'>
-    <Main_nav />
+  return <Layout>
+    <div className='page home'>
+      <div className='main-content main-input'>
+        <input
+          className='en-font'
+          autoFocus
+          disabled={state.status === 'loading'}
+          value={state.word}
+          placeholder='输入单词'
+          onChange={evt => {
+            if (state.status === 'loading')
+              throw Error('loading 时不让输入')
+            update({
+              word: evt.target.value,
+              status: 'before lookup',
+            })
+          }}
+          onKeyDown={evt => {
+            if (evt.key === 'Enter')
+              q.set(state.word)
+          }}
+        />
+        {right_btn}
+      </div>
 
-    <div className='main-content main-input'>
-      <input
-        className='en-font'
-        autoFocus
-        disabled={state.status === 'loading'}
-        value={state.word}
-        placeholder='输入单词'
-        onChange={evt => {
-          if (state.status === 'loading')
-            throw Error('loading 时不让输入')
-          update({
-            word: evt.target.value,
-            status: 'before lookup',
-          })
-        }}
-        onKeyDown={evt => {
-          if (evt.key === 'Enter')
-            q.set(state.word)
-        }}
-      />
-      {right_btn}
+      {state.status === 'success' &&
+        (state.output === null
+          ? <p className='home-tip error'>{state.word} 好像不是个正经单词</p>
+          : <div className='lookup-result'>
+            <Basic_explain lookup_result={state.output.result} />
+            {Boolean(state.output.result.mw?.length) &&
+              // @ts-ignore:
+              <EE_explain mw={state.output.result.mw} />
+            }
+            <Other_explain word={q.val} />
+          </div>
+        )
+      }
+      {state.status === 'error' &&
+        <p className='home-tip error'>{state.error}</p>
+      }
     </div>
-
-    {state.status === 'success' &&
-      (state.output === null
-        ? <p className='home-tip error'>{state.word} 好像不是个正经单词</p>
-        : <div className='lookup-result'>
-          <Basic_explain lookup_result={state.output.result} />
-          {Boolean(state.output.result.mw?.length) &&
-            // @ts-ignore:
-            <EE_explain mw={state.output.result.mw} />
-          }
-          <Other_explain word={q.val} />
-        </div>
-      )
-    }
-    {state.status === 'error' &&
-      <p className='home-tip error'>{state.error}</p>
-    }
-    {state.status === 'before lookup' &&
-      <p className='home-tip hi en-font'>Hi, I'm MrEnglish</p>
-    }
-  </div>
+  </Layout>
 }
 
 function useQ() {
