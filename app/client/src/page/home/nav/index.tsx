@@ -7,7 +7,7 @@ function Main_nav() {
 		<h1>MrEnglish</h1>
 		<ul>
 			<li>
-				<Link href='/word'>我的单词</Link>
+				<Link href='/word'>单词本</Link>
 			</li>
 		</ul>
 	</nav>
