@@ -1,3 +1,4 @@
+import { check_en_word } from '@mr-english/util'
 import {
     schema__mw_entries,
     type I_formatted_meriam_webster_prs,
@@ -23,6 +24,9 @@ export * from './audio-url.ts'
 
 export
 async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_result> {
+    if (!check_en_word(word))
+        return { error: true, type: 'not a word', raw_body: 'PPz 未发送请求' }
+
     const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/learners/json/${word}?key=${apikey}`)
     const raw_body = await response.text()
     if (raw_body === 'Invalid API key. Not subscribed for this reference.')

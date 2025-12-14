@@ -57,7 +57,7 @@ async function init_service__lookup(opts: {
                 }
         }
 
-        console.log('lookup meriam-webster:', word)
+        // console.log('lookup meriam-webster:', word)
         const mw_result = await lookup_from_mw(opts.mw_apikey, word)
         if (mw_result.error) {
             console.log(`cache meriam-webster "${word}" as not found`)

@@ -1,5 +1,5 @@
+import { is_real_string } from '@mr-english/util'
 import { I_app_env } from '@mr-english-server/schema'
-import { is_real_string } from '../utils/type-checker.ts'
 
 export
 function read_env(): I_app_env {

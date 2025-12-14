@@ -1,9 +1,9 @@
+import { is_valid_en_phrase } from '@mr-english/util'
 import { simple_match } from '@mr-english-server/router'
 import { I_app_service } from '@mr-english-server/schema'
 import { throw_bad_request, SUCCESS, format_request_input } from '@mr-english-server/throw'
 import { str2obj_id } from '@mr-english-server/util'
 import type { ObjectId } from 'mongodb'
-import { check_en_word } from '../utils/type-checker.ts'
 
 export
 const route__lookup = simple_match<I_app_service>({
@@ -13,7 +13,7 @@ const route__lookup = simple_match<I_app_service>({
         const userid = await ctx.service.session(ctx.request).check()
         const word = ctx.url.searchParams.get('word')
         throw_bad_request('lookup', () => {
-            if (word === null || !check_en_word(word))
+            if (word === null || !is_valid_en_phrase(word))
                 return word
             return SUCCESS
         })
@@ -35,7 +35,7 @@ const route__star_word = simple_match<I_app_service>({
         const word = ctx.url.searchParams.get('word')
         const star = ctx.url.searchParams.get('star')
         await throw_bad_request('star word', async () => {
-            if (word === null || !check_en_word(word)
+            if (word === null || !is_valid_en_phrase(word)
                 // @ts-ignore:
                 || !['1', '0'].includes(star)
                 || !(await ctx.service.word_mng.is_in_ecdict(word as string))

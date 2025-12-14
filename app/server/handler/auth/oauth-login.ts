@@ -1,7 +1,7 @@
+import { is_real_string } from '@mr-english/util'
 import type { I_handler, I_route } from '@mr-english-server/router'
 import type { I_app_service } from '@mr-english-server/schema'
 import { get_userinfo_by_code } from '@ppz/oauth-login/github'
-import { is_real_string } from '../../utils/type-checker.ts'
 
 export
 const route__login: I_route<I_app_service> = (method, url) => {
