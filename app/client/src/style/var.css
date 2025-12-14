@@ -19,7 +19,7 @@ html {
   html {
     --bg-color: 0,0,0;
     --font-color: 255,255,255;
-		--content-bg-color: rgba(var(--font-color), .08);
+		--content-bg-color: rgba(var(--font-color), .1);
 		--link-color: #99c3ff;
 
 		background-color: rgb(var(--bg-color));

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { I_item__word } from '@mr-english/schema'
-import { Loading } from '@mr-english-client/ui'
+import { Loading, Layout } from '@mr-english-client/ui'
 import { Icon__close } from '@mr-english-client/icon'
 import { make_route__home } from '@mr-english-client/biz'
 
@@ -15,23 +15,25 @@ function Word_page() {
 			.then(set_list)
 	}, [])
 
-	return <div className='page word'>
-		{list === null ? <Loading />
-			: list.length === 0 ? <div>暂无记录</div>
-			: <List
-				list={list}
-				load_more={cursor => {
-					retrieve__history(cursor)
-						.then(more => {
-							if (more.length === 0)
-								console.log('noty: no more')
-							else
-								set_list([...list, ...more])
-						})
-				}}
-			/>
-		}
-	</div>
+	return <Layout>
+		<div className='page word'>
+			{list === null ? <Loading />
+				: list.length === 0 ? <div>暂无记录</div>
+				: <List
+					list={list}
+					load_more={cursor => {
+						retrieve__history(cursor)
+							.then(more => {
+								if (more.length === 0)
+									console.log('noty: no more')
+								else
+									set_list([...list, ...more])
+							})
+					}}
+				/>
+			}
+		</div>
+	</Layout>
 }
 
 function List(props: {
