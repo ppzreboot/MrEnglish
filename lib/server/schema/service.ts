@@ -5,7 +5,6 @@ import type { I_app_env } from './env.ts'
 
 export
 interface I_service__session {
-    check: () => Promise<ObjectId>
     get_current_user_id: () => Promise<null | ObjectId>
     get_current_user: () => Promise<null | I_doc__user<Date>>
 }

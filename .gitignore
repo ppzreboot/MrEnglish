@@ -1,7 +1,5 @@
 deno.lock
 .vscode
 .env
-
+.clite
 dist
-node_modules
-.vite

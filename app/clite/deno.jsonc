@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "compile": "deno run -A @clite/compile -p=/static -o=../server/.clite"
+  },
+  "imports": {
+    "@clite/compile": "jsr:@clite/compile@^0.0.3"
+  },
+  "compilerOptions": {
+    "lib": ["es2022", "dom"]
+  }
+}

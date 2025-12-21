@@ -7,9 +7,9 @@ import { init_service__sign_up_in } from '../service/sign-up-in.ts'
 import { init_service__word_mng } from '../service/word.ts'
 import { init_service__lookup } from '../service/lookup/mod.ts'
 
-import { route__login } from '../handler/auth/oauth-login.ts'
-import { route__auth_status } from '../handler/auth/status.ts'
-import { route__get_history, route__lookup, route__star_word } from '../handler/word.ts'
+import { login_controller } from '../controller/login/index.ts'
+import { github_login_controller } from '../controller/login/github.ts'
+import { home_controller } from '../controller/home.ts'
 
 export
 async function init(env: I_app_env): Promise<{
@@ -25,8 +25,14 @@ async function init(env: I_app_env): Promise<{
         mw_apikey: env.mw_apikey,
     })
     const word_mng = init_service__word_mng(app_model, lookup)
+    const route_list: I_route<I_app_service>[] = [
+        ['GET', '/', home_controller],
+        ['GET', '/login', login_controller],
+        ['GET', '/login/github', github_login_controller],
+    ]
 
     return {
+        route_list,
         service: {
             env,
             session,
@@ -34,12 +40,5 @@ async function init(env: I_app_env): Promise<{
             word_mng,
             lookup,
         },
-        route_list: [
-            route__auth_status,
-            route__login,
-            route__lookup,
-            route__star_word,
-            route__get_history,
-        ]
     }
 }

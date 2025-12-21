@@ -22,7 +22,7 @@ async function init_service__lookup(opts: {
     mw_cache_mongo_uri: string
     mw_apikey: string
 }): Promise<I_service__lookup> {
-    console.log('connecting ecdict sqlite3 at', opts.ecdict_sqlite3)
+    console.log('opening ecdict sqlite3 at', opts.ecdict_sqlite3)
     const lookup_from_ecdict = make_ecdict_sqlite3(
         new Database(opts.ecdict_sqlite3, {
             readonly: true,

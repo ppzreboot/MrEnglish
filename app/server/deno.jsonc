@@ -6,6 +6,7 @@
     "compile": "deno compile --env-file -A --output=dist/serve--mr-english main/main.ts"
   },
   "imports": {
+    "@clite/serve": "jsr:@clite/serve@^0.0.3",
     "@db/sqlite": "jsr:@db/sqlite@^0.13.0",
     "@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5",
     "@ppz/oauth-login": "jsr:@ppz/oauth-login@0.0.6",

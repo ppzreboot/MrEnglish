@@ -31,22 +31,6 @@ function init_service__session_maker(
         return {
             get_current_user_id,
             get_current_user,
-            async check() {
-                const userid = await get_current_user_id()
-                if (userid === null)
-                    throw new Response(
-                        JSON.stringify({
-                            error: true,
-                            key: 'session expired',
-                        }),
-                        {
-                            headers: {
-                                'Set-Cookie': 'session_token=; Path=/; Max-Age=0',
-                            },
-                        },
-                    )
-                return userid
-            }
         }
     }
 }
