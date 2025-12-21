@@ -1,8 +1,9 @@
 import clite_meta from '../../.clite/.meta.ts'
+import { h, s, type I_real_interpolation } from './interpolation.ts'
 import { type I_page_meta, page_list } from './meta.ts'
 
 export
-const layout = (title: string, body: string) =>
+const layout = (title: string, body: I_real_interpolation) =>
 	`<!doctype html>
 	<html lang="zh-CN">
 	<head>
@@ -13,26 +14,26 @@ const layout = (title: string, body: string) =>
 		<link rel="stylesheet" href="${clite_meta.url_prefix}/${clite_meta.css}">
 		<script src="${clite_meta.url_prefix}/${clite_meta.js}"></script>
 	</head>
-	${body}
+	${body.value}
 	</html>`
 
 export
-const simple_page = (current_page: I_page_meta, main: string) =>
+const simple_page = (current_page: I_page_meta, main: I_real_interpolation) =>
 	layout(
 		'MrEnglish - ' + current_page.title,
-		`<div class='simple layout'>
+		h`<div class='simple layout'>
 			<header>
 				<h1>MrEnglish</h1>
 				<nav>
 					<ul>
 						${page_list.map(page =>
-							`<li>
+							h`<li>
 								${page.path === current_page.path
-									? `<h2>${page.title}</h2>`
-									: `<a href="${page.path}">${page.title}</a>`
+									? h`<h2>${s(page.title)}</h2>`
+									: h`<a href="${s(page.path)}">${s(page.title)}</a>`
 								}
 							</li>`
-						).join('')}
+						)}
 					</ul>
 				</nav>
 			</header>

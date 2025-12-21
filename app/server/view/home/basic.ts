@@ -1,4 +1,3 @@
-import { Read_word } from '@mr-english-client/ui'
 import { I_formatted_meriam_webster_prs } from '@mr-english/meriam-webster'
 import type { I_inflection_type } from '@ppz-ai/ecdict-common'
 import { I_lookup_result } from '@mr-english/schema'

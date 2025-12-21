@@ -2,7 +2,7 @@ import { I_lookup_result } from '@mr-english/schema'
 import { I_formatted_meriam_webster_entry } from '@mr-english/meriam-webster'
 import { pages } from '../_inner/meta.ts'
 import { simple_page } from '../_inner/layout.ts'
-import { html } from '../_inner/util.tsx'
+import { h, s } from '../_inner/interpolation.ts'
 
 export
 const home_page = (opts?: {
@@ -10,15 +10,15 @@ const home_page = (opts?: {
   star: boolean,
   lookup_result: null | I_lookup_result,
 }) =>
-	simple_page(pages.home, html`
+	simple_page(pages.home, h`
     <div class="page home">
       <div
         class="main-content main-input"
-        data-word="${opts && opts.word}"
+        data-word="${opts && s(opts.word)}"
       ></div>
-      ${opts && html`
+      ${opts && h`
 				<div class='lookup-result'>
-          ${opts.lookup_result && html`
+          ${opts.lookup_result && h`
 						basic explain
 						${opts.lookup_result.mw &&
 							EE_explain(opts.lookup_result.mw)
@@ -31,16 +31,16 @@ const home_page = (opts?: {
 	`)
 
 const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
-	`<article class='main-content e2e'>
+	h`<article class='main-content e2e'>
 			<h5>英英释义</h5>
 			${mw.map(entry =>
-				`<div key={index} class='entry'>
-					<h5 class="fl">${entry.fl ?? '??'}</h5>
+				h`<div key={index} class='entry'>
+					<h5 class="fl">${s(entry.fl ?? '??')}</h5>
 					<ul class='list'>
 						${entry.shortdef.map(def =>
-							`<li class='txt-item'>
-								<div title="${def}"}>
-									${def}
+							h`<li class='txt-item'>
+								<div title="${s(def)}"}>
+									${s(def)}
 								</div>
 							</li>`
 						)}
@@ -50,17 +50,17 @@ const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
 	</article>`
 
 const other_explain = (word: string) =>
-  `<article class="main-content other-dict">
+  h`<article class="main-content other-dict">
 		<h5>其他字典</h5>
 		<p>
 			<a target='_blank'
-        href="https://youdao.com/result?lang=en&word=${word}"
+        href="https://youdao.com/result?lang=en&word=${s(word)}"
       >有道词典</a>
 			<a target='_blank'
-        href="https://dict.eudic.net/dicts/en/${word}"
+        href="https://dict.eudic.net/dicts/en/${s(word)}"
       >欧路词典</a>
 			<a target='_blank'
-        href="https://translate.google.com/?sl=en&tl=zh-CN&text=${word}&op=translate"
+        href="https://translate.google.com/?sl=en&tl=zh-CN&text=${s(word)}&op=translate"
       >谷歌翻译</a>
 		</p>
 	</article>`
