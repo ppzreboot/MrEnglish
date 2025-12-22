@@ -42,7 +42,7 @@ const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
 			<h5>英英释义</h5>
 			${mw.map(entry =>
 				h`<div key={index} class='entry'>
-					<h5 class="fl">${s(entry.fl ?? '??')}</h5>
+					<h5 class="fl">${s(entry.fl)}</h5>
 					<ul class='list'>
 						${entry.shortdef.map(def =>
 							h`<li class='txt-item'>

@@ -66,8 +66,12 @@ async function init_service__lookup(opts: {
             return { ecdict: ecdict_result }
         }
         console.log(`cache meriam-webster "${word}"`)
-        await mw_cache.insertOne({ word, raw: mw_result.raw })
         // 如果有两个人查同一个单词，这里会报错
+        await mw_cache.insertOne({ word, raw: mw_result.raw })
+        if (mw_result.data.length === 0) {
+            console.warn(`meriam-webster: "${word}" has no valid entry`)
+            return { ecdict: ecdict_result }
+        }
         return {
             ecdict: ecdict_result,
             mw: mw_result.data,

@@ -61,6 +61,7 @@ function format_raw(word: string, raw: I_raw_mw_entry[]) {
     word = word.toLowerCase()
     return raw
         .filter(item =>
+            item.fl &&
             item.hwi.hw.split('*').join('').toLowerCase() === word
         )
         .map<I_formatted_meriam_webster_entry>(item => ({
@@ -69,7 +70,7 @@ function format_raw(word: string, raw: I_raw_mw_entry[]) {
                 ipa: prs.ipa,
                 audio: prs.sound?.audio,
             })),
-            fl: item.fl,
+            fl: item.fl!,
             shortdef: item.shortdef,
         }))
 }

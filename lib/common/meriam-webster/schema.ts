@@ -32,7 +32,7 @@ interface I_formatted_meriam_webster_entry {
     /** pronunciation */
     prs?: I_formatted_meriam_webster_prs[]
     /** function label */
-    fl?: string
+    fl: string
     /** short definition */
     shortdef: string[]
 }
