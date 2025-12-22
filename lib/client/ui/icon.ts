@@ -4,14 +4,14 @@ const props = (classname?: string) => ({
 	fill: 'none',
 	viewbox: '0 0 24 24',
 	stroke: 'currentColor',
-	strokewidth: '2',
-	strokelinecap: 'round',
-	strokelinejoin: 'round',
+	'stroke-width': '2',
+	'stroke-linecap': 'round',
+	'stroke-linejoin': 'round',
 	class: 'mr-english-svg ' + (classname ?? ''),
 })
 
 export
-const Icon__speak = (
+const speak_icon = (
 	type: 1 | 2 | 3,
 	classname?: string,
 ) =>
@@ -28,7 +28,7 @@ const Icon__speak = (
 	])
 
 export
-const Icon__menu = (classname?: string) =>
+const menu_icon = (classname?: string) =>
 	h('svg', props(classname), [
 		h('rect', { width: "7", height: "7", x: "3", y: "3", rx: "1" }),
 		h('rect', { width: "7", height: "7", x: "14", y: "3", rx: "1" }),
@@ -37,29 +37,29 @@ const Icon__menu = (classname?: string) =>
 	])
 
 export
-const Icon_search = (classname?: string) =>
-	h('svg', props(classname), [
+const search_icon = <S>(classname?: string) =>
+	h<S>('svg', props(classname), [
 		h('path', { d: 'm21 21-4.34-4.34' }),
 		h('circle', { cx: '11', cy: '11', r: '8' }),
 	])
 
 export
-const Icon__close = (classname?: string) =>
+const close_icon = (classname?: string) =>
 	h('svg', props(classname), [
 		h('path', { d: 'M18 6 6 18' }),
 		h('path', { d: 'm6 6 12 12' }),
 	])
 
 export
-const Icon__star = (fill: boolean, classname?: string) =>
-	h('svg',
+const star_icon = <S>(fill: boolean, classname?: string) =>
+	h<S>('svg',
 		{
 			fill: fill ? 'currentColor': 'none',
 			viewbox: '0 0 24 24',
 			stroke: 'currentColor',
-			strokewidth: '2',
-			strokelinecap: 'round',
-			strokelinejoin: 'round',
+			'stroke-width': '2',
+			'stroke-linecap': 'round',
+			'stroke-linejoin': 'round',
 			class: 'mr-english-svg ' + (classname ?? ''),
 		},
 		[

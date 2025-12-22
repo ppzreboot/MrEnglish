@@ -24,8 +24,8 @@ interface I_service__lookup {
 
 export
 interface I_service__word_mng {
-    add_history_and_get_star(user_id: ObjectId, word: string): Promise<boolean>
-    star(user_id: ObjectId, word: string, star: boolean): Promise<void>
+    add_history_and_get_star(user_id: ObjectId, word: string): Promise<{ id: string, star: boolean }>
+    star(word_oid: ObjectId, user_id: ObjectId, star: boolean): Promise<void>
     is_in_ecdict(word: string): Promise<boolean>
     get_history(userid: ObjectId, limit: number, last: null | {
         update_at: Date

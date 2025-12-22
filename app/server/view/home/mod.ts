@@ -5,19 +5,33 @@ import { simple_page } from '../_inner/layout.ts'
 import { h, s } from '../_inner/interpolation.ts'
 import { basic_explain } from './basic.ts'
 
+type I_opts
+	= null // 获取页面，不查单词
+	| { // 没查到单词
+		word: string
+		lookup_result: null
+		record: null
+	}
+	| { // 查到单词
+		word: string
+		lookup_result: I_lookup_result
+		record: { // 查询记录
+			id: string
+			star: boolean
+		}
+	}
+
 export
-const home_page = (opts?: {
-  word: string,
-  star: boolean,
-  lookup_result: null | I_lookup_result,
-}) =>
-	simple_page(pages.home,
+const home_page = (opts: I_opts) => {
+	const clite_data = opts && {
+		word: opts.word,
+		valid_ecdict: opts.lookup_result !== null,
+		record: opts.record,
+	}
+	return simple_page(pages.home,
 		h`
 			<div class="page home">
-				<div
-					class="main-input main-content"
-					data-word="${opts && s(opts.word)}"
-				></div>
+				<div class="main-input main-content"></div>
 				${opts && h`
 					<div class='lookup-result'>
 						${opts.lookup_result && [
@@ -31,11 +45,12 @@ const home_page = (opts?: {
 			</div>
 			<script>
 				document.addEventListener('DOMContentLoaded', () => {
-					CLITE.home_page()
+					CLITE.home_page(${s(JSON.stringify(clite_data))})
 				})
 			</script>
 		`,
 	)
+}
 
 const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
 	h`<article class='main-content e2e'>
@@ -46,9 +61,7 @@ const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
 					<ul class='list'>
 						${entry.shortdef.map(def =>
 							h`<li class='txt-item'>
-								<div title="${s(def)}"}>
-									${s(def)}
-								</div>
+								${s(def)}
 							</li>`
 						)}
 					</ul>

@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongodb'
 import { is_valid_en_phrase } from '@mr-english/util'
 import { I_c } from '@mr-english-server/schema'
-import { throw_bad_request, SUCCESS, format_request_input } from '@mr-english-server/throw'
+import { format_request_input } from '@mr-english-server/throw'
 import { str2obj_id } from '@mr-english-server/util'
 import { home_page } from '../view/home/mod.ts'
 import { respond_html } from '../utils/respond.ts'
@@ -11,34 +11,51 @@ export
 const home_controller: I_c = async ctx => {
     const userid = await throw_login(ctx)
     const word = ctx.url.searchParams.get('q')
+
+    // 获取页面，不查单词
     if (word === null)
-        return respond_html(home_page())
+        return respond_html(home_page(null))
+
+    // 单词（或短语）不合法
+    if (!is_valid_en_phrase(word))
+        return respond_html(home_page({
+            word,
+            lookup_result: null,
+            record: null,
+        }))
 
     const result = await ctx.service.lookup.full(word)
-    const star = result === null
-        ? false
-        : await ctx.service.word_mng.add_history_and_get_star(userid, result.ecdict.word)
+    // 没查到
+    if (result === null)
+        return respond_html(home_page({
+            word,
+            lookup_result: null,
+            record: null,
+        }))
 
     return respond_html(
-        home_page({ word, star, lookup_result: result })
+        home_page({
+            word,
+            lookup_result: result,
+            record: await ctx.service.word_mng.add_history_and_get_star(userid, result.ecdict.word),
+        })
     )
 }
 
 export
 const star_controller: I_c = async ctx => {
     const userid = await throw_login(ctx)
-    const word = ctx.url.searchParams.get('word')
-    const star = ctx.url.searchParams.get('star')
-    await throw_bad_request('star word', async () => {
-        if (word === null || !is_valid_en_phrase(word)
-            // @ts-ignore:
-            || !['1', '0'].includes(star)
-            || !(await ctx.service.word_mng.is_in_ecdict(word as string))
-        )
-            return { word, star }
-        return SUCCESS
+    const { word_oid, star } = await format_request_input<{ word_oid: ObjectId, star: boolean}>('star word', () => {
+        const word = ctx.url.searchParams.get('word')
+        const star = ctx.url.searchParams.get('star')
+        
+        let word_oid: ObjectId | null = null
+        if ((word === null || (word_oid = str2obj_id(word)) === null)
+         || (star !== '0' && star !== '1'))
+            return [false, { word, star }]
+        return [true, { word_oid, star: star === '1' }]
     })
-    await ctx.service.word_mng.star(userid, word as string, star === '1')
+    await ctx.service.word_mng.star(word_oid, userid, star)
     return Response.json({ error: false, data: null })
 }
 

@@ -23,14 +23,17 @@ function init_service__word_mng(app_db: I_app_db, lookup: I_service__lookup): I_
         async add_history_and_get_star(userid, word) {
             await add_history(userid, word)
             const doc = await app_db.word.findOne({ word, userid })
-            return doc!.star
+            return {
+                id: doc!._id.toString(),
+                star: doc!.star,
+            }
         },
-        async star(userid, word, star) {
-            const count = await app_db.word.updateOne({ word, userid }, {
+        async star(word_oid, userid, star) {
+            const count = await app_db.word.updateOne({ _id: word_oid, userid }, {
                 $set: { star }
             })
             if (count.matchedCount !== 1)
-                throw Error(`staring word: no word "${word}" found for user ${userid}`)
+                throw Error(`staring word: not found for user ${userid}`)
         },
         async is_in_ecdict(word) {
             return null !== await lookup.ecdict(word)

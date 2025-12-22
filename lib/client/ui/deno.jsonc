@@ -3,12 +3,9 @@
 	"version": "0.0.0",
 	"exports": "./mod.ts",
 	"imports": {
-    "wouter": "npm:wouter@^3.8.1",
-    "react": "npm:react@^19.2.0"
+    "hyperapp": "npm:hyperapp@^2.0.22"
 	},
   "compilerOptions": {
-    "lib": ["es2022", "dom"],
-    "jsxImportSource": "react",
-    "jsx": "react-jsx"
+    "lib": ["es2022", "dom"]
   }
 }
