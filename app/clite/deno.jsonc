@@ -1,9 +1,10 @@
 {
   "tasks": {
-    "compile": "deno run -A @clite/compile -p=/static -o=../server/.clite"
+    "dev": "deno run -A --watch=./ jsr:@clite/compile -p=/static -o=../server/.clite",
+    "compile": "deno run -A jsr:@clite/compile -p=/static -o=../server/.clite"
   },
   "imports": {
-    "@clite/compile": "jsr:@clite/compile@^0.0.3"
+    "hyperapp": "npm:hyperapp@^2.0.22"
   },
   "compilerOptions": {
     "lib": ["es2022", "dom"]

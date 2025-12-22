@@ -14,31 +14,35 @@ const layout = (title: string, body: I_real_interpolation) =>
 		<link rel="stylesheet" href="${clite_meta.url_prefix}/${clite_meta.css}">
 		<script src="${clite_meta.url_prefix}/${clite_meta.js}"></script>
 	</head>
-	${body.value}
+	<body>
+		${body.value}
+	</body>
 	</html>`
 
 export
 const simple_page = (current_page: I_page_meta, main: I_real_interpolation) =>
 	layout(
 		'MrEnglish - ' + current_page.title,
-		h`<div class='simple layout'>
-			<header>
-				<h1>MrEnglish</h1>
-				<nav>
-					<ul>
-						${page_list.map(page =>
-							h`<li>
-								${page.path === current_page.path
-									? h`<h2>${s(page.title)}</h2>`
-									: h`<a href="${s(page.path)}">${s(page.title)}</a>`
-								}
-							</li>`
-						)}
-					</ul>
-				</nav>
-			</header>
-			<main>${main}</main>
-			<footer>MrEnglish</footer>
-		</div>`,
+		h`
+			<div class='simple layout'>
+				<header>
+					<h1>MrEnglish</h1>
+					<nav>
+						<ul>
+							${page_list.map(page =>
+								h`<li>
+									${page.path === current_page.path
+										? h`<h2>${s(page.title)}</h2>`
+										: h`<a href="${s(page.path)}">${s(page.title)}</a>`
+									}
+								</li>`
+							)}
+						</ul>
+					</nav>
+				</header>
+				<main>${main}</main>
+				<footer>MrEnglish</footer>
+			</div>
+		`,
 	)
 	

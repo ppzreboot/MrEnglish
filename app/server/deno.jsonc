@@ -8,6 +8,7 @@
   "imports": {
     "@clite/serve": "jsr:@clite/serve@^0.0.3",
     "@db/sqlite": "jsr:@db/sqlite@^0.13.0",
+    "@ppz-ai/ecdict-common": "jsr:@ppz-ai/ecdict-common@^0.3.5",
     "@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5",
     "@ppz/oauth-login": "jsr:@ppz/oauth-login@0.0.6",
     "mongodb": "npm:mongodb@^7.0.0",

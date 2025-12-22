@@ -3,6 +3,7 @@ import { I_formatted_meriam_webster_entry } from '@mr-english/meriam-webster'
 import { pages } from '../_inner/meta.ts'
 import { simple_page } from '../_inner/layout.ts'
 import { h, s } from '../_inner/interpolation.ts'
+import { basic_explain } from './basic.ts'
 
 export
 const home_page = (opts?: {
@@ -10,25 +11,31 @@ const home_page = (opts?: {
   star: boolean,
   lookup_result: null | I_lookup_result,
 }) =>
-	simple_page(pages.home, h`
-    <div class="page home">
-      <div
-        class="main-content main-input"
-        data-word="${opts && s(opts.word)}"
-      ></div>
-      ${opts && h`
-				<div class='lookup-result'>
-          ${opts.lookup_result && h`
-						basic explain
-						${opts.lookup_result.mw &&
-							EE_explain(opts.lookup_result.mw)
-						}
-					`}
-          ${other_explain(opts.word)}
-        </div>`
-      }
-    </div>
-	`)
+	simple_page(pages.home,
+		h`
+			<div class="page home">
+				<div
+					class="main-input main-content"
+					data-word="${opts && s(opts.word)}"
+				></div>
+				${opts && h`
+					<div class='lookup-result'>
+						${opts.lookup_result && [
+							basic_explain(opts.lookup_result),
+							opts.lookup_result.mw &&
+								EE_explain(opts.lookup_result.mw)
+						]}
+						${other_explain(opts.word)}
+					</div>`
+				}
+			</div>
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					CLITE.home_page()
+				})
+			</script>
+		`,
+	)
 
 const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
 	h`<article class='main-content e2e'>

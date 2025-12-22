@@ -7,7 +7,7 @@ type I_empty_interpolation = null | false | undefined
 type I_safe_interpolation
 	= I_empty_interpolation
 	| I_real_interpolation
-	| I_real_interpolation[]
+	| I_safe_interpolation[]
 
 type I_html = (s: TemplateStringsArray, ...args: I_safe_interpolation[])
 	=> I_real_interpolation
@@ -36,9 +36,11 @@ const h: I_html = (s, ...args) => {
 		if (i < args.length) {
 			const a = args[i]
 			if (!empty_val(a))
-				result += Array.isArray(a)
-					? a.map(i => i.value).join('')
-					: a.value
+				result += !Array.isArray(a)
+					? a.value
+					: a
+							.filter(i => !empty_val(i))
+							.map(i => (i as I_real_interpolation).value).join('')
 		}
 	}
 	return {

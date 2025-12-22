@@ -10,7 +10,7 @@ import { throw_login } from './_inner/throw-login.ts'
 export
 const home_controller: I_c = async ctx => {
     const userid = await throw_login(ctx)
-    const word = ctx.url.searchParams.get('word')
+    const word = ctx.url.searchParams.get('q')
     if (word === null)
         return respond_html(home_page())
 
