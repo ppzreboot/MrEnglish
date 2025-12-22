@@ -2,12 +2,10 @@
 	"name": "@mr-english-client/icon",
   "version": "0.0.0",
 	"exports": "./mod.tsx",
-	"imports": {
-    "react": "npm:react@^19.2.0"
-	},
+  "imports": {
+    "hyperapp": "npm:hyperapp@^2.0.22"
+  },
   "compilerOptions": {
-    "lib": ["es2022", "dom"],
-    "jsxImportSource": "react",
-    "jsx": "react-jsx"
+    "lib": ["es2022", "dom"]
   }
 }
