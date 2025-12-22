@@ -17,7 +17,7 @@ export
 function basic_explain(lookup_result: I_lookup_result) {
 	const { ecdict, mw } = lookup_result
   // 音标与读音
-  const read_list = mw === undefined ? [] :
+  const read_list = mw === null ? [] :
     mw.flatMap(entry => entry.prs)
       .filter(prns => prns) as I_formatted_meriam_webster_prs[]
 

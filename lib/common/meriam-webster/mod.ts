@@ -16,12 +16,15 @@ export type {
 
 type I_lookup_result = I_mw_error | {
     error: false
-    data: I_formatted_meriam_webster_entry[]
-    raw: I_raw_mw_entry[]
+    raw_body: I_raw_mw_entry[]
 }
 
 export * from './audio-url.ts'
 
+/**
+ * 不返回 formatted，是为了保持 api 调用和数据库查询结果一致
+ * 即“已缓存”和“未缓存”一致
+ */
 export
 async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_result> {
     if (!check_en_word(word))
@@ -43,8 +46,7 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_re
     if (parsed.success)
         return {
             error: false,
-            data: format_raw(word, parsed.data),
-            raw: json_body,
+            raw_body: json_body,
         }
     else
         return {
@@ -57,7 +59,7 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_lookup_re
 }
 
 export
-function format_raw(word: string, raw: I_raw_mw_entry[]) {
+function format_raw(word: string, raw: I_raw_mw_entry[]): I_formatted_meriam_webster_entry[] {
     word = word.toLowerCase()
     return raw
         .filter(item =>

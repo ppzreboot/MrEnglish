@@ -5,7 +5,7 @@ import type { I_formatted_meriam_webster_entry } from '@mr-english/meriam-webste
 export
 interface I_lookup_result {
 	ecdict: I_ecdict
-	mw?: I_formatted_meriam_webster_entry[]
+	mw: null | I_formatted_meriam_webster_entry[]
 }
 
 export
@@ -24,7 +24,7 @@ const schema__mw_entry: z.ZodType<I_formatted_meriam_webster_entry> = z.object({
 			audio: z.string().min(1).optional(),
 		})
 	).optional(),
-	fl: z.string().optional(),
+	fl: z.string(),
 	shortdef: z.array(z.string().min(1)),
 })
 
@@ -48,6 +48,6 @@ const schema__api_output__lookup_result: z.ZodType<null | I_lookup_output> =
 				}).nullable(),
 				inflection: z.record(schema__inflection_type, z.string().optional())
 			}),
-			mw: z.array(schema__mw_entry).optional(),
+			mw: z.array(schema__mw_entry).nullable(),
 		})
 	}).nullable()

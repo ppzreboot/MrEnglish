@@ -6,7 +6,7 @@ import {
     type I_mw_error,
     type I_raw_mw_entry,
     lookup_from_mw,
-    format_raw,
+    format_raw as _format_raw_mw,
 } from '@mr-english/meriam-webster'
 import type { I_lookup_result } from '@mr-english/schema'
 import type { I_service__lookup } from '@mr-english-server/schema'
@@ -47,34 +47,31 @@ async function init_service__lookup(opts: {
             { word },
             { collation: { locale: 'en', strength: 2 } },
         )
-        if (cached_mw_result !== null) {
-            if (cached_mw_result.raw === undefined)
-                return { ecdict: ecdict_result }
-            else
-                return {
-                    ecdict: ecdict_result,
-                    mw: format_raw(word, cached_mw_result.raw),
-                }
-        }
+        // 缓存中，有
+        if (cached_mw_result !== null)
+            return {
+                ecdict: ecdict_result,
+                mw: format_raw_mw(word, cached_mw_result.raw),
+            }
 
-        // console.log('lookup meriam-webster:', word)
+        // 缓存中，没有，就调用 meriam-webster API
+        console.log('caching meriam webster word', word)
         const mw_result = await lookup_from_mw(opts.mw_apikey, word)
-        if (mw_result.error) {
+
+        if (mw_result.error) { // 没查到
             console.log(`cache meriam-webster "${word}" as not found`)
             await mw_cache.insertOne({ word }) // “不存在”也是数据
             console.error(format_mw_error(word, mw_result))
-            return { ecdict: ecdict_result }
+            return { ecdict: ecdict_result, mw: null }
         }
+
+        // 查到了
         console.log(`cache meriam-webster "${word}"`)
         // 如果有两个人查同一个单词，这里会报错
-        await mw_cache.insertOne({ word, raw: mw_result.raw })
-        if (mw_result.data.length === 0) {
-            console.warn(`meriam-webster: "${word}" has no valid entry`)
-            return { ecdict: ecdict_result }
-        }
+        await mw_cache.insertOne({ word, raw: mw_result.raw_body })
         return {
             ecdict: ecdict_result,
-            mw: mw_result.data,
+            mw: format_raw_mw(word, mw_result.raw_body),
         }
     }
 
@@ -82,6 +79,13 @@ async function init_service__lookup(opts: {
         ecdict: lookup_from_ecdict,
         full: lookup,
     }
+}
+
+function format_raw_mw(word: string, raw?: I_raw_mw_entry[]) {
+    if (raw === undefined)
+        return null
+    const formatted = _format_raw_mw(word, raw)
+    return formatted.length ? formatted : null
 }
 
 export
