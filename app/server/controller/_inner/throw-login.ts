@@ -11,7 +11,7 @@ async function throw_login(input: I_i) {
 		status: 302,
 		headers: {
 			'Set-Cookie': 'session_token=; Path=/; Max-Age=0',
-			'Location': '/login',
+			'Location': '/login', // TODO: 应该记录当前请求，登录后自动跳回
 		},
 	})
 }
