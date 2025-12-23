@@ -99,9 +99,16 @@ const right_btn = (state: I_state) =>
 		)
 	: h<I_state>('a',
 			{
-				class: 'icon-btn',
-				disabled: state.current_input.length === 0,
+				class: {
+					'icon-btn': true,
+					disabled: state.current_input.trim().length === 0
+				},
 				href: '/?q=' + state.current_input,
+				onclick(s, e) {
+					if (state.current_input.trim().length === 0)
+						e.preventDefault()
+					return s
+				},
 			},
 			[search_icon()]
 		)

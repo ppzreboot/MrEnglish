@@ -55,7 +55,7 @@ const star_icon = <S>(fill: boolean, classname?: string) =>
 	h<S>('svg',
 		{
 			fill: fill ? 'currentColor': 'none',
-			viewbox: '0 0 24 24',
+			viewBox: '0 0 24 24',
 			stroke: 'currentColor',
 			'stroke-width': '2',
 			'stroke-linecap': 'round',
