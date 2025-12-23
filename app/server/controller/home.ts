@@ -10,10 +10,13 @@ import { throw_login } from './_inner/throw-login.ts'
 export
 const home_controller: I_c = async ctx => {
     const userid = await throw_login(ctx)
-    const word = ctx.url.searchParams.get('q')
+    let word = ctx.url.searchParams.get('q')
 
     // 获取页面，不查单词
     if (word === null)
+        return respond_html(home_page(null))
+    word = word.trim()
+    if (word === '')
         return respond_html(home_page(null))
 
     // 单词（或短语）不合法
