@@ -1,60 +1,28 @@
-export
-interface I_real_interpolation {
-	value: string
-	real_interpolation: true
-}
-type I_empty_interpolation = null | false | undefined
 type I_safe_interpolation
-	= I_empty_interpolation
-	| I_real_interpolation
+	= string
+	| false
+	| null
+	| undefined
+	| 0
 	| I_safe_interpolation[]
 
-type I_html = (s: TemplateStringsArray, ...args: I_safe_interpolation[])
-	=> I_real_interpolation
+const stringify = (val: I_safe_interpolation): string => {
+	if (Array.isArray(val))
+		return val.map(stringify).join('')
+	if (typeof(val) === 'string')
+		return val
+	return ''
+}
 
-/**
- * 不允许插值 string，是为了避免:
- *  ``` ts
- *  const tmpl =
- *		h`<div>
- * 	  	${a === b &&
- * 				`vulnerable interpolation
- * 					${b === c &&
- * 						'wrong!!!'
- * 					}
- * 				`
- *			}
- *		</div>`
- *  ```
- */
+type I_html = (s: TemplateStringsArray, ...args: I_safe_interpolation[]) => string
+
 export
 const h: I_html = (s, ...args) => {
 	let result = ''
 	for (let i=0; i<s.length; i++) {
 		result += s[i]
-
-		if (i < args.length) {
-			const a = args[i]
-			if (!empty_val(a))
-				result += !Array.isArray(a)
-					? a.value
-					: a
-							.filter(i => !empty_val(i))
-							.map(i => (i as I_real_interpolation).value).join('')
-		}
+		if (i < args.length)
+			result += stringify(args[i])
 	}
-	return {
-		real_interpolation: true,
-		value: result,
-	}
+	return result
 }
-
-const empty_val = (val: I_safe_interpolation): val is I_empty_interpolation =>
-	val === null || val === undefined || val === false
-
-/** Simple, Safe interpolation */
-export
-const s = (value: string): I_real_interpolation => ({
-	value,
-	real_interpolation: true,
-})

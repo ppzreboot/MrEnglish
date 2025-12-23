@@ -14,33 +14,32 @@ const home_controller: I_c = async ctx => {
 
     // 获取页面，不查单词
     if (word === null)
-        return respond_html(home_page(null))
+        return respond_html(home_page({ type: 'empty' }))
     word = word.trim()
     if (word === '')
-        return respond_html(home_page(null))
+        return respond_html(home_page({ type: 'empty' }))
 
     // 单词（或短语）不合法
     if (!is_valid_en_phrase(word))
         return respond_html(home_page({
+            type: 'word not found',
             word,
-            lookup_result: null,
-            record: null,
         }))
 
     const result = await ctx.service.lookup.full(word)
     // 没查到
     if (result === null)
         return respond_html(home_page({
+            type: 'word not found',
             word,
-            lookup_result: null,
-            record: null,
         }))
 
     return respond_html(
         home_page({
+            type: 'normal',
             word,
-            lookup_result: result,
             record: await ctx.service.word_mng.add_history_and_get_star(userid, result.ecdict.word),
+            lookup_result: result,
         })
     )
 }

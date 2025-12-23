@@ -1,10 +1,10 @@
+import { type I_page_key, pages, page_list } from '@mr-english/schema'
+import { h } from './interpolation.ts'
 import clite_meta from '../../.clite/.meta.ts'
-import { h, s, type I_real_interpolation } from './interpolation.ts'
-import { type I_page_meta, page_list } from './meta.ts'
 
 export
-const layout = (title: string, body: I_real_interpolation) =>
-	`<!doctype html>
+const layout = (title: string, body: string) =>
+	h`<!doctype html>
 	<html lang="zh-CN">
 	<head>
 		<meta charset="UTF-8">
@@ -15,14 +15,19 @@ const layout = (title: string, body: I_real_interpolation) =>
 		<script src="${clite_meta.url_prefix}/${clite_meta.js}"></script>
 	</head>
 	<body>
-		${body.value}
+		${body}
 	</body>
 	</html>`
 
 export
-const simple_page = (current_page: I_page_meta, main: I_real_interpolation) =>
-	layout(
-		'MrEnglish - ' + current_page.title,
+const simple_page = <I_page_opts>(
+	current_page: I_page_key,
+	opts: I_page_opts,
+	main: string,
+) => {
+	const page_meta = pages[current_page]
+	return layout(
+		'MrEnglish - ' + page_meta.title,
 		h`
 			<div class='simple layout'>
 				<header>
@@ -30,10 +35,10 @@ const simple_page = (current_page: I_page_meta, main: I_real_interpolation) =>
 					<nav>
 						<ul>
 							${page_list.map(page =>
-								h`<li>
-									${page.path === current_page.path
-										? h`<h2>${s(page.title)}</h2>`
-										: h`<a href="${s(page.path)}">${s(page.title)}</a>`
+								`<li>
+									${page.path === page_meta.path
+										? `<h2>${page.title}</h2>`
+										: `<a href="${page.path}">${page.title}</a>`
 									}
 								</li>`
 							)}
@@ -43,6 +48,10 @@ const simple_page = (current_page: I_page_meta, main: I_real_interpolation) =>
 				<main>${main}</main>
 				<footer>MrEnglish</footer>
 			</div>
+			<script>
+				CLITE.${current_page}_page(${JSON.stringify(opts)})
+			</script>
 		`,
 	)
+}
 	

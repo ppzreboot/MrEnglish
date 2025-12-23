@@ -1,48 +1,61 @@
-import { h, app } from 'hyperapp'
+import { h, app, text } from 'hyperapp'
 import { star_icon, search_icon } from '@mr-english-client/ui'
+import { I_page_opts__home, I_page_opts__ee_entry } from '@mr-english/schema'
+
 import './index.css'
-import { I_init_data } from './type.ts'
 
 type I_state = {
 	type: 'empty'
 	current_input: string
+	compositing: boolean
 } | {
 	type: 'word not found'
 	last_input: string
 	current_input: string
+	compositing: boolean
 } | {
 	type: 'normal'
 	last_input: string
 	current_input: string
+	compositing: boolean
 	has_star: boolean
 	word_oid: string
 	staring: boolean
 }
 
 export
-const home_page = (opts: I_init_data) => {
+const home_page = (opts: I_page_opts__home) => {
 	console.log({ opts })
+	main_input(opts)
+	if (opts.type === 'normal' && opts.ee_entry_list)
+		ee_short_def(opts.ee_entry_list)
+}
 
+const main_input = (opts: I_page_opts__home) =>
 	app<I_state>({
 		node: document.querySelector('.main-input') as HTMLDivElement,
 		init(): I_state {
-			if (opts === null)
-				return { type: 'empty', current_input: '' }
-			else if (opts.valid_ecdict)
-				return {
-					type: 'normal',
-					current_input: opts.word,
-					last_input: opts.word,
-					has_star: opts.record.star,
-					word_oid: opts.record.id,
-					staring: false,
-				}
-			else
-				return {
-					type: 'word not found',
-					current_input: opts.word,
-					last_input: opts.word,
-				}
+			switch (opts.type) {
+				case 'empty':
+					return { type: 'empty', current_input: '', compositing: false }
+				case 'word not found':
+					return {
+						type: 'word not found',
+						last_input: opts.word,
+						current_input: opts.word,
+						compositing: false,
+					}
+				case 'normal':
+					return {
+						type: 'normal',
+						last_input: opts.word,
+						current_input: opts.word,
+						compositing: false,
+						has_star: opts.record.star,
+						word_oid: opts.record.id,
+						staring: false,
+					}
+			}
 		},
 		view: state =>
 			h('div', {}, [
@@ -51,11 +64,21 @@ const home_page = (opts: I_init_data) => {
 					value: state.current_input,
 					autofocus: state.type === 'empty',
 					placeholder: '输入单词',
+					oncompositionstart: s => ({
+						...s,
+						compositing: true,
+					}),
+					oncompositionend: s => ({
+						...s,
+						compositing: false,
+					}),
 					oninput: (s, evt) => ({
 						...s,
 						current_input: (evt.target as HTMLInputElement).value,
 					}),
 					onkeydown: (s, evt) => {
+						if (s.compositing)
+							return s
 						const q = s.current_input.trim()
 						if (evt.key === 'Enter' && q.length)
 							location.href = '/?q=' + q
@@ -66,7 +89,29 @@ const home_page = (opts: I_init_data) => {
 			])
 		,
 	})
-}
+
+const ee_short_def = (list: I_page_opts__ee_entry[]) =>
+	app({
+		node: document.querySelector('.entries')!,
+		init: {},
+		view: () =>
+			h('div', {},
+				list.map(entry =>
+					h('div', { class: 'entry' }, [
+						h('h5', { class: 'fl' },
+							text(entry.fl)
+						),
+						h('ul', { class: 'list' },
+							entry.shortdef.map(def =>
+								h('li', { class: 'txt-item' },
+									text(def)
+								)
+							)
+						)
+					])
+				)
+			)
+	})
 
 const right_btn = (state: I_state) =>
 	state.type === 'normal' && state.current_input === state.last_input
@@ -86,6 +131,7 @@ const right_btn = (state: I_state) =>
 							type: 'normal',
 							current_input: state.current_input,
 							last_input: state.last_input,
+							compositing: false,
 							word_oid: state.word_oid,
 							has_star: !state.has_star,
 							staring: false,

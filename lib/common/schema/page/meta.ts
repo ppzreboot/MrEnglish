@@ -4,6 +4,7 @@ interface I_page_meta {
 	title: string
 }
 
+export
 type I_page_key = 'home' | 'ai_translate' | 'vocabulary_book' | 'setting'
 
 export

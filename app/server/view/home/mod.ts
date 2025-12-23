@@ -1,86 +1,75 @@
-import { I_lookup_result } from '@mr-english/schema'
-import { I_formatted_meriam_webster_entry } from '@mr-english/meriam-webster'
-import { pages } from '../_inner/meta.ts'
+import { I_lookup_record, I_lookup_result } from '@mr-english/schema'
 import { simple_page } from '../_inner/layout.ts'
-import { h, s } from '../_inner/interpolation.ts'
+import { h } from '../_inner/interpolation.ts'
 import { basic_explain } from './basic.ts'
 
-type I_opts
-	= null // 获取页面，不查单词
-	| { // 没查到单词
-		word: string
-		lookup_result: null
-		record: null
-	}
-	| { // 查到单词
-		word: string
-		lookup_result: I_lookup_result
-		record: { // 查询记录
-			id: string
-			star: boolean
-		}
-	}
+type I_render_opts = {
+	type: 'empty'
+} | {
+	type: 'word not found'
+	word: string
+} | {
+	type: 'normal'
+	word: string
+	record: I_lookup_record
+	lookup_result: I_lookup_result
+}
 
 export
-const home_page = (opts: I_opts) => {
-	const clite_data = opts && {
-		word: opts.word,
-		valid_ecdict: opts.lookup_result !== null,
-		record: opts.record,
-	}
-	return simple_page(pages.home,
+const home_page = (opts: I_render_opts) =>
+	simple_page('home', r2p(opts),
 		h`
 			<div class="page home">
 				<div class="main-input main-content"></div>
-				${opts && h`
-					<div class='lookup-result'>
-						${opts.lookup_result && [
-							basic_explain(opts.lookup_result),
+				${opts.type !== 'empty' && h`
+					<div class='lookup-result'>${[
+						opts.type === 'normal' && [
+							basic_explain(opts.lookup_result.ecdict),
 							opts.lookup_result.mw &&
-								EE_explain(opts.lookup_result.mw)
-						]}
-						${other_explain(opts.word)}
-					</div>`
+								`<article class='main-content e2e'>
+									<h5>英英释义</h5>
+									<div class="entries"></div>
+								</article>`
+						],
+						other_explain(opts.word),
+					]}</div>`
 				}
 			</div>
-			<script>
-				document.addEventListener('DOMContentLoaded', () => {
-					CLITE.home_page(${s(JSON.stringify(clite_data))})
-				})
-			</script>
 		`,
 	)
-}
-
-const EE_explain = (mw: I_formatted_meriam_webster_entry[]) =>
-	h`<article class='main-content e2e'>
-			<h5>英英释义</h5>
-			${mw.map(entry =>
-				h`<div key={index} class='entry'>
-					<h5 class="fl">${s(entry.fl)}</h5>
-					<ul class='list'>
-						${entry.shortdef.map(def =>
-							h`<li class='txt-item'>
-								${s(def)}
-							</li>`
-						)}
-					</ul>
-				</div>`
-			)}
-	</article>`
 
 const other_explain = (word: string) =>
-  h`<article class="main-content other-dict">
+  `<article class="main-content other-dict">
 		<h5>其他字典</h5>
 		<p>
 			<a target='_blank'
-        href="https://youdao.com/result?lang=en&word=${s(word)}"
+        href="https://youdao.com/result?lang=en&word=${word}"
       >有道词典</a>
 			<a target='_blank'
-        href="https://dict.eudic.net/dicts/en/${s(word)}"
+        href="https://dict.eudic.net/dicts/en/${word}"
       >欧路词典</a>
 			<a target='_blank'
-        href="https://translate.google.com/?sl=en&tl=zh-CN&text=${s(word)}&op=translate"
+        href="https://translate.google.com/?sl=en&tl=zh-CN&text=${word}&op=translate"
       >谷歌翻译</a>
 		</p>
 	</article>`
+
+/** render opts (on server) to init opts (on clite) */
+function r2p(opts: I_render_opts) {
+	switch (opts.type) {
+		case 'empty':
+			return { type: 'empty' }
+		case 'word not found':
+			return { type: 'word not found', word: opts.word }
+		case 'normal':
+			return {
+				type: 'normal',
+				word: opts.word,
+				record: opts.record,
+				ee_entry_list: opts.lookup_result?.mw?.map(entry => ({
+					label: entry.fl,
+					shortdef: entry.shortdef,
+				})) || null
+			}
+	}
+}
