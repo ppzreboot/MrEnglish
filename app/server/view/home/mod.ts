@@ -1,4 +1,4 @@
-import { I_lookup_record, I_lookup_result } from '@mr-english/schema'
+import { I_lookup_record, I_lookup_result, I_page_opts__home } from '@mr-english/schema'
 import { simple_page } from '../_inner/layout.ts'
 import { h } from '../_inner/interpolation.ts'
 import { basic_explain } from './basic.ts'
@@ -55,7 +55,7 @@ const other_explain = (word: string) =>
 	</article>`
 
 /** render opts (on server) to init opts (on clite) */
-function r2p(opts: I_render_opts) {
+function r2p(opts: I_render_opts): I_page_opts__home {
 	switch (opts.type) {
 		case 'empty':
 			return { type: 'empty' }
@@ -67,7 +67,7 @@ function r2p(opts: I_render_opts) {
 				word: opts.word,
 				record: opts.record,
 				ee_entry_list: opts.lookup_result?.mw?.map(entry => ({
-					label: entry.fl,
+					fl: entry.fl,
 					shortdef: entry.shortdef,
 				})) || null
 			}
