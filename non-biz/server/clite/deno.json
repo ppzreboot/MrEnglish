@@ -1,0 +1,12 @@
+{
+	"name": "@clite/server-utils",
+	"version": "0.0.0",
+	"exports": {
+		"./serve": "./serve.ts",
+		"./template": "./template/mod.ts",
+		"./type": "./type.ts"
+	},
+	"imports": {
+		"@std/media-types": "jsr:@std/media-types@^1.1.0"
+	}
+}
