@@ -17,11 +17,11 @@ const pages: Record<I_page_key, I_page_meta> = {
 		path: '/ai-trans',
 		title: 'AI 翻译',
 	},
-	 vocabulary_book: {
+	vocabulary_book: {
 		path: '/voc-book',
 		title: '单词本',
 	},
-	 setting: {
+	setting: {
 		path: '/setting',
 		title: '设置',
 	},
