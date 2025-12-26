@@ -1,0 +1,14 @@
+{
+	"name": "@biz/common",
+	"version": "0.0.0",
+	"exports": {
+		"./entity": "./entity/mod.ts",
+		"./page": "./page/mod.ts",
+		"./api": "./api/mod.ts",
+		"./util": "./util/mod.ts"
+	},
+	"imports": {
+		"@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5",
+		"zod": "npm:zod@^4.1.12"
+	}
+}

@@ -1,8 +1,0 @@
-{
-	"name": "@mr-english-server/util",
-	"version": "0.0.0",
-	"exports": "./mod.ts",
-	"imports": {
-    "mongodb": "npm:mongodb@^7.0.0"
-	}
-}

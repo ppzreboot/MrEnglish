@@ -1,0 +1,15 @@
+{
+    "name": "@biz/s",
+    "version": "0.0.0",
+    "exports": {
+        "./schema": "./schema/mod.ts",
+        "./throw": "./throw/mod.ts",
+        "./util": "./util/mod.ts",
+        "./response": "./response/mod.ts",
+        "./router": "./router/mod.ts"
+    },
+    "imports": {
+        "@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5",
+        "mongodb": "npm:mongodb@^7.0.0"
+    }
+}

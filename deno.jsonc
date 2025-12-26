@@ -1,13 +1,7 @@
 {
   "workspace": [
-    "biz/common/*",
-    "biz/clite/app",
-    "biz/clite/lib/*",
-    "biz/server/app",
-    "biz/server/lib/*",
-
-    "non-biz/common/*",
-    "non-biz/server/*"
+    "biz/*",
+    "non-biz/*"
   ],
   "fmt": {
     "semiColons": false,

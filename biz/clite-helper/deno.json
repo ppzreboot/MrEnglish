@@ -1,0 +1,14 @@
+{
+	"name": "@biz/c",
+	"exports": {
+		"./ui": "./ui/mod.ts",
+		"./hyperapp": "./hyperapp/mod.ts"
+	},
+	"imports": {
+    "goober": "npm:goober@^2.1.18",
+    "hyperapp": "npm:hyperapp@^2.0.22"
+	},
+  "compilerOptions": {
+    "lib": ["es2022", "dom"]
+  }
+}

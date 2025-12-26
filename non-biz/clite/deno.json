@@ -1,0 +1,11 @@
+{
+	"name": "@ppz/clite",
+	"version": "0.0.0",
+	"exports": {
+		"./common": "./common/mod.ts",
+		"./server": "./server/mod.ts"
+	},
+	"imports": {
+		"@std/media-types": "jsr:@std/media-types@^1.1.0"
+	}
+}
