@@ -6,10 +6,10 @@ export
 const layout = <PK extends string>(props: {
 	clite_meta: I_clite_meta<PK>
 	title: string
-	head: string
+	head: null | string
 	body: string
 }) =>
-	`<!doctype html>
+	h`<!doctype html>
 	<html lang="zh-CN">
 	<head>
 		<meta charset="UTF-8">
@@ -38,19 +38,16 @@ const simple_page = <PK extends string>(props: {
 	return layout({
 		clite_meta: clite_meta,
 		title: props.title,
-		head: h`
-			<link rel="stylesheet" href="${clite_meta.url_prefix}/${clite_meta.global_style}">
-			${pages[pk].css &&
-				h`<link rel="stylesheet" href="${clite_meta.url_prefix}/${pages[pk].css}">`
-			}
-		`,
-		body: h`
-			<div id="app-root"></div>
+		head: pages[pk].css &&
+			`<link rel="stylesheet" href="${clite_meta.url_prefix}/${pages[pk].css}">`
+		,
+		body:
+			h`<div id="app-root"></div>
 			<script type="module">
 			import { main } from '${clite_meta.url_prefix}/${pages[pk].js}'
 			main(document.getElementById('app-root'), ${JSON.stringify(props.opts)})
-			</script>
-		`,
+			</script>`
+		,
 	})
 }
 	
