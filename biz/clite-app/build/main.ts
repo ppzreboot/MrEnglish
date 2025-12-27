@@ -1,7 +1,7 @@
 import { copy } from '@std/fs'
 import { build } from 'esbuild'
 import { denoPlugin } from '@deno/esbuild-plugin'
-import { join } from '@std/path'
+import { join, SEPARATOR } from '@std/path'
 
 import {
 	type I_page_key,
@@ -38,6 +38,8 @@ const result = await build({
 	},
 	plugins: [denoPlugin()],
 })
+for (const output of result.outputFiles)
+	console.log(output.path)
 
 // 打印编译日志
 if (result.warnings.length) {
@@ -101,7 +103,7 @@ async function write_manifest() {
 	)
 
 	function parse_entry(path: string) {
-		const filename = path.split('/').pop()!
+		const filename = path.split(SEPARATOR).pop()!
 		const is_js = filename.endsWith('.js')
 		const is_css = filename.endsWith('.css')
 		if (!is_js && !is_css) // 不是 js 或 css
