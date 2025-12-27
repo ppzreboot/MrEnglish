@@ -1,11 +1,11 @@
-import { type ElementVNode, h, text } from 'hyperapp'
+import { type MaybeVNode, h, text } from 'hyperapp'
 import { page_list } from '@biz/common/page'
 import { $ } from './style.ts'
 
 const current_path = location.pathname
 
 export
-const Layout = <S>(main: ElementVNode<S>) =>
+const Layout = <S>(main: MaybeVNode<S> | readonly MaybeVNode<S>[]) =>
 	$.layout<S>({}, [
 		Header(),
 		$.main({}, main),

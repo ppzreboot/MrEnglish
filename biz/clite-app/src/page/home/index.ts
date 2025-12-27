@@ -10,11 +10,9 @@ const main = (node: HTMLElement, opts: I_page_opts__home) =>
 	app({
 		node,
 		init: opts2state(opts),
-		view: s => Layout<I_state>(
-			h('div', {}, [
-				Main_input(s)
-			])
-		),
+		view: s => Layout<I_state>([
+			Main_input(s)
+		]),
 	})
 
 const opts2state = (opts: I_page_opts__home): I_state => {
