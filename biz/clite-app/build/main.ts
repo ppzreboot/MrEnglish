@@ -2,6 +2,7 @@ import { copy } from '@std/fs'
 import { build } from 'esbuild'
 import { denoPlugin } from '@deno/esbuild-plugin'
 import { join, SEPARATOR } from '@std/path'
+import { join as posix_join } from '@std/path/posix'
 
 import {
 	type I_page_key,
@@ -10,7 +11,7 @@ import {
 } from '@biz/common/page'
 
 const out_dir = '../server-app/.clite'
-const asset_dir = 'asset'
+const asset_dir = './asset'
 const public_path = '/static' // 必须是绝对路径
 
 // compile
@@ -96,8 +97,8 @@ async function write_manifest() {
 
 	out_dir: import.meta.dirname!, // .meta.ts 所在目录即 out_dir
 	url_prefix: '${public_path}',
-	asset_prefix: '${join(public_path, asset_dir)}', // 在这里拼接好，serve 时就不用依赖 @std/path 了
-	global_style: '${get_global_style_path()}',
+	asset_prefix: '${posix_join(public_path, asset_dir)}', // 在这里拼接好，serve 时就不用依赖 @std/path 了
+	global_style: '${get_global_style_filename()}',
 	pages: ${JSON.stringify(pages, null, 2)}
 }`
 	)
@@ -121,7 +122,7 @@ async function write_manifest() {
 			is_css,
 		}
 	}
-	function get_global_style_path() {
+	function get_global_style_filename() {
 		for (const file of result.outputFiles) {
 			const entry = parse_entry(file.path)
 			if (entry === null) continue
