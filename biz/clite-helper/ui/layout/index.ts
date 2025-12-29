@@ -5,7 +5,7 @@ import { $ } from './style.ts'
 const current_path = location.pathname
 
 export
-const Layout = <S>(main: MaybeVNode<S> | readonly MaybeVNode<S>[]) =>
+const Layout = <S>(main: MaybeVNode<S>[]) =>
 	$.layout<S>({}, [
 		Header(),
 		$.main({}, main),

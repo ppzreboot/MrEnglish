@@ -27,46 +27,45 @@ const $ = {
 			fontSize: '1rem',
 		},
 	})]),
-}
 
-// 	.lookup-result {
-// 		article.basic {
-// 			.pronunciation-list {
-// 				margin-bottom: var(--fs);
-// 				display: flex;
-// 				gap: var(--fs);
-// 			}
-// 			.inflection-list {
-// 				display: flex;
-// 				flex-wrap: wrap;
-// 				column-gap: var(--fs);
-// 				label {
-// 					font-size: var(--fs-sm);
-// 					opacity: .6;	
-// 					margin-right: .4em;
-// 				}
-// 			}
-// 		}
-// 		article.e2e {
-// 			.entry {
-// 				&:not(:last-child) {
-// 					margin-bottom: var(--fs);
-// 				}
-// 				h5.fl {
-// 					opacity: .8;
-// 					margin-bottom: calc(var(--fs) / 2);
-// 					line-height: 1.2;
-// 					font-family: serif, Times New Roman;
-// 				}
-// 			}
-// 		}
-// 		article.other-dict {
-// 			p {
-// 				a {
-// 					margin-right: var(--fs);
-// 					font-size: var(--fs-sm);
-// 				}
-// 			}
-// 		}
-// 	}
-// }
+	lookup_result: H('div', css({
+		'article.basic': {
+			'.pronunciation-list': {
+				marginBottom: 'var(--fs)',
+				display: 'flex',
+				gap: 'var(--fs)',
+			},
+			'.inflection-list': {
+				display: 'flex',
+				flexWrap: 'wrap',
+				columnGap: 'var(--fs)',
+				label: {
+					fontSize: 'var(--fs-sm)',
+					opacity: .6,
+					marginRight: '.4em',
+				}
+			}
+		},
+		'article.e2e': {
+			'.entry': {
+				'&:not(:last-child)': {
+					marginBottom: 'var(--fs)',
+				},
+				'h5.fl': {
+					opacity: .8,
+					marginBottom: 'calc(var(--fs) / 2)',
+					lineHeight: 1.2,
+					fontFamily: 'serif, Times New Roman',
+				}
+			}
+		},
+		'article.other-dict': {
+			p: {
+				a: {
+					marginRight: 'var(--fs)',
+					fontSize: 'var(--fs-sm)',
+				}
+			}
+		},
+	})),
+}
