@@ -5,10 +5,16 @@
 		"./hyperapp": "./hyperapp/mod.ts"
 	},
 	"imports": {
-    "goober": "npm:goober@^2.1.18",
-    "hyperapp": "npm:hyperapp@^2.0.22"
+		"@types/react": "npm:@types/react@^19.2.7",
+		"@types/react-dom": "npm:@types/react-dom@^19.2.3",
+		"goober": "npm:goober@^2.1.18",
+		"react": "npm:react@^19.2.0",
+		"react-dom": "npm:react-dom@^19.2.0",
+		"react-hot-toast": "npm:react-hot-toast@^2.6.0"
 	},
-  "compilerOptions": {
-    "lib": ["es2022", "dom"]
-  }
+	"compilerOptions": {
+		"lib": ["es2022", "dom"],
+		"jsxImportSource": "react",
+		"jsx": "react-jsx"
+	}
 }

@@ -1,18 +1,25 @@
 {
-  "tasks": {
-    "dev": "deno run -A --watch=src,../clite-helper,../common,../../non-biz ./build/main.ts",
-    "compile": "deno run -A ./build/main.ts"
-  },
-  "imports": {
-    "@deno/esbuild-plugin": "jsr:@deno/esbuild-plugin@^1.2.1",
+	"tasks": {
+		"dev": "deno run -A --watch=src,../clite-helper,../common,../../non-biz ./build/main.ts",
+		"compile": "deno run -A ./build/main.ts"
+	},
+	"imports": {
+		"@deno/esbuild-plugin": "jsr:@deno/esbuild-plugin@^1.2.1",
 		"@std/cli": "jsr:@std/cli@^1.0.24",
 		"@std/fs": "jsr:@std/fs@^1.0.20",
-    "@std/path": "jsr:@std/path@^1.1.3",
+		"@std/path": "jsr:@std/path@^1.1.3",
 		"esbuild": "npm:esbuild@^0.27.2",
-    "goober": "npm:goober@^2.1.18",
-    "hyperapp": "npm:hyperapp@^2.0.22"
-  },
-  "compilerOptions": {
-    "lib": ["es2022", "dom", "deno.ns"]
-  }
+
+		"@types/react": "npm:@types/react@^19.2.7",
+		"@types/react-dom": "npm:@types/react-dom@^19.2.3",
+		"goober": "npm:goober@^2.1.18",
+		"react": "npm:react@^19.2.0",
+		"react-dom": "npm:react-dom@^19.2.0",
+		"react-hot-toast": "npm:react-hot-toast@^2.6.0"
+	},
+	"compilerOptions": {
+		"lib": ["es2022", "dom", "Deno.ns"],
+		"jsxImportSource": "react",
+		"jsx": "react-jsx"
+	}
 }
