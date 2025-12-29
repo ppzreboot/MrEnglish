@@ -2,9 +2,10 @@
 	"name": "@biz/c",
 	"exports": {
 		"./ui": "./ui/mod.ts",
-		"./hyperapp": "./hyperapp/mod.ts"
+		"./main": "./main/mod.ts"
 	},
 	"imports": {
+		"#/": "./",
 		"@types/react": "npm:@types/react@^19.2.7",
 		"@types/react-dom": "npm:@types/react-dom@^19.2.3",
 		"goober": "npm:goober@^2.1.18",
@@ -14,7 +15,7 @@
 	},
 	"compilerOptions": {
 		"lib": ["es2022", "dom"],
-		"jsxImportSource": "react",
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"jsxImportSource": "react"
 	}
 }

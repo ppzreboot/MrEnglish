@@ -19,7 +19,7 @@
 	},
 	"compilerOptions": {
 		"lib": ["es2022", "dom", "Deno.ns"],
-		"jsxImportSource": "react",
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"jsxImportSource": "react"
 	}
 }

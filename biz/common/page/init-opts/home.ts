@@ -10,7 +10,7 @@ export
 type I_page_opts__home = {
 	type: 'empty'
 } | {
-	type: 'word not found'
+	type: 'not found'
 	word: string
 } | {
 	type: 'normal'
