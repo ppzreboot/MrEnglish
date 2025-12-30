@@ -29,7 +29,7 @@ const home_controller: I_c = async ctx => {
     // 单词（或短语）不合法
     if (!is_valid_en_phrase(word))
         return r({
-            type: 'word not found',
+            type: 'not found',
             word,
         })
 
@@ -37,7 +37,7 @@ const home_controller: I_c = async ctx => {
     // 没查到
     if (result === null)
         return r({
-            type: 'word not found',
+            type: 'not found',
             word,
         })
 
