@@ -63,6 +63,7 @@ const Main_input = (props: I_page_opts__home) => {
 	return <$Main_input className='main-content'>
 		<input
 			placeholder='输入单词'
+			className='en-font'
 			autoFocus={state.type === 'empty'}
 			value={state.current_input}
 			onChange={evt => {
