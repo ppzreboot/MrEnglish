@@ -1,6 +1,6 @@
 import { Fragment, useMemo, type ReactNode } from 'react'
 import { identify_word } from './identify-word.ts'
-import { make_route__home } from '@mr-english-client/biz'
+import { home_page_url } from '@biz/common/page'
 
 /** English Paragraph */
 export
@@ -11,7 +11,7 @@ function En_p(props: { text: string }): ReactNode {
 				<Fragment key={index}>
 					{maybe_word.is_word
 						? <a
-								href={make_route__home(maybe_word.val)}
+								href={home_page_url(maybe_word.val)}
 								style={{
 									color: 'inherit',
 								}}

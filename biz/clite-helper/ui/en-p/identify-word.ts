@@ -1,4 +1,4 @@
-import { is_letter } from '@mr-english/util'
+import { is_letter } from '@biz/common/util'
 
 interface I_maybe_word {
 	is_word: boolean

@@ -78,7 +78,7 @@ ul.txt-list {
 	}
 }
 
-a:not(.reset):not(.icon-btn) {
+a:not(.reset) {
 	color: var(--link-color);
 	text-decoration: none;
 	&:hover {
