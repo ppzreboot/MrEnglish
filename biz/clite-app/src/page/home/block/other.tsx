@@ -14,8 +14,8 @@ const Other_explain = (props: { word: string }) =>
 const $Other_explain = styled('article')({
 	p: {
 		a: {
-			color: 'inherit',
-			fontWeight: 500,
+			// color: 'inherit',
+			// fontWeight: 500,
 			opacity: .8,
 			marginRight: 'var(--fs)',
 			fontSize: 'var(--fs-sm)',

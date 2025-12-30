@@ -10,6 +10,7 @@ import { init_service__lookup } from '../service/lookup/mod.ts'
 import { login_controller } from '../controller/login/index.ts'
 import { github_login_controller } from '../controller/login/github.ts'
 import { home_controller, star_controller } from '../controller/home.ts'
+import { vocabulary_controller } from '../controller/vocabulary.ts'
 
 export
 async function init(env: I_app_env): Promise<{
@@ -24,12 +25,13 @@ async function init(env: I_app_env): Promise<{
         mw_cache_mongo_uri: env.mw_cache_mongo_uri,
         mw_apikey: env.mw_apikey,
     })
-    const word_mng = init_service__word_mng(app_model, lookup)
+    const word = init_service__word_mng(app_model, lookup)
     const route_list: I_route<I_app_service>[] = [
         ['GET' , '/', home_controller],
         ['GET' , '/api/star', star_controller],
         ['GET' , '/login', login_controller],
         ['GET' , '/login/github', github_login_controller],
+        ['GET' , '/vocabulary', vocabulary_controller],
     ]
 
     return {
@@ -38,7 +40,7 @@ async function init(env: I_app_env): Promise<{
             env,
             session,
             sign_up_in,
-            word_mng,
+            word,
             lookup,
         },
     }

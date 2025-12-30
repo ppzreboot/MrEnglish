@@ -1,5 +1,6 @@
 import type { ObjectId, WithId } from 'mongodb'
-import type { I_doc__user, I_doc__word, I_lookup_result } from '@biz/common/entity'
+import type { I_doc__user, I_doc__vocabulary, I_lookup_result } from '@biz/common/entity'
+import type { I_voc_list_opts } from '@biz/common/api'
 import type { I_ecdict } from '@ppz-ai/ecdict-sqlite3'
 import type { I_app_env } from './env.ts'
 
@@ -23,14 +24,11 @@ interface I_service__lookup {
 }
 
 export
-interface I_service__word_mng {
-    add_history_and_get_star(user_id: ObjectId, word: string): Promise<{ id: string, star: boolean }>
+interface I_service__word {
+    add_vocabulary_and_get_star(user_id: ObjectId, word: string): Promise<{ id: string, star: boolean }>
     star(word_oid: ObjectId, user_id: ObjectId, star: boolean): Promise<void>
     is_in_ecdict(word: string): Promise<boolean>
-    get_history(userid: ObjectId, limit: number, last: null | {
-        update_at: Date
-        id: ObjectId
-    }): Promise<WithId<I_doc__word<ObjectId, Date>>[]>
+    get_vocabulary(userid: ObjectId, limit: number, opts: I_voc_list_opts): Promise<WithId<I_doc__vocabulary<ObjectId, Date>>[]>
 }
 
 export
@@ -39,5 +37,5 @@ interface I_app_service {
     session: I_service__session_maker
     sign_up_in: I_service__sign_up_in
     lookup: I_service__lookup
-    word_mng: I_service__word_mng
+    word: I_service__word
 }

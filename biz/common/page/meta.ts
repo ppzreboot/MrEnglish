@@ -1,7 +1,7 @@
 import type { I_clite_pages } from '@ppz/clite/common'
 
 export
-type I_page_key = 'home' | 'ai_trans' | 'voc_book' | 'setting'
+type I_page_key = 'home' | 'ai_trans' | 'vocabulary' | 'setting'
 
 export
 const pages: I_clite_pages<I_page_key> = {
@@ -15,9 +15,9 @@ const pages: I_clite_pages<I_page_key> = {
 		path: '/ai-trans',
 		title: 'AI 翻译',
 	},
-	voc_book: {
-		key: 'voc_book',
-		path: '/voc-book',
+	vocabulary: {
+		key: 'vocabulary',
+		path: '/vocabulary',
 		title: '单词本',
 	},
 	setting: {

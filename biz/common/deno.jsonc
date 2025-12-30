@@ -8,6 +8,7 @@
 		"./util": "./util/mod.ts"
 	},
 	"imports": {
+		"#/": "./",
 		"@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5",
 		"zod": "npm:zod@^4.1.12"
 	}

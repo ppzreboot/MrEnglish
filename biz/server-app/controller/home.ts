@@ -46,7 +46,7 @@ const home_controller: I_c = async ctx => {
         type: 'normal',
         word,
         result,
-        record: await ctx.service.word_mng.add_history_and_get_star(userid, result.ecdict.word),
+        record: await ctx.service.word.add_vocabulary_and_get_star(userid, result.ecdict.word),
     })
 }
 
@@ -63,38 +63,6 @@ const star_controller: I_c = async ctx => {
             return [false, { word, star }]
         return [true, { word_oid, star: star === '1' }]
     })
-    await ctx.service.word_mng.star(word_oid, userid, star)
+    await ctx.service.word.star(word_oid, userid, star)
     return Response.json({ error: false, data: null })
-}
-
-export
-const word_list_controller: I_c = async ctx => {
-    const userid = await throw_login(ctx)
-    type I_input = null | { update_at: Date, id: ObjectId }
-    const last = format_request_input<I_input>('get lookup history', () => {
-        const update_at = ctx.url.searchParams.get('update_at')
-        const id = ctx.url.searchParams.get('id')
-        if (update_at === null && id === null)
-            return [true, null]
-        if (update_at !== null && id !== null) {
-            const _u = Number(update_at)
-            if (!Number.isSafeInteger(_u))
-                return [false, { update_at, id }]
-            const u = new Date(_u)
-            const i = str2obj_id(id)
-            if (i === null)
-                return [false, { update_at, id }]
-            return [true, { update_at: u, id: i }]
-        }
-        return [false, 'all null or all not null']
-    })
-    const list = await ctx.service.word_mng.get_history(userid, 50, last)
-    return Response.json({
-        error: false,
-        data: list.map(item => ({
-            ...item,
-            last_lookup_at: item.last_lookup_at.getTime(),
-            first_lookup_at: item.first_lookup_at.getTime(),
-        })),
-    })
 }

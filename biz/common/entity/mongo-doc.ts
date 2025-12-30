@@ -26,7 +26,7 @@ interface I_doc__session<ID, Time extends I_time> {
     create_at: Time
 }
 export
-interface I_doc__word<ID, Time extends I_time> {
+interface I_doc__vocabulary<ID, Time extends I_time> {
     userid: ID
     word: string
     star: boolean

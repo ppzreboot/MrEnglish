@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
-import type { I_item__word } from '@mr-english/schema'
-import { Loading, Layout } from '@mr-english-client/ui'
-import { Icon__close } from '@mr-english-client/icon'
-import { make_route__home } from '@mr-english-client/biz'
-
-import './page.css'
-import { retrieve__history, type I_cursor__word } from '../../api/word.ts'
+import { Layout } from '@biz/c/ui'
+import { Simple_main } from '@biz/c/main'
+import type { I_page_opts__vocabulary } from '@biz/common/page'
+import './index.css'
 
 export
-function Word_page() {
+const main = Simple_main<I_page_opts__vocabulary>(props =>
+	props.opts.list.map(voc =>
+		<span key={voc.word}>{voc.word}</span>
+	)
+)
+
+const Page = () => {
 	const [list, set_list] = useState<I_item__word[] | null>(null)
 	useEffect(() => {
 		retrieve__history(null)
