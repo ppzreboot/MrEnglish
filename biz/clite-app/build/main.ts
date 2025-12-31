@@ -40,7 +40,7 @@ const result = await build({
 	plugins: [denoPlugin()],
 })
 for (const output of result.outputFiles)
-	console.log(output.path)
+	console.log(output.path.split(SEPARATOR).at(-1))
 
 // 打印编译日志
 if (result.warnings.length) {
