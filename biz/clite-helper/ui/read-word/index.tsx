@@ -15,49 +15,36 @@ function Read_word(props: I_formatted_meriam_webster_prs) {
 		</$Read_word>
 }
 
-type I_state = {
-	playing: false
-} | {
-	playing: true
-	svg_type: 0 | 1 | 2 | 3
-}
-
 function Read_word_with_audio(props: { ipa: string, audio: string }) {
-	const [state, set_state] = useState<I_state>({ playing: false })
+	const [playing, set_playing] = useState(false)
+	const [svg_type, set_svg_type] = useState<0 | 1 | 2>(2)
 	const audio_ref = useRef<HTMLAudioElement>(null)
 
 	useEffect(() => {
-		if (state.playing) {
+		if (playing) {
 			const interval_id = setInterval(() => {
-				set_state(s => {
-					if (s.playing)
-						return {
-							playing: true,
-							svg_type: (s.svg_type + 1) % 4 as 0 | 1 | 2 | 3,
-						}
-					else
-						return s
-				})
-			}, 300)
+				set_svg_type(type =>
+					(type + 1) % 3 as 0 | 1 | 2
+				)
+			}, 200)
 			return () => clearInterval(interval_id)
 		}
-	}, [state.playing])
+	}, [playing])
 
 	return <$Read_word
 		onClick={() => {
-			set_state({ playing: true, svg_type: 0 })
+			set_playing(true)
 			audio_ref.current!.play()
 		}}
 	>
 		<span>{props.ipa}</span>
-		<SVG__speak
-			type={state.playing ? state.svg_type : 3}
-		/>
+		<SVG__speak type={svg_type} />
 		<audio
 			ref={audio_ref}
 			src={make_audio_url(props.audio)}
 			onEnded={() => {
-				set_state({ playing: false })
+				set_playing(false)
+				set_svg_type(2)
 			}}
 		/>
 	</$Read_word>
