@@ -9,7 +9,7 @@ import {
     format_raw as _format_raw_mw,
 } from '@ppz/meriam-webster'
 import type { I_lookup_result } from '@biz/common/entity'
-import type { I_service__lookup } from '@biz/s'
+import type { I_service__lookup } from '@biz/s/schema'
 
 interface I_doc__raw_mw_cache {
     word: string

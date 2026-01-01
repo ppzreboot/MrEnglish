@@ -1,4 +1,4 @@
-import type { I_app_db, I_service__session_maker, I_service__session } from '@mr-english-server/schema'
+import type { I_app_db, I_service__session_maker, I_service__session } from '@biz/s/schema'
 import { parse_cookie } from '../utils/parse-cookie.ts'
 
 export

@@ -1,4 +1,4 @@
-import type { I_app_db } from '@mr-english-server/schema'
+import type { I_app_db } from '@biz/s/schema'
 import type { ObjectId } from 'mongodb'
 
 export
