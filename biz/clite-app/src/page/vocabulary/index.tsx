@@ -1,38 +1,25 @@
-import { useEffect, useState } from 'react'
-import { Layout } from '@biz/c/ui'
+import { useState } from 'react'
+import { Layout, SVG__close } from '@biz/c/ui'
 import { Simple_main } from '@biz/c/main'
-import type { I_page_opts__vocabulary } from '@biz/common/page'
+import { home_page_url, type I_page_opts__vocabulary } from '@biz/common/page'
+import {
+	type I_voc_filter,
+	type I_vocabulary,
+	default_voc_list_opts,
+} from '@biz/common/api'
+
 import './index.css'
+import { Filter } from './filter.tsx'
 
-export
-const main = Simple_main<I_page_opts__vocabulary>(props =>
-	props.opts.list.map(voc =>
-		<span key={voc.word}>{voc.word}</span>
-	)
-)
-
-const Page = () => {
-	const [list, set_list] = useState<I_item__word[] | null>(null)
-	useEffect(() => {
-		retrieve__history(null)
-			.then(set_list)
-	}, [])
-
+const Page = (props: { opts: I_page_opts__vocabulary }) => {
+	const [filter, set_filter] = useState<I_voc_filter>(default_voc_list_opts)
+	const voc_list = props.opts.list
 	return <Layout>
+		<Filter state={{ val: filter, set: set_filter }} />
 		<div className='page word'>
-			{list === null ? <Loading />
-				: list.length === 0 ? <div>暂无记录</div>
-				: <List
-					list={list}
-					load_more={cursor => {
-						retrieve__history(cursor)
-							.then(more => {
-								if (more.length === 0)
-									console.log('noty: no more')
-								else
-									set_list([...list, ...more])
-							})
-					}}
+			{ voc_list.length === 0 ? <div>暂无记录</div> :
+				<List
+					list={voc_list}
 				/>
 			}
 		</div>
@@ -40,8 +27,8 @@ const Page = () => {
 }
 
 function List(props: {
-	list: I_item__word[]
-	load_more: (cursor: I_cursor__word) => void
+	list: I_vocabulary[]
+	// load_more: (cursor: I_cursor__word) => void
 }) {
 	const last = props.list.at(-1)!
 	return <ul className='word-list'>
@@ -49,7 +36,7 @@ function List(props: {
 			<li key={item.word}>
 				<a
 					className='word-wrapper reset'
-					href={make_route__home(item.word)}
+					href={home_page_url(item.word)}
 				>
 					<label className='en-font'>{item.word}</label>
 					<button
@@ -57,18 +44,15 @@ function List(props: {
 						onClickCapture={e => {
 							e.preventDefault()
 						}}>
-						<Icon__close />
+						<SVG__close />
 					</button>
 				</a>
 			</li>
 		)}
 		<li
-			onClick={() =>
-				props.load_more({
-					id: last._id,
-					update_at: last.last_lookup_at,
-				})
-			}
 		>加载更多</li>
 	</ul>
 }
+
+export
+const main = Simple_main<I_page_opts__vocabulary>(Page)
