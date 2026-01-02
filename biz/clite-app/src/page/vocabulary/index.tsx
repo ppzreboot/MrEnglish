@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { Layout, SVG__close } from '@biz/c/ui'
+import { useStt } from '@biz/c/utils'
 import { Simple_main } from '@biz/c/main'
 import { home_page_url, type I_page_opts__vocabulary } from '@biz/common/page'
 import {
@@ -9,13 +9,17 @@ import {
 } from '@biz/common/api'
 
 import './index.css'
-import { Filter } from './filter.tsx'
+import { Header } from './header.tsx'
 
 const Page = (props: { opts: I_page_opts__vocabulary }) => {
-	const [filter, set_filter] = useState<I_voc_filter>(default_voc_list_opts)
+	const filter = useStt<I_voc_filter>(default_voc_list_opts)
+	const multi_select = useStt(false)
 	const voc_list = props.opts.list
 	return <Layout>
-		<Filter state={{ val: filter, set: set_filter }} />
+		<Header
+			filter={filter}
+			multi_select={multi_select}
+		/>
 		<div className='page word'>
 			{ voc_list.length === 0 ? <div>暂无记录</div> :
 				<List

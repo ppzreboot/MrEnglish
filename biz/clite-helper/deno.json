@@ -2,6 +2,7 @@
 	"name": "@biz/c",
 	"exports": {
 		"./ui": "./ui/mod.ts",
+		"./utils": "./utils/mod.ts",
 		"./main": "./main/mod.ts"
 	},
 	"imports": {
