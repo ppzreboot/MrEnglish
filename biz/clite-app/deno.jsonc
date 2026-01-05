@@ -16,7 +16,8 @@
 		"goober": "npm:goober@^2.1.18",
 		"react": "npm:react@^19.2.0",
 		"react-dom": "npm:react-dom@^19.2.0",
-		"react-hot-toast": "npm:react-hot-toast@^2.6.0"
+		"react-hot-toast": "npm:react-hot-toast@^2.6.0",
+		"superfine": "npm:superfine@^8.2.0"
 	},
 	"compilerOptions": {
 		"lib": ["es2022", "dom", "Deno.ns"],

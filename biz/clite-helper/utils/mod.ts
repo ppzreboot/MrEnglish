@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import type { Dispatch, SetStateAction } from 'react'
 
 export
-interface I_state<V> {
+interface I_stt<V> {
 	val: V
-	set: Dispatch<SetStateAction<V>>
+	set: (old_val: V) => void
 }
 
 export

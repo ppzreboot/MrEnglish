@@ -2,8 +2,10 @@
 	"name": "@biz/c",
 	"exports": {
 		"./ui": "./ui/mod.ts",
+		"./ui2": "./ui2/mod.ts",
 		"./utils": "./utils/mod.ts",
-		"./main": "./main/mod.ts"
+		"./main": "./main/mod.ts",
+		"./superfine": "./superfine/mod.ts"
 	},
 	"imports": {
 		"#/": "./",
@@ -12,7 +14,8 @@
 		"goober": "npm:goober@^2.1.18",
 		"react": "npm:react@^19.2.0",
 		"react-dom": "npm:react-dom@^19.2.0",
-		"react-hot-toast": "npm:react-hot-toast@^2.6.0"
+		"react-hot-toast": "npm:react-hot-toast@^2.6.0",
+		"superfine": "npm:superfine@^8.2.0"
 	},
 	"compilerOptions": {
 		"lib": ["es2022", "dom"],
