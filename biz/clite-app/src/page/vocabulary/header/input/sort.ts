@@ -1,8 +1,9 @@
 import { css } from 'goober'
+import { cns } from '@biz/common/util'
 import { $S, redraw, h, text } from '@biz/c/superfine'
 import { I_voc__sort } from '@biz/common/api'
 import { SVG__thin_arrow } from '@biz/c/ui2'
-import { cns } from '@biz/common/util'
+import { select_style } from '@biz/c/style'
 
 const opt_list: I_voc__sort[] = [
 	{ key: 'time', order: 'up' },
@@ -29,6 +30,7 @@ function Sort_input(sort: I_voc__sort) {
 							className: cns(equal_sort(opt, sort) && 'active'),
 							key: opt.key,
 							onclick: () => {
+								if (equal_sort(opt, sort)) return
 								sort.key = opt.key
 								sort.order = opt.order
 								redraw()
@@ -45,62 +47,29 @@ function Sort_input(sort: I_voc__sort) {
 const equal_sort = (a: I_voc__sort, b: I_voc__sort) =>
 	a.key === b.key && a.order === b.order
 
-const $Cont = $S('div', css({
-	position: 'relative',
-	'.display': {
-		background: 'var(--content-bg-color)',
-		border: '1px solid rgba(var(--font-color), .08)',
-		borderRadius: '.25em',
+const $Cont = $S('div', cns(select_style.container, css({
+	label: {
+		width: '6.3em',
 
-		display: 'grid',
-		placeItems: 'center',
-	},
-	'&:hover .dropdown, .display:focus + .dropdown': {
-		display: 'block',
-	},
-	'.dropdown': {
-		display: 'none',
-		paddingTop: '.3em',
-		position: 'absolute',
-		left: 0,
-		top: '100%',
-		ul: {
-			background: 'var(--content-bg-color)',
-			border: '1px solid rgba(var(--font-color), .08)',
-			borderRadius: '.25em',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 
-			padding: '.2em 0',
-
-			'li:not(.active)': {
-				color: 'var(--link-color)',
-				cursor: 'default',
-				opacity: .8,
-				'&:hover': {
-					opacity: 1,
-				},
-			},
+		gap: '0.2em',
+		svg: {
+			width: '.8em',
+			marginRight: '-0.3em',
 		},
 	},
-}))
-
-const $Sort_label = $S('label', css({
-	height: '2em',
-	width: '6.3em',
-
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-
-	gap: '0.2em',
-	cursor: 'pointer',
-	svg: {
-		width: '.8em',
-		marginRight: '-0.3em',
+	'.dropdown': {
+		left: 0,
+		top: '100%',
 	},
-}))
+})))
+
 
 const Sort_label = (sort: I_voc__sort) =>
-	$Sort_label({}, [
+	h('label', {}, [
 		text({
 			time: '最近查询',
 			alphabet: '字母表',

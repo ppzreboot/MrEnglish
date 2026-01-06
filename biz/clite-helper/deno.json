@@ -5,6 +5,7 @@
 		"./ui2": "./ui2/mod.ts",
 		"./utils": "./utils/mod.ts",
 		"./main": "./main/mod.ts",
+		"./style": "./style/mod.ts",
 		"./superfine": "./superfine/mod.ts"
 	},
 	"imports": {
