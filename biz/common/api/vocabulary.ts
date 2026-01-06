@@ -11,7 +11,7 @@ type I_voc__sort_key = 'time' | 'alphabet'
 export
 interface I_voc__sort {
 	key: I_voc__sort_key
-	order: 'asc' | 'desc'
+	order: 'up' | 'down'
 }
 export
 interface I_voc__list_opts {
@@ -30,6 +30,6 @@ export
 const default_voc_list_opts: I_voc__list_opts = {
 	sort: {
 		key: 'time',
-		order: 'desc',
+		order: 'up',
 	},
 }
