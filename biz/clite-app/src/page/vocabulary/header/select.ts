@@ -1,10 +1,9 @@
-import { h, Children } from 'superfine'
+import { I_value, $S, redraw, h, I_children } from '@biz/c/superfine'
 import { css } from 'goober'
-import { I_value, $S, redraw } from '@biz/c/superfine'
 
 export
 function Select<K extends string>(p: {
-	options: [K, () => Children][]
+	options: [K, () => I_children][]
 	value: I_value<K>
 }) {
 	return $Cont({}, [

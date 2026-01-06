@@ -1,6 +1,5 @@
-import { text } from 'superfine'
+import { text, h, $S } from '@biz/c/superfine'
 import { css } from 'goober'
-import { $S } from '@biz/c/superfine'
 import type {
 	I_voc__sort,
 	I_voc__list_opts,

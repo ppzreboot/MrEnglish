@@ -1,9 +1,8 @@
-import { h } from 'superfine'
-import type { Props, I_tagname, Children } from 'superfine'
+import { type I_children, type I_props, h } from './_superfine.ts'
 
 export
-const $S = <Tag extends I_tagname>(tag: Tag, className: string) =>
-	(props: Props<Tag>, children?: Children) => {
+const $S = (tag: string, className: string) =>
+	(props: I_props, children?: I_children) => {
 		let c = className
 		if (typeof (props.className) === 'string')
 			c = props.className + ' ' + c

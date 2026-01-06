@@ -1,10 +1,9 @@
-import { patch } from 'superfine'
-import type { VNode, I_tagname } from 'superfine'
+import { type I_vnode, patch } from './_superfine.ts'
 
 let _redraw: () => void
 
 export
-const super_main = <Opts>(Page: (opts: Opts) => () => VNode<I_tagname>) =>
+const super_main = <Opts>(Page: (opts: Opts) => () => I_vnode) =>
 	(root: HTMLDivElement, opts: Opts) => {
 		const _Page = Page(opts)
 		_redraw = () => {

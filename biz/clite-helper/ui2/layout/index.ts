@@ -1,12 +1,11 @@
-import { h, text, type Children } from 'superfine'
-import { $S } from '../../superfine/styled.ts'
 import { css } from 'goober'
+import { h, text, $S, type I_children } from '#/superfine/mod.ts'
 import { page_list } from '@biz/common/page'
 
 const current_path = location.pathname
 
 export
-const Layout = (children: Children) =>
+const Layout = (children: I_children) =>
 	$Layout({}, [
 		$Header({}, [
 			h('h1', {}, text('MrEnglish')),
