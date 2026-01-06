@@ -50,7 +50,7 @@ function init_service__word_mng(app_db: I_app_db, lookup: I_service__lookup): I_
 				const last = await app_db.vocabulary.findOne({
 					_id: new ObjectId(opts.last_page)
 				}) as WithId<I_doc__vocabulary<ObjectId, Date>>
-				if (opts.sort.type === 'alphabet')
+				if (opts.sort.key === 'alphabet')
 					filter.word = {
 						[sort_map[opts.sort.order]]: last.word,
 					}
@@ -75,7 +75,7 @@ function init_service__word_mng(app_db: I_app_db, lookup: I_service__lookup): I_
 			return await app_db.vocabulary
 				.find(filter)
 				.sort({
-					[opts.sort.type === 'alphabet'
+					[opts.sort.key === 'alphabet'
 						? 'word'
 						: 'last_lookup_at'
 					]: order_key,

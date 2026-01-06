@@ -6,10 +6,10 @@ import { SVG__thin_arrow } from '@biz/c/ui2'
 import { select_style } from '@biz/c/style'
 
 const opt_list: I_voc__sort[] = [
-	{ key: 'time', order: 'up' },
-	{ key: 'time', order: 'down' },
-	{ key: 'alphabet', order: 'up' },
-	{ key: 'alphabet', order: 'down' },
+	{ key: 'time', order: 'asc' },
+	{ key: 'time', order: 'desc' },
+	{ key: 'alphabet', order: 'asc' },
+	{ key: 'alphabet', order: 'desc' },
 ]
 
 export
@@ -69,5 +69,5 @@ const Sort_label = (sort: I_voc__sort) =>
 			time: '最近查询',
 			alphabet: '字母表',
 		}[sort.key]),
-		SVG__thin_arrow(sort.order === 'up' ? undefined : { style: 'transform: rotate(180deg);' }),
+		SVG__thin_arrow(sort.order === 'asc' ? undefined : { style: 'transform: rotate(180deg);' }),
 	])
