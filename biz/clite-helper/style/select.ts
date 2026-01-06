@@ -5,10 +5,12 @@ const container = css({
 	position: 'relative',
 
 	label: {
-		height: '2em',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+
+		height: '2em',
+		cursor: 'pointer',
 	},
 	'.display': {
 		background: 'var(--content-bg-color)',
@@ -34,12 +36,10 @@ const container = css({
 
 			padding: '.2em 0',
 
-			'li:not(.active)': {
-				color: 'var(--link-color)',
-				cursor: 'default',
-				opacity: .8,
-				'&:hover': {
-					opacity: 1,
+			'li.active': {
+				label: {
+					opacity: .6,
+					cursor: 'default',
 				},
 			},
 		},

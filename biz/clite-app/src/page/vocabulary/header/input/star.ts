@@ -11,7 +11,7 @@ function Star_input(star: I_value<boolean | undefined>) {
 			star.val === undefined
 				? h('label', {}, [
 					h('span', { style: 'opacity: .7' }, text('收藏')),
-					SVG__star(true, { style: 'color: var(--star-color); opacity: .8;' }),
+					SVG__star(false, { style: 'color: var(--star-color); opacity: .8;' }),
 				])
 				: Label(star.val)
 		),
@@ -39,7 +39,7 @@ const Label = (star?: boolean) =>
 	h('label', {},
 		star === true ? [text('已收藏'), SVG__star(true, { style: 'color: var(--star-color)' })]
 		: star === false ? [text('未收藏'), SVG__star(false)]
-		: text('全部')
+		: [text('全部'), SVG__star(false, { style: 'color: var(--star-color);' })]
 	)
 
 const Option = (self: boolean | undefined, state: I_value<boolean | undefined>) =>
