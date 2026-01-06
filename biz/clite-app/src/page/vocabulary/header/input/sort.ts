@@ -50,11 +50,6 @@ const equal_sort = (a: I_voc__sort, b: I_voc__sort) =>
 const $Cont = $S('div', cns(select_style.container, css({
 	label: {
 		width: '6.3em',
-
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-
 		gap: '0.2em',
 		svg: {
 			width: '.8em',

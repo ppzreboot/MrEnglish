@@ -94,7 +94,7 @@ const Main_input = (props: I_page_opts__home) => {
 			? <button
 					className='icon-btn'
 					style={{
-						color: state.word_record.star ? '#eac54f' : undefined
+						color: state.word_record.star ? 'var(--star-color)' : undefined
 					}}
 					disabled={disabled_lookup}
 					onClick={async () => {

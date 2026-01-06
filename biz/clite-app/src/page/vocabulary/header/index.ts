@@ -26,6 +26,6 @@ function Header(opts: I_header_opts) {
 const $Cont = $S('div', css({
 	display: 'flex',
 	alignItems: 'center',
-	gap: '2em',
+	gap: '1em',
 	fontSize: 'var(--fs-sm)',
 }))

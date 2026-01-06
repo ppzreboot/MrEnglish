@@ -6,6 +6,9 @@ const container = css({
 
 	label: {
 		height: '2em',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	'.display': {
 		background: 'var(--content-bg-color)',

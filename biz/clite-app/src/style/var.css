@@ -3,6 +3,7 @@ html {
 	--font-color: 0,0,0;
 	--content-bg-color: rgb(var(--bg-color));
 	--link-color: #1a0dab;
+	--star-color: #eac54f;
 
 	--fs: 16px;
 	--fs-sm: 14px;
