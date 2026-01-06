@@ -13,7 +13,7 @@ const respond_page = <K extends string>(props: {
 }) =>
 	respond_html(
 		simple_page({
-			title: 'MrEnglish - ' + props.page_meta.title,
+			title: props.page_meta.title + ' - MrEnglish',
 			page_meta: props.page_meta,
 			clite_meta: props.clite_meta,
 			opts: props.opts,

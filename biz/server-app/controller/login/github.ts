@@ -25,7 +25,7 @@ const github_login_controller: I_c = async ctx => {
         })
     }
 
-    const session_token = await ctx.service.sign_up_in('github', userinfo.id)
+    const session_token = await ctx.service.auth.sign_up_in('github', userinfo.id)
     const cookie_str = `session_token=${session_token
         }; Max-Age=${ctx.service.env.session_duration_ms / 1000
         }; HttpOnly; Path=/; ${
