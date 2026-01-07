@@ -1,9 +1,10 @@
 import { css } from 'goober'
-import { cns } from '@biz/common/util'
+import { assert, cns } from '@biz/common/util'
+import type { voc_api as api } from '@biz/common/api'
 import { $S, redraw, h, text } from '@biz/c/superfine'
-import { voc_api as api } from '@biz/common/api'
 import { SVG__thin_arrow } from '@biz/c/ui2'
 import { select_style } from '@biz/c/style'
+import { page_state, load } from '../../ss.ts'
 
 const opt_list: api.I_sort[] = [
 	{ key: 'time', order: 'asc' },
@@ -13,14 +14,15 @@ const opt_list: api.I_sort[] = [
 ]
 
 export
-function Sort_input(sort: api.I_sort) {
+const Sort_input = () => {
+	const sort = page_state.opts.sort
 	return $Cont({}, [
 		h('div',
 			{
 				className: 'display',
 				tabindex: 0,
 			},
-			Sort_label(sort)
+			Sort_label(sort),
 		),
 		h('div', { className: 'dropdown' },
 			h('ul', {},
@@ -28,12 +30,16 @@ function Sort_input(sort: api.I_sort) {
 					h('li',
 						{
 							className: cns(equal_sort(opt, sort) && 'active'),
-							key: opt.key,
-							onclick: () => {
-								if (equal_sort(opt, sort)) return
+							key: opt.key + ' ' + opt.order,
+							onclick: async () => {
+								assert(
+									equal_sort(opt, sort) === false,
+									'clicked a disabled button'
+								)
 								sort.key = opt.key
 								sort.order = opt.order
 								redraw()
+								await load(false)
 							}
 						},
 						Sort_label(opt),

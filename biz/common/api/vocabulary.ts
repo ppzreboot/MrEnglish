@@ -1,5 +1,6 @@
 import z from 'zod'
 import type { I_x_paged_list_opts } from './_util.ts'
+import type { I_sort_order } from './common.ts'
 
 export
 interface I_record {
@@ -14,7 +15,7 @@ type I_sort_key = 'time' | 'alphabet'
 export
 interface I_sort {
 	key: I_sort_key
-	order: 'asc' | 'desc'
+	order: I_sort_order
 }
 
 export
@@ -38,9 +39,9 @@ const z_paged_list_opts: z.ZodType<I_paged_list_opts> = z.object({
 })
 
 export
-const default_list_opts: I_list_opts = {
+const default_list_opts = (): I_list_opts => ({
 	sort: {
 		key: 'time',
 		order: 'asc',
 	},
-}
+})

@@ -39,12 +39,6 @@
 	margin: -.5em;
 	width: 1em;
 	height: 1em;
-	&:not([disabled]) {
-		cursor: pointer;
-	}
-	&[disabled] {
-		opacity: .5;
-	}
 	svg {
 		font-size: inherit;
 		width: 1em;

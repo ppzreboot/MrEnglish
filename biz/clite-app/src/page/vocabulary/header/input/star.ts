@@ -1,26 +1,39 @@
 import { css } from 'goober'
 import { cns } from '@biz/common/util'
 import { SVG__star } from '@biz/c/ui2'
-import { $S, h, I_value, redraw, text } from '@biz/c/superfine'
+import { $S, h, redraw, text } from '@biz/c/superfine'
 import { select_style } from '@biz/c/style'
+import { page_state, load } from '../../ss.ts'
 
 export
-function Star_input(star: I_value<boolean | undefined>) {
+const Star_input = () => {
+	const current_star = page_state.opts.star
 	return $Cont({}, [
 		h('div', { className: 'display' },
-			star.val === undefined
+			page_state === undefined
 				? h('label', {}, [
 					h('span', { style: 'opacity: .7' }, text('收藏')),
 					SVG__star(false, { style: 'color: var(--star-color); opacity: .8;' }),
 				])
-				: Label(star.val)
+				: Label(current_star)
 		),
 		h('div', { className: 'dropdown' },
-			h('ul', {}, [
-				Option(undefined, star),
-				Option(true, star),
-				Option(false, star),
-			])
+			h('ul', {},
+				[undefined, true, false].map(self =>
+					h('li',
+						{
+							key: String(self),
+							className: cns(self === current_star && 'active'),
+							async onclick() {
+								page_state.opts.star = self
+								redraw()
+								await load(false)
+							},
+						},
+						Label(self),
+					)
+				)
+			)
 		)
 	])
 }
@@ -40,16 +53,4 @@ const Label = (star?: boolean) =>
 		star === true ? [text('已收藏'), SVG__star(true, { style: 'color: var(--star-color)' })]
 		: star === false ? [text('未收藏'), SVG__star(false)]
 		: [text('全部'), SVG__star(false, { style: 'color: var(--star-color);' })]
-	)
-
-const Option = (self: boolean | undefined, state: I_value<boolean | undefined>) =>
-	h('li',
-		{
-			className: cns(self === state.val && 'active'),
-			onclick: () => {
-				state.set(self)
-				redraw()
-			}
-		},
-		Label(self),
 	)

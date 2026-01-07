@@ -1,5 +1,6 @@
 import type { ObjectId, WithId } from 'mongodb'
 import { voc_api as api } from '@biz/common/api'
+import { sleep } from '@biz/common/util'
 import { I_c } from '@biz/s/schema'
 import { respond_page } from '@biz/s/response'
 import { pages } from '@biz/common/page'
@@ -13,7 +14,7 @@ const page_size = 5
 export
 const vocabulary_controller: I_c = async ctx => {
 	const userid = await throw_login(ctx)
-	const list = await ctx.service.word.get_vocabulary(userid, page_size, api.default_list_opts)
+	const list = await ctx.service.word.get_vocabulary(userid, page_size, api.default_list_opts())
 	return respond_page({
 		page_meta: pages.vocabulary,
 		clite_meta,
@@ -25,6 +26,7 @@ const vocabulary_controller: I_c = async ctx => {
 
 export
 const voc_list_controller: I_c = async ctx => {
+	// await sleep(1000)
 	const userid = await throw_login(ctx)
 	const opts = await format_request_body(ctx.request, api.z_paged_list_opts)
 	const list = await ctx.service.word.get_vocabulary(userid, page_size, opts)

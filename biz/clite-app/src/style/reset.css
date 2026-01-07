@@ -22,6 +22,14 @@ input, button {
 	font-family: inherit;
 
 	display: block;
+
+	&[disabled] {
+		opacity: .6;
+	}
+}
+
+button:not([disabled]) {
+	cursor: pointer;
 }
 
 h5, label {

@@ -12,7 +12,7 @@ type I_children = I_vnode | I_vnode[]
 
 export
 interface I_props {
-	[key: string]: unknown
+	[key: string]: string | number
 }
 
 export

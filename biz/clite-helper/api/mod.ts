@@ -11,10 +11,11 @@ const request = {
 		fetch(url)
 			.then(parse_body<Data>)
 	,
-	post: <Data = null>(url: string, data: unknown) =>
+	post: <Data = null>(url: string, data: unknown, abort_signal?: AbortSignal) =>
 		fetch(url, {
 			method: 'POST',
 			body: JSON.stringify(data),
+			signal: abort_signal,
 		})
 			.then(parse_body<Data>)
 	,
