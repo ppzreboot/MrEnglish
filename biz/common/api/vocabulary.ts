@@ -1,33 +1,44 @@
+import z from 'zod'
+import type { I_x_paged_list_opts } from './_util.ts'
+
 export
-interface I_voc__record {
+interface I_record {
 	id: string
 	word: string
 	star: boolean
 }
 
 export
-type I_voc__sort_key = 'time' | 'alphabet'
+type I_sort_key = 'time' | 'alphabet'
 
 export
-interface I_voc__sort {
-	key: I_voc__sort_key
+interface I_sort {
+	key: I_sort_key
 	order: 'asc' | 'desc'
 }
+
 export
-interface I_voc__list_opts {
-	sort: I_voc__sort
+interface I_list_opts {
+	sort: I_sort
 	/** true: 已收藏; false: 未收藏; undefined: 全部 */
 	star?: boolean
 }
 
 export
-type I_voc__paged_list_opts = I_voc__list_opts & {
-	/** 上一页的 object-id */
-	last_page?: string
-}
+type I_paged_list_opts = I_list_opts & I_x_paged_list_opts
 
 export
-const default_voc_list_opts: I_voc__list_opts = {
+const z_paged_list_opts: z.ZodType<I_paged_list_opts> = z.object({
+	sort: z.object({
+		key: z.enum(['time', 'alphabet']),
+		order: z.enum(['asc', 'desc']),
+	}),
+	star: z.boolean().optional(),
+	last_page: z.string().optional(),
+})
+
+export
+const default_list_opts: I_list_opts = {
 	sort: {
 		key: 'time',
 		order: 'asc',

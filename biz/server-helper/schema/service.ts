@@ -1,6 +1,6 @@
 import type { ObjectId, WithId } from 'mongodb'
 import type { I_doc__user, I_doc__vocabulary, I_lookup_result } from '@biz/common/entity'
-import type { I_voc__paged_list_opts } from '@biz/common/api'
+import type { voc_api } from '@biz/common/api'
 import type { I_ecdict } from '@ppz-ai/ecdict-sqlite3'
 import type { I_app_env } from './env.ts'
 
@@ -31,7 +31,7 @@ interface I_service__word {
     add_vocabulary_and_get_star(user_id: ObjectId, word: string): Promise<{ id: string, star: boolean }>
     star(word_oid: ObjectId, user_id: ObjectId, star: boolean): Promise<void>
     is_in_ecdict(word: string): Promise<boolean>
-    get_vocabulary(userid: ObjectId, limit: number, opts: I_voc__paged_list_opts): Promise<WithId<I_doc__vocabulary<ObjectId, Date>>[]>
+    get_vocabulary(userid: ObjectId, limit: number, opts: voc_api.I_paged_list_opts): Promise<WithId<I_doc__vocabulary<ObjectId, Date>>[]>
 }
 
 export

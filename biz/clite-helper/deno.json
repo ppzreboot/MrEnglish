@@ -1,6 +1,7 @@
 {
 	"name": "@biz/c",
 	"exports": {
+		"./api": "./api/mod.ts",
 		"./ui": "./ui/mod.ts",
 		"./ui2": "./ui2/mod.ts",
 		"./utils": "./utils/mod.ts",

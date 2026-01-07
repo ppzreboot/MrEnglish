@@ -1,3 +1,5 @@
+import type z from 'zod'
+
 type I_format<T> = () => [false, unknown] | [true, T]
 
 export
@@ -14,6 +16,16 @@ function format_request_input<T>(handler_name: string, cb: I_format<T>): T {
 }
 
 export
-async function format_request_body<T>() {
-
+async function format_request_body<T>(req: Request, ztype: z.ZodType<T>) {
+	try {
+		const data = await req.json()
+		return ztype.parse(data)
+	} catch(err) {
+		console.error('bad request body')
+		console.error(err)
+		throw Response.json({
+			error: true,
+			key: 'bad request',
+		})
+	}
 }

@@ -1,11 +1,11 @@
 import { css } from 'goober'
 import { cns } from '@biz/common/util'
 import { $S, redraw, h, text } from '@biz/c/superfine'
-import { I_voc__sort } from '@biz/common/api'
+import { voc_api as api } from '@biz/common/api'
 import { SVG__thin_arrow } from '@biz/c/ui2'
 import { select_style } from '@biz/c/style'
 
-const opt_list: I_voc__sort[] = [
+const opt_list: api.I_sort[] = [
 	{ key: 'time', order: 'asc' },
 	{ key: 'time', order: 'desc' },
 	{ key: 'alphabet', order: 'asc' },
@@ -13,7 +13,7 @@ const opt_list: I_voc__sort[] = [
 ]
 
 export
-function Sort_input(sort: I_voc__sort) {
+function Sort_input(sort: api.I_sort) {
 	return $Cont({}, [
 		h('div',
 			{
@@ -44,7 +44,7 @@ function Sort_input(sort: I_voc__sort) {
 	])
 }
 
-const equal_sort = (a: I_voc__sort, b: I_voc__sort) =>
+const equal_sort = (a: api.I_sort, b: api.I_sort) =>
 	a.key === b.key && a.order === b.order
 
 const $Cont = $S('div', cns(select_style.container, css({
@@ -63,7 +63,7 @@ const $Cont = $S('div', cns(select_style.container, css({
 })))
 
 
-const Sort_label = (sort: I_voc__sort) =>
+const Sort_label = (sort: api.I_sort) =>
 	h('label', {}, [
 		text({
 			time: '最近查询',

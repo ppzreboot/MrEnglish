@@ -1,1 +1,1 @@
-export * from './vocabulary.ts'
+export * as voc_api from './vocabulary.ts'

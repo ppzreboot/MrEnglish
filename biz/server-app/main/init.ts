@@ -11,7 +11,7 @@ import { init_service__lookup } from '../service/lookup/mod.ts'
 import { login_controller } from '../controller/login/index.ts'
 import { github_login_controller } from '../controller/login/github.ts'
 import { home_controller, star_controller } from '../controller/home.ts'
-import { vocabulary_controller } from '../controller/vocabulary.ts'
+import { voc_list_controller, vocabulary_controller } from '../controller/vocabulary.ts'
 import { setting_controller } from '../controller/setting.ts'
 import { logout_controller } from '../controller/login/logout.ts'
 
@@ -30,13 +30,16 @@ async function init(env: I_app_env): Promise<{
     })
     const word = init_service__word_mng(app_model, lookup)
     const route_list: I_route<I_app_service>[] = [
-        ['GET' , pages.home.path, home_controller],
-        ['GET' , pages.vocabulary.path, vocabulary_controller],
-        ['GET' , pages.setting.path, setting_controller],
-        ['GET' , '/api/star', star_controller],
         ['GET' , '/login', login_controller],
         ['GET' , '/login/github', github_login_controller],
         ['GET' , '/logout', logout_controller],
+
+        ['GET' , pages.home.path, home_controller],
+        ['GET' , pages.vocabulary.path, vocabulary_controller],
+        ['GET' , pages.setting.path, setting_controller],
+
+        ['GET' , '/api/star', star_controller],
+        ['POST', '/api/vocabulary', voc_list_controller],
     ]
 
     return {
