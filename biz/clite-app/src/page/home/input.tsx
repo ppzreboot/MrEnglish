@@ -133,7 +133,8 @@ const Main_input = (props: I_page_opts__home) => {
 	function go() {
 		if (is_valid_en_phrase(current_input))
 			location.href = home_page_url(current_input)
-		throw Error('invalid input')
+		else
+			throw Error('invalid input')
 	}
 }
 

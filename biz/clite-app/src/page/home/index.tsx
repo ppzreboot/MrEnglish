@@ -2,10 +2,10 @@ import { type I_page_opts__home } from '@biz/common/page'
 import { Simple_main } from '@biz/c/main'
 import { Layout } from '@biz/c/ui'
 
-import { Basic_explain } from './block/basic.tsx'
 import { Main_input } from './input.tsx'
-import { Other_explain } from './block/other.tsx'
+import { Basic_explain } from './block/basic.tsx'
 import { EE_explain } from './block/ee.tsx'
+import { Other_explain } from './block/other.tsx'
 
 export
 const main = Simple_main<I_page_opts__home>(props =>
@@ -25,4 +25,3 @@ const main = Simple_main<I_page_opts__home>(props =>
 		</div>
 	</Layout>
 )
-
