@@ -11,10 +11,13 @@ const Page = (opts: I_page_opts__vocabulary) => {
 		record,
 		selected: false,
 	}))
-	return () => Layout([
-		Header(),
-		List(),
-	])
+	return () =>
+		Layout({},
+			[
+				Header(),
+				List(),
+			],
+		)
 }
 
 export

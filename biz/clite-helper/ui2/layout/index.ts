@@ -1,12 +1,12 @@
 import { css } from 'goober'
-import { h, text, $S, type I_children } from '#/superfine/mod.ts'
+import { h, text, $S, type I_props, type I_children } from '#/superfine/mod.ts'
 import { page_list } from '@biz/common/page'
 
 const current_path = location.pathname
 
 export
-const Layout = (children: I_children) =>
-	$Layout({}, [
+const Layout = (props: I_props, children: I_children) =>
+	$Layout(props, [
 		$Header({}, [
 			h('h1', {}, text('MrEnglish')),
 			h('nav', {}, [

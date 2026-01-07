@@ -10,27 +10,27 @@ const Star_input = () => {
 	const current_star = page_state.opts.star
 	return $Cont({}, [
 		h('div', { className: 'display' },
-			page_state === undefined
-				? h('label', {}, [
-					h('span', { style: 'opacity: .7' }, text('收藏')),
-					SVG__star(false, { style: 'color: var(--star-color); opacity: .8;' }),
-				])
-				: Label(current_star)
+			current_star === undefined
+				? h('button',
+					{
+						disabled: page_state.loading,
+					},
+					[
+						h('span', { style: 'opacity: .7' }, text('收藏')),
+						SVG__star(false, { style: 'color: var(--star-color); opacity: .8;' }),
+					],
+				)
+				: Label(current_star, page_state.loading, false)
 		),
 		h('div', { className: 'dropdown' },
 			h('ul', {},
 				[undefined, true, false].map(self =>
-					h('li',
-						{
-							key: String(self),
-							className: cns(self === current_star && 'active'),
-							async onclick() {
-								page_state.opts.star = self
-								redraw()
-								await load(false)
-							},
-						},
-						Label(self),
+					h('li', { key: String(self) },
+						Label(
+							self,
+							self === current_star || page_state.loading,
+							true,
+						),
 					)
 				)
 			)
@@ -39,7 +39,7 @@ const Star_input = () => {
 }
 
 const $Cont = $S('div', cns(select_style.container, css({
-	label: {
+	button: {
 		width: '6em',
 		gap: '.4em',
 		svg: {
@@ -48,8 +48,18 @@ const $Cont = $S('div', cns(select_style.container, css({
 	},
 })))
 
-const Label = (star?: boolean) =>
-	h('label', {},
+const Label = (star: boolean | undefined, disabled: boolean, clickable: boolean) =>
+	h('button',
+		{
+			disabled,
+			onclick: clickable
+				? async () => {
+					page_state.opts.star = star
+					redraw()
+					await load(false)
+				}
+				: undefined
+		},
 		star === true ? [text('已收藏'), SVG__star(true, { style: 'color: var(--star-color)' })]
 		: star === false ? [text('未收藏'), SVG__star(false)]
 		: [text('全部'), SVG__star(false, { style: 'color: var(--star-color);' })]

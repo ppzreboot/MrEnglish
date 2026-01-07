@@ -22,27 +22,13 @@ const Sort_input = () => {
 				className: 'display',
 				tabindex: 0,
 			},
-			Sort_label(sort),
+			Sort_label(sort, false, false),
 		),
 		h('div', { className: 'dropdown' },
 			h('ul', {},
 				opt_list.map(opt =>
-					h('li',
-						{
-							className: cns(equal_sort(opt, sort) && 'active'),
-							key: opt.key + ' ' + opt.order,
-							onclick: async () => {
-								assert(
-									equal_sort(opt, sort) === false,
-									'clicked a disabled button'
-								)
-								sort.key = opt.key
-								sort.order = opt.order
-								redraw()
-								await load(false)
-							}
-						},
-						Sort_label(opt),
+					h('li', { key: opt.key + ' ' + opt.order },
+						Sort_label(opt, equal_sort(opt, sort), true),
 					)
 				)
 			)
@@ -54,7 +40,7 @@ const equal_sort = (a: api.I_sort, b: api.I_sort) =>
 	a.key === b.key && a.order === b.order
 
 const $Cont = $S('div', cns(select_style.container, css({
-	label: {
+	button: {
 		width: '6.3em',
 		gap: '0.2em',
 		svg: {
@@ -68,12 +54,28 @@ const $Cont = $S('div', cns(select_style.container, css({
 	},
 })))
 
-
-const Sort_label = (sort: api.I_sort) =>
-	h('label', {}, [
-		text({
-			time: '最近查询',
-			alphabet: '字母表',
-		}[sort.key]),
-		SVG__thin_arrow(sort.order === 'asc' ? undefined : { style: 'transform: rotate(180deg);' }),
-	])
+const Sort_label = (sort: api.I_sort, selected: boolean, clickable: boolean) =>
+	h('button',
+		{
+			disabled: selected || page_state.loading,
+			onclick: clickable
+				? async () => {
+					assert(
+						equal_sort(sort, page_state.opts.sort) === false,
+						'clicked a disabled button'
+					)
+					page_state.opts.sort.key = sort.key
+					page_state.opts.sort.order = sort.order
+					redraw()
+					await load(false)
+				}
+				: undefined
+		},
+		[
+			text({
+				time: '最近查询',
+				alphabet: '字母表',
+			}[sort.key]),
+			SVG__thin_arrow(sort.order === 'asc' ? undefined : { style: 'transform: rotate(180deg);' }),
+		],
+	)
