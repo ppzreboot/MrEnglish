@@ -10,10 +10,14 @@ async function serve_clite<K extends string>(
 	const filename = url_path.slice(meta.url_prefix.length)
 	const local_path = meta.out_dir + filename
 	const stat = await get_stat(local_path)
-	if (stat === 'file not exist')
+	if (stat === 'file not exist') {
+		console.error('non-existent file:', local_path)
 		return new Response('clite: Not Found', { status: 404 })
-	if (!stat.isFile) // TODO: 未测试
+	}
+	if (!stat.isFile) { // TODO: 未测试
+		console.error('invalid file path:', local_path)
 		return new Response('clite: Forbidden', { status: 403 })
+	}
 
 	return filename.startsWith(meta.asset_prefix)
 		? await respond_asset(filename, local_path, is_head)
