@@ -4,7 +4,7 @@ import { Layout } from '@biz/c/ui2'
 export
 const main = super_main(() =>
 	() =>
-		Layout([
+		Layout({}, [
 			h('a',
 				{
 					href: '/logout',
