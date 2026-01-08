@@ -3,7 +3,7 @@
 		"test": "deno test --env-file -A",
 		"type": "deno check main/main.ts", // 检查类型
 		"dev": "deno run --env-file -A --watch main/main.ts",
-		"compile": "deno compile --env-file -A --output=dist/serve--mr-english main/main.ts"
+		"compile": "deno compile --env-file -A --output=dist/mr-english-server main/main.ts"
 	},
 	"imports": {
 		"#/": "./",
