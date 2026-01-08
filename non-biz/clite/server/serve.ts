@@ -39,6 +39,7 @@ async function respond_immutable(filename: string, local_path: string, is_head: 
 	if (is_head)
 		return new Response(null, init)
 	const file = await Deno.open(local_path, { read: true })
+	console.log('serving immutable file:', local_path)
 	return new Response(file.readable, init)
 }
 
