@@ -66,6 +66,10 @@ const Main_input = (props: I_page_opts__home) => {
 			className='en-font'
 			autoFocus={state.type === 'empty'}
 			value={state.current_input}
+			onFocus={evt => {
+				if (state.current_input.length > 0)
+					evt.target.select()
+			}}
 			onChange={evt => {
 				set_state(s => ({
 					...s,

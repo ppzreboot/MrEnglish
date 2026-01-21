@@ -7,22 +7,25 @@ const EE_explain = (props: { list: {
 	shortdef: string[]
 }[] }) =>
 	<$EE_details className='main-content'>
-		{props.list.map((entry, index) =>
-			<div key={index} className='entry'>
-				<h5 className='fl'>
-					{entry.fl}
-				</h5>
-				<ul className='txt-list'>
-					{entry.shortdef.map(def =>
-						<li key={def}>
-							<div title={def}>
-								<En_p text={def} />
-							</div>
-						</li>
-					)}
-				</ul>
-			</div>
-		)}
+		{props.list
+			.filter(entry => entry.shortdef.length > 0)
+			.map((entry, index) =>
+				<div key={index} className='entry'>
+					<h5 className='fl'>
+						{entry.fl}
+					</h5>
+					<ul className='txt-list'>
+						{entry.shortdef.map(def =>
+							<li key={def}>
+								<div title={def}>
+									<En_p text={def} />
+								</div>
+							</li>
+						)}
+					</ul>
+				</div>
+			)
+		}
 	</$EE_details>
 
 const $EE_details = styled('article')({

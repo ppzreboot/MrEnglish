@@ -9,6 +9,7 @@
 	}
 
 	@media (max-width: 600px) {
+		margin-bottom: 1em;
 		padding: .75rem 1.5rem;
 		&:has(> h5:first-child) {
 			margin-top: calc(var(--fs) * 2.7);

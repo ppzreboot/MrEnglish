@@ -48,13 +48,15 @@ const Basic_explain = (props: I_lookup_result) => {
 			.flat()
 	return <$Basic_details className='main-content'>
 		<h5>简明释义</h5>
-		<ul className='pronunciation-list'>
-			{prn_list.map((prn, index) =>
-				<li key={index}>
-					<Read_word {...prn} />
-				</li>
-			)}
-		</ul>
+		{prn_list.length > 0 &&
+			<ul className='pronunciation-list'>
+				{prn_list.map((prn, index) =>
+					<li key={index}>
+						<Read_word {...prn} />
+					</li>
+				)}
+			</ul>
+		}
 		<ul className='txt-list'>
 			{ecdict.translation.map(d =>
 				<li key={d}>
@@ -62,7 +64,7 @@ const Basic_explain = (props: I_lookup_result) => {
 				</li>
 			)}
 		</ul>
-		{inf_list.length &&
+		{inf_list.length > 0 &&
 			<ul className='inflection-list'>
 				{inf_list.map(item =>
 					<li key={item.label}>
