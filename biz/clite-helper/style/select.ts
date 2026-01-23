@@ -13,14 +13,14 @@ const container = css({
 	},
 	'.display': {
 		background: 'var(--content-bg-color)',
-		border: '1px solid rgba(var(--font-color), .15)',
+		border: '1px solid rgba(var(--font-color), .1)',
 		borderRadius: '.25em',
 
 		display: 'grid',
 		placeItems: 'center',
 	},
 
-	'&:focus-within': {
+	'&:hover': {
 		'.display': {
 			borderColor: 'rgba(var(--font-color), .3)',
 		},
