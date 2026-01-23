@@ -12,6 +12,8 @@ function Header() {
 }
 
 const $Cont = $S('div', css({
+	position: 'sticky',
+	top: '1em',
 	display: 'flex',
 	alignItems: 'center',
 	gap: '1em',
