@@ -37,7 +37,7 @@ const equal_sort = (a: api.I_sort, b: api.I_sort) =>
 
 const $Cont = $S('div', cns(select_style.container, css({
 	button: {
-		width: '6.3em',
+		width: '6.5em',
 		gap: '0.2em',
 		svg: {
 			width: '.8em',

@@ -9,30 +9,35 @@ const container = css({
 		alignItems: 'center',
 		justifyContent: 'center',
 
-		height: '2em',
+		height: '2.2em',
 	},
 	'.display': {
 		background: 'var(--content-bg-color)',
-		border: '1px solid rgba(var(--font-color), .08)',
+		border: '1px solid rgba(var(--font-color), .15)',
 		borderRadius: '.25em',
 
 		display: 'grid',
 		placeItems: 'center',
 	},
 
-	'&:hover .dropdown': {
-		display: 'block',
+	'&:focus-within': {
+		'.display': {
+			borderColor: 'rgba(var(--font-color), .3)',
+		},
+		'.dropdown': {
+			display: 'block',
+		},
 	},
 	'.dropdown': {
 		display: 'none',
-		paddingTop: '.3em',
+		paddingTop: '.4em',
 		position: 'absolute',
 
 		ul: {
 			background: 'var(--content-bg-color)',
-			border: '1px solid rgba(var(--font-color), .08)',
+			border: '1px solid rgba(var(--font-color), .3)',
 			borderRadius: '.25em',
-			padding: '.2em 0',
+			padding: '.3em 0',
 		},
 	},
 })

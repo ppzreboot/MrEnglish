@@ -40,7 +40,7 @@ const Star_input = () => {
 
 const $Cont = $S('div', cns(select_style.container, css({
 	button: {
-		width: '6em',
+		width: '6.2em',
 		gap: '.4em',
 		svg: {
 			width: '1em',
