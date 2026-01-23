@@ -10,7 +10,7 @@ import clite_meta from '#/.clite/.meta.ts'
 import { format_request_body } from '@biz/s/throw'
 import { I_doc__vocabulary } from '@biz/common/entity'
 
-const page_size = 25
+const page_size = 36 // 在 iphone14 max 上差不多一页半
 
 export
 const vocabulary_controller: I_c = async ctx => {
