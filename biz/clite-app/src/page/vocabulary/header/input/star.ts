@@ -16,7 +16,7 @@ const Star_input = () => {
 						disabled: page_state.loading,
 					},
 					[
-						h('span', { style: 'opacity: .7' }, text('收藏')),
+						h('span', {}, text('收藏')),
 						SVG__star(false, { style: 'color: var(--star-color); opacity: .8;' }),
 					],
 				)

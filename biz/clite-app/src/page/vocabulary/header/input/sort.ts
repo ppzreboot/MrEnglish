@@ -17,11 +17,7 @@ export
 const Sort_input = () => {
 	const sort = page_state.opts.sort
 	return $Cont({}, [
-		h('div',
-			{
-				className: 'display',
-				tabindex: 0,
-			},
+		h('div', { className: 'display' },
 			Sort_label(sort, false, false),
 		),
 		h('div', { className: 'dropdown' },

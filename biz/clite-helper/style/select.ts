@@ -20,7 +20,7 @@ const container = css({
 		placeItems: 'center',
 	},
 
-	'&:hover .dropdown, .display:focus + .dropdown': {
+	'&:hover .dropdown': {
 		display: 'block',
 	},
 	'.dropdown': {

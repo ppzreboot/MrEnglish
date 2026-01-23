@@ -1,4 +1,3 @@
-import z from 'zod'
 import type { I_x_paged_list_opts } from './_util.ts'
 import type { I_sort_order } from './common.ts'
 
@@ -27,16 +26,6 @@ interface I_list_opts {
 
 export
 type I_paged_list_opts = I_list_opts & I_x_paged_list_opts
-
-export
-const z_paged_list_opts: z.ZodType<I_paged_list_opts> = z.object({
-	sort: z.object({
-		key: z.enum(['time', 'alphabet']),
-		order: z.enum(['asc', 'desc']),
-	}),
-	star: z.boolean().optional(),
-	last_page: z.string().optional(),
-})
 
 export
 const default_list_opts = (): I_list_opts => ({

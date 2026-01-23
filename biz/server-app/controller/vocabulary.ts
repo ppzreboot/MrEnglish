@@ -1,6 +1,7 @@
 import type { ObjectId, WithId } from 'mongodb'
+import { z } from 'zod'
 import { voc_api as api } from '@biz/common/api'
-import { sleep } from '@biz/common/util'
+// import { sleep } from '@biz/common/util'
 import { I_c } from '@biz/s/schema'
 import { respond_page } from '@biz/s/response'
 import { pages } from '@biz/common/page'
@@ -24,11 +25,20 @@ const vocabulary_controller: I_c = async ctx => {
 	})
 }
 
+const z_paged_list_opts: z.ZodType<api.I_paged_list_opts> = z.object({
+	sort: z.object({
+		key: z.enum(['time', 'alphabet']),
+		order: z.enum(['asc', 'desc']),
+	}),
+	star: z.boolean().optional(),
+	last_page: z.string().optional(),
+})
+
 export
 const voc_list_controller: I_c = async ctx => {
 	// await sleep(5000)
 	const userid = await throw_login(ctx)
-	const opts = await format_request_body(ctx.request, api.z_paged_list_opts)
+	const opts = await format_request_body(ctx.request, z_paged_list_opts)
 	const list = await ctx.service.word.get_vocabulary(userid, page_size, opts)
 	return Response.json({
 		error: 0,

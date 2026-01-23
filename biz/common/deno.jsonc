@@ -9,7 +9,6 @@
 	},
 	"imports": {
 		"#/": "./",
-		"@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5",
-		"zod": "npm:zod@^4.1.12"
+		"@ppz-ai/ecdict-sqlite3": "jsr:@ppz-ai/ecdict-sqlite3@^0.3.5"
 	}
 }
