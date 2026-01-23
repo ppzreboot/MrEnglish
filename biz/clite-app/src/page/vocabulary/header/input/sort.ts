@@ -7,8 +7,8 @@ import { select_style } from '@biz/c/style'
 import { page_state, load } from '../../ss.ts'
 
 const opt_list: api.I_sort[] = [
-	{ key: 'time', order: 'asc' },
 	{ key: 'time', order: 'desc' },
+	{ key: 'time', order: 'asc' },
 	{ key: 'alphabet', order: 'asc' },
 	{ key: 'alphabet', order: 'desc' },
 ]

@@ -42,6 +42,6 @@ export
 const default_list_opts = (): I_list_opts => ({
 	sort: {
 		key: 'time',
-		order: 'asc',
+		order: 'desc',
 	},
 })

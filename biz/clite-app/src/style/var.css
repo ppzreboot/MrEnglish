@@ -17,12 +17,12 @@ html {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
-    --bg-color: 0,0,0;
-    --font-color: 255,255,255;
-		--content-bg-color: rgba(var(--font-color), .1);
+	html {
+		--bg-color: 0,0,0;
+		--font-color: 255,255,255;
+		--content-bg-color: #1e1e1e;
 		--link-color: #99c3ff;
 
 		background-color: rgb(var(--bg-color));
-  }
+	}
 }

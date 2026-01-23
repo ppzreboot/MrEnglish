@@ -9,7 +9,7 @@ import clite_meta from '#/.clite/.meta.ts'
 import { format_request_body } from '@biz/s/throw'
 import { I_doc__vocabulary } from '@biz/common/entity'
 
-const page_size = 5
+const page_size = 25
 
 export
 const vocabulary_controller: I_c = async ctx => {
