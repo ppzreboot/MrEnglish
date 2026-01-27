@@ -38,6 +38,13 @@ const container = css({
 			border: '1px solid rgba(var(--font-color), .3)',
 			borderRadius: '.25em',
 			padding: '.3em 0',
+			li: {
+				button: {
+					'&:hover:not([disabled])': {
+						background: 'rgba(var(--font-color), .05)',
+					}
+				}
+			}
 		},
 	},
 })
