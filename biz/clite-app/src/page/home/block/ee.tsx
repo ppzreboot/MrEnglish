@@ -1,10 +1,10 @@
 import { css } from 'goober'
 import type { I_formatted_meriam_webster_entry } from '@ppz/meriam-webster'
 import { $S, h, text } from '@biz/c/superfine'
-// import { En_p } from '@biz/c/ui'
+import { FP__En_p } from '@biz/c/ui2'
 
 export
-const EE_explain = (list: I_formatted_meriam_webster_entry[]) =>
+const FP__EE_explain = (list: I_formatted_meriam_webster_entry[]) =>
 	$EE_details({ className: 'main-content' }, [
 		h('h5', {}, text('英英释义')),
 		h('div', {},
@@ -19,7 +19,8 @@ const EE_explain = (list: I_formatted_meriam_webster_entry[]) =>
 							entry.shortdef.map(def =>
 								h('li', {},
 									h('div', { title: def },
-										text(def)
+										FP__En_p(def)
+										// text(def)
 									)
 								)
 							)
@@ -39,6 +40,9 @@ const $EE_details = $S('article', css({
 			marginBottom: 'calc(var(--fs) / 2)',
 			lineHeight: 1.2,
 			fontFamily: 'serif, Times New Roman',
-		}
+		},
+		a: {
+			color: 'inherit',
+		},
 	}
 }))

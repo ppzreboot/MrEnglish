@@ -6,13 +6,15 @@ import { Main_input } from './input.ts'
 import { make__Basic_explain } from './block/basic.ts'
 import { Other_explain } from './block/other.ts'
 import { init_state } from './ss.ts'
-import { EE_explain } from './block/ee.tsx'
+import { FP__EE_explain } from './block/ee.tsx'
 
 const Page = (opts: I_page_opts__home) => {
 	const state = init_state(opts)
 	const Basic_explain = opts.type === 'normal'
 		? make__Basic_explain(opts.result)
 		: () => null
+	const ee_explain = opts.type === 'normal' && opts.result.mw &&
+		FP__EE_explain(opts.result.mw)
 	return () =>
 		Layout({},
 			[
@@ -20,8 +22,7 @@ const Page = (opts: I_page_opts__home) => {
 				opts.type !== 'empty' &&
 					h('div', {}, [
 						Basic_explain(),
-						opts.type === 'normal' && opts.result.mw &&
-							EE_explain(opts.result.mw),
+						ee_explain,
 						Other_explain(opts.word),
 					]),
 			],

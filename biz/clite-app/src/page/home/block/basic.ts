@@ -54,7 +54,7 @@ const make__Basic_explain = (props: I_lookup_result) => {
 		$Basic_details({ className: 'main-content' }, [
 			h('h5', {}, text('简明释义')),
 			h('ul', { className: 'pronunciation-list' },
-				prn_list.map((Read, index) =>
+				prn_list.map(Read =>
 					h('li', {},
 						Read(),
 					)
@@ -90,6 +90,7 @@ const $Basic_details = $S('article', css({
 	'.pronunciation-list': {
 		marginBottom: 'var(--fs)',
 		display: 'flex',
+		flexWrap: 'wrap',
 		gap: 'var(--fs)',
 	},
 	'.inflection-list': {
