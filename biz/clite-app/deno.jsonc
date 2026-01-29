@@ -20,8 +20,6 @@
 		"superfine": "npm:superfine@^8.2.0"
 	},
 	"compilerOptions": {
-		"lib": ["es2022", "dom", "Deno.ns"],
-		"jsx": "react-jsx",
-		"jsxImportSource": "react"
+		"lib": ["es2022", "dom", "Deno.ns"]
 	}
 }

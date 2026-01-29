@@ -18,8 +18,6 @@ type I_mw_result = I_mw_error | {
     raw_body: I_raw_mw_entry[]
 }
 
-export * from './audio-url.ts'
-
 /**
  * 不返回 formatted，是为了保持 api 调用和数据库查询结果一致
  * 即“已缓存”和“未缓存”一致

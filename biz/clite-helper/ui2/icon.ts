@@ -19,6 +19,13 @@ const SVG__thin_arrow = (props?: I_props) =>
 	])
 
 export
+const SVG__search = (props?: I_props) =>
+	SVG(props, [
+		h('path', { d: 'm21 21-4.34-4.34' }),
+		h('circle', { cx: 11, cy: 11, r: 8 }),
+	])
+
+export
 const SVG__star = (fill: boolean, props?: I_props) => SVG(
 	{
 		...props,
@@ -32,3 +39,17 @@ const SVG__star = (fill: boolean, props?: I_props) => SVG(
 		)
 	]
 )
+
+export
+const SVG__speak = (type: 0 | 1 | 2, props?: I_props) =>
+	SVG(props, [
+		h('path', {
+			d: 'M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z'
+		}),
+		type >= 1 &&
+			h('path', { d: 'M16 9a5 5 0 0 1 0 6' })
+		,
+		type === 2 &&
+			h('path', { d: 'M19.364 18.364a9 9 0 0 0 0-12.728' })
+		,
+	])

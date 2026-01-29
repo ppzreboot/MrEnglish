@@ -1,9 +1,10 @@
-import { styled } from 'goober'
+import { css } from 'goober'
 import type { I_inflection_type } from '@ppz-ai/ecdict-common'
 import { cns } from '@biz/common/util'
 import { home_page_url } from '@biz/common/page'
 import { I_lookup_result } from '@biz/common/entity'
-import { Read_word } from '@biz/c/ui'
+import { Read_word } from '@biz/c/ui2'
+import { $S, h, text } from '@biz/c/superfine'
 
 const inflection_label: Record<I_inflection_type, string> = {
   did: '过去式',
@@ -22,8 +23,17 @@ interface I_inf_item {
 }
 
 export
-const Basic_explain = (props: I_lookup_result) => {
+const make__Basic_explain = (props: I_lookup_result) => {
+	const mw = props.mw
+	const prn_list = mw === null ? [] :
+		mw
+			.map(entry => entry.prs)
+			.filter(prs => prs !== undefined)
+			.flat()
+			.map(Read_word)
+
 	const ecdict = props.ecdict
+	// inflection (屈折变化)
 	const inf_list = Object.entries(ecdict.inflection)
 		.map<I_inf_item>(([label, inf]) => ({
 			label: inflection_label[label as I_inflection_type],
@@ -40,48 +50,43 @@ const Basic_explain = (props: I_lookup_result) => {
 			is_lemma: true,
 		})
 
-	const mw = props.mw
-	const prn_list = mw === null ? [] :
-		mw
-			.map(entry => entry.prs)
-			.filter(prs => prs !== undefined)
-			.flat()
-	return <$Basic_details className='main-content'>
-		<h5>简明释义</h5>
-		{prn_list.length > 0 &&
-			<ul className='pronunciation-list'>
-				{prn_list.map((prn, index) =>
-					<li key={index}>
-						<Read_word {...prn} />
-					</li>
-				)}
-			</ul>
-		}
-		<ul className='txt-list'>
-			{ecdict.translation.map(d =>
-				<li key={d}>
-					{d}
-				</li>
-			)}
-		</ul>
-		{inf_list.length > 0 &&
-			<ul className='inflection-list'>
-				{inf_list.map(item =>
-					<li key={item.label}>
-						<label>{item.label}</label>
-						<a href={home_page_url(item.inf)}
-							className={cns('en-font', item.is_lemma && 'lemma')}
-						>
-							{item.inf}
-						</a>
-					</li>
-				)}
-			</ul>
-		}
-	</$Basic_details>
+	return () =>
+		$Basic_details({ className: 'main-content' }, [
+			h('h5', {}, text('简明释义')),
+			h('ul', { className: 'pronunciation-list' },
+				prn_list.map((Read, index) =>
+					h('li', {},
+						Read(),
+					)
+				)
+			),
+			h('ul', { className: 'txt-list' },
+				ecdict.translation.map(d =>
+					h('li', {},
+						text(d)
+					)
+				)
+			),
+			inf_list.length > 0 &&
+				h('ul', { className: 'inflection-list' },
+					inf_list.map(item =>
+						h('li', { key: item.label }, [
+							h('label', {}, text(item.label)),
+							h('a',
+								{
+									href: home_page_url(item.inf),
+									className: cns('en-font', item.is_lemma && 'lemma')
+								},
+								text(item.inf),
+							)
+						])
+					)
+				)
+			,
+		])
 }
 
-const $Basic_details = styled('article')({
+const $Basic_details = $S('article', css({
 	'.pronunciation-list': {
 		marginBottom: 'var(--fs)',
 		display: 'flex',
@@ -100,4 +105,4 @@ const $Basic_details = styled('article')({
 			color: 'inherit',
 		},
 	}
-})
+}))

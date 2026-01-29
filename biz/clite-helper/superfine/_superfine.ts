@@ -7,18 +7,20 @@ interface I_vnode {
 	[_vnode]: true
 }
 
+type I_child = I_vnode | false | null
+
 export
-type I_children = I_vnode | I_vnode[]
+type I_children = I_child | I_child[]
 
 export
 interface I_props {
-	[key: string]: string | number
+	[key: string]: unknown
 }
 
 export
 const h = _h as (
 	tagname: string,
-	props: object,
+	props: I_props,
 	children?: I_children,
 ) => I_vnode
 

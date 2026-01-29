@@ -1,34 +1,35 @@
-import { styled } from 'goober'
-import { En_p } from '@biz/c/ui'
+import { css } from 'goober'
+import type { I_formatted_meriam_webster_entry } from '@ppz/meriam-webster'
+import { $S, h, text } from '@biz/c/superfine'
+// import { En_p } from '@biz/c/ui'
 
 export
-const EE_explain = (props: { list: {
-	fl: string
-	shortdef: string[]
-}[] }) =>
-	<$EE_details className='main-content'>
-		{props.list
-			.filter(entry => entry.shortdef.length > 0)
-			.map((entry, index) =>
-				<div key={index} className='entry'>
-					<h5 className='fl'>
-						{entry.fl}
-					</h5>
-					<ul className='txt-list'>
-						{entry.shortdef.map(def =>
-							<li key={def}>
-								<div title={def}>
-									<En_p text={def} />
-								</div>
-							</li>
-						)}
-					</ul>
-				</div>
-			)
-		}
-	</$EE_details>
+const EE_explain = (list: I_formatted_meriam_webster_entry[]) =>
+	$EE_details({ className: 'main-content' }, [
+		h('h5', {}, text('英英释义')),
+		h('div', {},
+			list
+				.filter(entry => entry.shortdef.length > 0)
+				.map(entry =>
+					h('div', { className: 'entry' }, [
+						h('h5', { className: 'fl' },
+							text(entry.fl)
+						),
+						h('ul', { className: 'txt-list' },
+							entry.shortdef.map(def =>
+								h('li', {},
+									h('div', { title: def },
+										text(def)
+									)
+								)
+							)
+						)
+					])
+				)
+		)
+	])
 
-const $EE_details = styled('article')({
+const $EE_details = $S('article', css({
 	'.entry': {
 		'&:not(:last-child)': {
 			marginBottom: 'var(--fs)',
@@ -40,4 +41,4 @@ const $EE_details = styled('article')({
 			fontFamily: 'serif, Times New Roman',
 		}
 	}
-})
+}))

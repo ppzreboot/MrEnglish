@@ -22,7 +22,7 @@ const result = await build({
 			out: 'global-style',
 		},
 		...page_list.map(meta => ({
-			in: `src/page/${meta.key}/index.tsx`,
+			in: `src/page/${meta.key}/index.ts`,
 			out: meta.key,
 		})),
 	],

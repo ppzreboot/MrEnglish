@@ -1,7 +1,10 @@
 {
     "name": "@ppz/meriam-webster",
     "version": "0.0.0",
-    "exports": "./mod.ts",
+    "exports": {
+        ".": "./mod.ts",
+        "./url": "./audio-url.ts"
+    },
     "tasks": {
         "test": "deno test --allow-env --allow-net"
     },
