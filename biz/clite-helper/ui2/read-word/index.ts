@@ -1,8 +1,8 @@
-import { css } from 'goober'
 import type { I_formatted_meriam_webster_prs } from '@ppz/meriam-webster'
 import { make_audio_url } from '@ppz/meriam-webster/url'
-import { $S, h, redraw, text } from '@biz/c/superfine'
+import { h, redraw, text } from '@biz/c/superfine'
 import { SVG__speak } from '../icon.ts'
+import { $Read_word } from './style.ts'
 
 export
 const Read_word = (props: I_formatted_meriam_webster_prs) =>
@@ -49,34 +49,3 @@ const Read_word_with_audio = (props: { ipa: string, audio: string }) => {
 		)
 	}
 }
-
-const $Read_word = $S('div', css({
-	fontSize: 'var(--fs-sm)',
-	height: '2em',
-	lineHeight: 1.5,
-	borderRadius: '8px',
-	backgroundColor: 'rgba(var(--font-color), .05)',
-	padding: '0 .5em',
-
-	display: 'inline-flex',
-	alignItems: 'center',
-	cursor: 'pointer',
-
-	'&:active': {
-		backgroundColor: 'rgba(var(--font-color), .1)',
-	},
-
-	span: {
-		marginRight: '0.2em',
-		'&::before, &::after': {
-			content: '"/"',
-			fontSize: 'var(--fs)',
-			opacity: .6,
-			margin: '0 .3em',
-		}
-	},
-	svg: {
-		width: '1em',
-		height: '1em',
-	},
-}))
