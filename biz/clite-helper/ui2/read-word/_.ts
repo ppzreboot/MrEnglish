@@ -1,8 +1,32 @@
 import { css } from 'goober'
-import { $S } from '@biz/c/superfine'
+import { $S, redraw } from '@biz/c/superfine'
+
+interface I_play_state {
+	playing: boolean
+	svg_type: 0 | 1 | 2
+	interval_id: number | null
+}
 
 export
-const $Read_word = $S('div', css({
+const use_play = () => {
+	const state: I_play_state = {
+		playing: false,
+		svg_type: 2,
+		interval_id: null,
+	}
+	return {
+		state,
+		on_end() {
+			clearInterval(state.interval_id!)
+			state.playing = false
+			state.svg_type = 2
+			redraw()
+		},
+	}
+}
+
+export
+const $Read_word = $S('button', css({
 	fontSize: 'var(--fs-sm)',
 	height: '2em',
 	lineHeight: 1.5,
