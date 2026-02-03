@@ -3,7 +3,7 @@ import type { I_inflection_type } from '@ppz-ai/ecdict-common'
 import { cns } from '@biz/common/util'
 import { home_page_url } from '@biz/common/page'
 import { I_lookup_result } from '@biz/common/entity'
-import { Read_word } from '@biz/c/ui2'
+import { Read_word, Read_word_with_web_speech } from '@biz/c/ui2'
 import { $S, h, text } from '@biz/c/superfine'
 
 const inflection_label: Record<I_inflection_type, string> = {
@@ -31,6 +31,7 @@ const make__Basic_explain = (props: I_lookup_result) => {
 			.filter(prs => prs !== undefined)
 			.flat()
 			.map(Read_word)
+	prn_list.push(Read_word_with_web_speech(props.ecdict.word))
 
 	const ecdict = props.ecdict
 	// inflection (屈折变化)
