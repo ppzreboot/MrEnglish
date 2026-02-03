@@ -29,7 +29,6 @@ const Read_word_with_audio = (props: { ipa: string, audio: string }) => {
 			{
 				onclick: () => {
 					if (playing) {
-						playing = false
 						audio.pause()
 						audio.currentTime = 0
 						on_end()
