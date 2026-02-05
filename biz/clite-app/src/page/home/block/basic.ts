@@ -4,7 +4,8 @@ import { cns } from '@biz/common/util'
 import { home_page_url } from '@biz/common/page'
 import { I_lookup_result } from '@biz/common/entity'
 import { Read_word, Read_word_with_web_speech } from '@biz/c/ui2'
-import { $S, h, text } from '@biz/c/superfine'
+import { get_voice_list } from '@biz/c/utils'
+import { $S, h, redraw, text } from '@biz/c/superfine'
 
 const inflection_label: Record<I_inflection_type, string> = {
   did: '过去式',
@@ -31,7 +32,12 @@ const make__Basic_explain = (props: I_lookup_result) => {
 			.filter(prs => prs !== undefined)
 			.flat()
 			.map(Read_word)
-	prn_list.push(Read_word_with_web_speech(props.ecdict.word))
+	make__read_by_browser(props.ecdict.word).then(read_by_browser => {
+		if (read_by_browser === null)
+			return
+		prn_list.push(Read_word_with_web_speech(read_by_browser))
+		redraw()
+	})
 
 	const ecdict = props.ecdict
 	// inflection (屈折变化)
@@ -108,3 +114,35 @@ const $Basic_details = $S('article', css({
 		},
 	}
 }))
+
+const make__read_by_browser = async (word: string) => {
+	if (globalThis.speechSynthesis === undefined)
+		return null
+	const voice_list = await get_voice_list()
+	if (voice_list === null || voice_list.length === 0)
+		return null
+	const en_list = voice_list.filter(v => v.lang === 'en-US')
+	const voice =
+		// en_list.find(v =>
+		// 	v.voiceURI === 'Microsoft Ava Online (Natural) - English (United States)'
+		// )
+		en_list.find(v =>
+			v.voiceURI === 'Samantha'
+		)
+		|| en_list[0]
+
+	const utterance = new SpeechSynthesisUtterance(word)
+	utterance.voice = voice
+	utterance.rate = .7
+	return {
+		play() {
+			speechSynthesis.speak(utterance)
+		},
+		stop() {
+			speechSynthesis.cancel()
+		},
+		on_end(end: () => void) {
+			utterance.addEventListener('end', end)
+		},
+	}
+}

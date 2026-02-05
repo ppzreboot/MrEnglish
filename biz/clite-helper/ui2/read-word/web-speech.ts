@@ -2,24 +2,27 @@ import { redraw } from '@biz/c/superfine'
 import { SVG__speak } from '../icon.ts'
 import { $Read_word, use_play } from './_.ts'
 
+interface I_read {
+	play(): void
+	stop(): void
+	on_end(on_end: () => void): void
+}
+
 export
-const Read_word_with_web_speech = (word: string) => {
+const Read_word_with_web_speech = (read: I_read) => {
 	const play = use_play()
-	const synth = globalThis.speechSynthesis
-	const utterance = new SpeechSynthesisUtterance(word)
-	// utterance.lang = 'en-US'
-	utterance.addEventListener('end', play.on_end)
+	read.on_end(play.on_end)
 
 	return () =>
 		$Read_word(
 			{
 				onclick() {
 					if (play.state.playing) {
-						synth.cancel()
+						read.stop()
 						play.on_end()
 					} else {
 						play.state.playing = true
-						synth.speak(utterance)
+						read.play()
 						play.state.interval_id = setInterval(() => {
 							play.state.svg_type = (play.state.svg_type + 1) % 3 as 0 | 1 | 2
 							redraw()
