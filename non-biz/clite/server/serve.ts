@@ -1,4 +1,5 @@
 import { contentType } from '@std/media-types'
+import { resolve, join } from '@std/path'
 import type { I_clite_meta } from './type.ts'
 
 export
@@ -8,7 +9,12 @@ async function serve_clite<K extends string>(
 	is_head: boolean,
 ): Promise<Response> {
 	const filename = url_path.slice(meta.url_prefix.length)
-	const local_path = meta.out_dir + filename
+	const root = resolve(meta.out_dir)
+	const local_path = resolve(join(root, filename))
+	if (!local_path.startsWith(root)) {
+		console.error('Forbidden path traversal attempt:', local_path)
+		return new Response('clite: Forbidden', { status: 403 })
+	}
 	const stat = await get_stat(local_path)
 	if (stat === 'file not exist') {
 		console.error('non-existent file:', local_path)

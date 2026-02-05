@@ -9,7 +9,7 @@ function read_env(): I_app_env {
 
     const raw_port = Deno.env.get('port')
     const port = Number(raw_port)
-    if (port < 8000 && port > 20000)
+    if (port < 8000 || port > 20000)
         throw Error('ENV Error: port - ' + raw_port)
 
     const raw_session_duration_d = Deno.env.get('session_duration_d')
