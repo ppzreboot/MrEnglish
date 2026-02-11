@@ -57,7 +57,7 @@ async function* stream_chat(
 					return
 
 				const json = JSON.parse(data)
-				const content = json.choices?.[0]?.delta?.content
+				const content = json.choices![0]!.delta!.content
 				if (content)
 					yield content
 			}
