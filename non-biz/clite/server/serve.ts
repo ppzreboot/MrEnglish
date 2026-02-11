@@ -25,7 +25,7 @@ async function serve_clite<K extends string>(
 		return new Response('clite: Forbidden', { status: 403 })
 	}
 
-	return filename.startsWith(meta.asset_prefix)
+	return url_path.startsWith(meta.asset_prefix)
 		? await respond_asset(filename, local_path, is_head)
 		: await respond_immutable(filename, local_path, is_head)
 }
