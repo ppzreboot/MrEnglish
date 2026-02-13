@@ -18,6 +18,15 @@ const init_service__llm_trans = (opts: {
 			})
 			return chat
 		},
+		async new_chat(userid, title, prompt) {
+			const result = await opts.app_db.llm_trans_chat.insertOne({
+				userid,
+				title,
+				system_prompt: prompt,
+				create_at: new Date(),
+			})
+			return result.insertedId
+		},
 		async *new_msg(chat, msg) {
 			const chat_id_str = chat._id.toString()
 			if (unfinished_chat.has(chat_id_str))
