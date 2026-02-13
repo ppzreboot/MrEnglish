@@ -8,7 +8,7 @@ const init_service__llm_trans = (opts: {
 	app_db: I_app_db
 	deepseek_apikey: string
 }): I_service__llm_trans => {
-	const unfinished_chat = new Set<string>()
+	const unfinished_chat = new Map<string, Date>()
 
 	return {
 		async own_chat(userid, chat_id) {
@@ -22,6 +22,7 @@ const init_service__llm_trans = (opts: {
 			const chat_id_str = chat._id.toString()
 			if (unfinished_chat.has(chat_id_str))
 				throw new Error(`chat ${chat_id_str} 有未完成的对话`)
+			unfinished_chat.set(chat_id_str, new Date())
 			for await (const delta_msg of new_msg(opts.app_db, opts.deepseek_apikey, chat, msg))
 				yield delta_msg
 			unfinished_chat.delete(chat_id_str)
@@ -50,6 +51,7 @@ async function* new_msg(
 		{
 			api_key,
 			think: false,
+			// max_tokens: 10_000,
 		},
 		[
 			{ role: 'system', content: chat.system_prompt },

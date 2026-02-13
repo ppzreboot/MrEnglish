@@ -3,14 +3,9 @@
 flowchart TD
 	START(["开始"])
 	END(["结束"])
-	START --> new_msg_received[/"input: chat id, msg"/]
-	new_msg_received --> GD__chat[/"获取 chat"/]
+	START --> new_msg_received[/"input: chat, msg"/]
 
-	GD__chat --> DE__chat{"判断 chat 是否存在"}
-	DE__chat -->|No| Error_1["Error: chat 不存在"]
-	Error_1 --> END
-
-	DE__chat -->|Yes| DE__unfinished_msg{"判断 chat 是否有未完成的对话 (内存中)"}
+	new_msg_received --> DE__unfinished_msg{"判断 chat 是否有未完成的对话 (内存中)"}
 	DE__unfinished_msg -->|Yes| Error_2["Error: chat 有未完成 msg"]
 	Error_2 --> END
 	
