@@ -32,10 +32,15 @@ const init_service__llm_trans = (opts: {
 			if (unfinished_chat.has(chat_id_str))
 				throw new Error(`chat ${chat_id_str} 有未完成的对话`)
 			unfinished_chat.set(chat_id_str, new Date())
-			const llm_stream = new_msg(opts.app_db, opts.deepseek_apikey, chat, msg)
-			for await (const delta_msg of llm_stream)
-				yield delta_msg
-			unfinished_chat.delete(chat_id_str)
+			try {
+				const llm_stream = new_msg(opts.app_db, opts.deepseek_apikey, chat, msg)
+				for await (const delta_msg of llm_stream)
+					yield delta_msg
+			} catch(err) {
+				throw err
+			} finally {
+				unfinished_chat.delete(chat_id_str)
+			}
 		},
 	}
 }
@@ -90,7 +95,7 @@ async function* new_msg(
 			// 2. 处理 finish
 			finished = true
 			const choice = stream_item.choices[0]
-			app_db.llm_trans_chat_msg.insertOne({
+			await app_db.llm_trans_chat_msg.insertOne({
 				chat_id: chat._id,
 				user_msg: msg,
 				create_at,
