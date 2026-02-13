@@ -30,6 +30,8 @@ const init_service__llm_trans = (opts: {
 		async *new_msg(chat, msg) {
 			const chat_id_str = chat._id.toString()
 			if (unfinished_chat.has(chat_id_str))
+				// 先暂时不处理这个异常
+				// 前端直接报错，提示“请刷新页面后重试”
 				throw new Error(`chat ${chat_id_str} 有未完成的对话`)
 			unfinished_chat.set(chat_id_str, new Date())
 			try {
