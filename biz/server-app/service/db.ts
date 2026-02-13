@@ -13,5 +13,7 @@ async function init_service__mongo_db(connect_uri: string, db_name: string): Pro
 		user_oauth: db.collection('user-oauth'),
 		session: db.collection('session'),
 		vocabulary: db.collection('vocabulary'),
+		llm_trans_chat: db.collection('llm_trans_chat'),
+		llm_trans_chat_msg: db.collection('llm_trans_chat_msg'),
 	}
 }

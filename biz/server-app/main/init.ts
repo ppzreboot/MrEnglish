@@ -15,6 +15,7 @@ import { home_controller, star_controller } from '../controller/home.ts'
 import { voc_list_controller, vocabulary_controller } from '../controller/vocabulary.ts'
 import { setting_controller } from '../controller/setting.ts'
 import { logout_controller } from '../controller/login/logout.ts'
+import { controller__create_chat } from '../controller/llm-trans/mod.ts'
 
 export
 async function init(env: I_app_env): Promise<{
@@ -45,6 +46,8 @@ async function init(env: I_app_env): Promise<{
 
         ['GET' , '/api/star', star_controller],
         ['POST', '/api/vocabulary', voc_list_controller],
+
+        ['POST', '/api/chat', controller__create_chat],
     ]
 
     return {
