@@ -11,6 +11,7 @@ const app_env = read_env()
 const { service, route_list } = await init(app_env)
 log_route(route_list)
 const router = make_router(route_list)
+let request_index = 0
 
 Deno.serve(
     {
@@ -22,7 +23,7 @@ Deno.serve(
     },
     async request => {
         const url = new URL(request.url)
-        console.log(`${request.method} ${url.pathname}`)
+        console.log(`${request.method} ${url.pathname} (${request_index++})`)
 
         if (url.pathname.startsWith(clite_meta.url_prefix)
             && get_or_head(request.method)
@@ -42,6 +43,7 @@ Deno.serve(
             })
         }
 
+        const started = Date.now()
         try {
             return await controller({ request, service, url })
         } catch(err) {
@@ -52,6 +54,8 @@ Deno.serve(
                 error: true,
                 key: 'Unknown Error',
             })
+        } finally {
+            console.log(`request ${request_index} done in ${Date.now() - started}ms`)
         }
     },
 )
