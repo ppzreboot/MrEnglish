@@ -43,7 +43,7 @@ interface I_service__word {
 export
 interface I_service__llm_trans {
     own_chat(userid: ObjectId, chat_id: ObjectId): Promise<null | WithId<I_doc__chat<ObjectId, Date>>>
-    new_msg(chat: WithId<I_doc__chat<ObjectId, Date>>, content: string): AsyncGenerator<string, void, void>
+    new_msg(chat: WithId<I_doc__chat<ObjectId, Date>>, msg: string): AsyncGenerator<string, void, void>
     new_chat(userid: ObjectId, title: string, prompt: string): Promise<ObjectId>
     // chat_list(userid: ObjectId): Promise<WithId<I_doc__chat<ObjectId, Date>>[]>
     // msg_list(chat: WithId<I_doc__chat<ObjectId, Date>>): Promise<WithId<I_doc__chat_msg<ObjectId, Date>>[]>

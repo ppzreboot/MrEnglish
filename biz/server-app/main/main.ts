@@ -55,7 +55,7 @@ Deno.serve(
                 key: 'Unknown Error',
             })
         } finally {
-            console.log(`request ${request_index} done in ${Date.now() - started}ms`)
+            console.log(`request ${request_index} handled in ${Date.now() - started}ms`)
         }
     },
 )

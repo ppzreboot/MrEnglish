@@ -3,7 +3,7 @@ import type { I_request_config, I_chat_msg, I_stream_response_item } from './typ
 export
 async function* stream_chat(
 	config: I_request_config,
-	messages: I_chat_msg[],
+	msg_list: I_chat_msg[],
 	signal?: AbortSignal,
 ): AsyncGenerator<I_stream_response_item, void, void> {
 	const res = await fetch(`https://api.deepseek.com/chat/completions`, {
@@ -14,7 +14,7 @@ async function* stream_chat(
 		},
 		body: JSON.stringify({
 			model: config.think ? 'deepseek-reasoner' : 'deepseek-chat',
-			messages,
+			messages: msg_list,
 			max_tokens: config.max_tokens,
 			stream: true,
 			stream_options: {

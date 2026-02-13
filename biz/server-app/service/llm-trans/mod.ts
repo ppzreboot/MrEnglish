@@ -32,7 +32,8 @@ const init_service__llm_trans = (opts: {
 			if (unfinished_chat.has(chat_id_str))
 				throw new Error(`chat ${chat_id_str} 有未完成的对话`)
 			unfinished_chat.set(chat_id_str, new Date())
-			for await (const delta_msg of new_msg(opts.app_db, opts.deepseek_apikey, chat, msg))
+			const llm_stream = new_msg(opts.app_db, opts.deepseek_apikey, chat, msg)
+			for await (const delta_msg of llm_stream)
 				yield delta_msg
 			unfinished_chat.delete(chat_id_str)
 		},
@@ -47,33 +48,46 @@ async function* new_msg(
 ): AsyncGenerator<string, void, void> {
 	const create_at = new Date()
 
+	/* 1. 组装 messages */
 	const history_list = await app_db.llm_trans_chat_msg
 		.find({ chat_id: chat._id })
 		.sort({ create_at: 1 })
-		.limit(20)
+		.limit(6)
 		.toArray()
-	const conv_list = history_list.map<I_chat_msg[]>(msg => [
+	const history_msg_list = history_list.map<I_chat_msg[]>(msg => [
 		{ role: 'user', content: msg.user_msg },
 		{ role: 'assistant', content: msg.raw_response.choices[0].message.content },
 	])
+	const msg_list: I_chat_msg[] = [
+		{ role: 'system', content: chat.system_prompt },
+		...history_msg_list.flat(),
+		{ role: 'user', content: msg },
+	]
+	console.debug('msg list', msg_list)
+
+	/* 2. 发送请求 */
 	const response = stream_chat(
 		{
 			api_key,
 			think: false,
-			// max_tokens: 10_000,
+			max_tokens: 4096, // max_tokens: [1, 8192]
 		},
-		[
-			{ role: 'system', content: chat.system_prompt },
-			...conv_list.flat(),
-			{ role: 'user', content: msg },
-		],
+		msg_list,
 	)
+
+	/* 3. 处理响应 */
 	let assistant_msg = ''
 	let finished = false
 	for await (const stream_item of response) {
 		if (finished)
 			throw Error('receiving after finished')
-		if (stream_item.usage !== null) {
+		if (stream_item.usage === null) {
+			// 1. 处理 delta content
+			const d_content = stream_item.choices[0].delta.content!
+			yield d_content
+			assistant_msg += d_content
+		} else {
+			// 2. 处理 finish
 			finished = true
 			const choice = stream_item.choices[0]
 			app_db.llm_trans_chat_msg.insertOne({
@@ -98,12 +112,6 @@ async function* new_msg(
 					}],
 				},
 			})
-		} else {
-			const d_content = stream_item.choices[0].delta.content
-			if (d_content === null)
-				throw Error('non-reasoner model dont output "null content"')
-			yield d_content
-			assistant_msg += d_content
 		}
 	}
 }
