@@ -7,10 +7,10 @@ type I_finish_reason = 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'in
 export
 interface I_response_choice {
 	finish_reason: I_finish_reason
-	index: number
+	index: 0
 	message: {
 		content: string
-		reasoning_content: string
+		reasoning_content?: string
 		role: 'assistant'
 	}
 }

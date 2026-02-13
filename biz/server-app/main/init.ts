@@ -7,6 +7,7 @@ import { init_service__session_maker } from '../service/session.ts'
 import { init_service__auth } from '../service/auth.ts'
 import { init_service__word_mng } from '../service/word.ts'
 import { init_service__lookup } from '../service/lookup/mod.ts'
+import { init_service__llm_trans } from '../service/llm-trans/mod.ts'
 
 import { login_controller } from '../controller/login/index.ts'
 import { github_login_controller } from '../controller/login/github.ts'
@@ -20,15 +21,19 @@ async function init(env: I_app_env): Promise<{
     service: I_app_service
     route_list: I_route<I_app_service>[]
 }> {
-    const app_model = await init_service__mongo_db(env.mongo_db_uri, env.mongo_db_name)
-    const session = init_service__session_maker(app_model, env.session_duration_ms)
-    const auth = init_service__auth(app_model)
+    const app_db = await init_service__mongo_db(env.mongo_db_uri, env.mongo_db_name)
+    const session = init_service__session_maker(app_db, env.session_duration_ms)
+    const llm_trans = init_service__llm_trans({
+        app_db,
+        deepseek_apikey: env.deepseek_apikey,
+    })
+    const auth = init_service__auth(app_db)
     const lookup = await init_service__lookup({
         ecdict_sqlite3: env.ecdict_sqlite3,
         mw_cache_mongo_uri: env.mw_cache_mongo_uri,
         mw_apikey: env.mw_apikey,
     })
-    const word = init_service__word_mng(app_model, lookup)
+    const word = init_service__word_mng(app_db, lookup)
     const route_list: I_route<I_app_service>[] = [
         ['GET' , '/login', login_controller],
         ['GET' , '/login/github', github_login_controller],
@@ -47,6 +52,7 @@ async function init(env: I_app_env): Promise<{
         service: {
             env,
             session,
+            llm_trans,
             auth,
             word,
             lookup,

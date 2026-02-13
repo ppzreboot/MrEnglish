@@ -6,6 +6,7 @@ interface I_app_env {
 
     // llm_base_url: string
     // llm_api_key: string
+    deepseek_apikey: string
 
     github_oauth_client_id: string
     github_oauth_client_secret: string

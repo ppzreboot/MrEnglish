@@ -45,6 +45,7 @@ interface I_stream_response_item__ongoing {
 	system_fingerprint: string
 
 	choices: [I_stream_response_choice__reasoning | I_stream_response_choice__content]
+	usage: null
 }
 
 export

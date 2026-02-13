@@ -1,5 +1,11 @@
 import type { ObjectId, WithId } from 'mongodb'
-import type { I_doc__user, I_doc__vocabulary, I_lookup_result } from '@biz/common/entity'
+import type {
+    I_doc__user,
+    I_doc__vocabulary,
+    I_lookup_result,
+    I_doc__chat,
+    I_doc__chat_msg,
+} from '@biz/common/entity'
 import type { voc_api } from '@biz/common/api'
 import type { I_ecdict } from '@ppz-ai/ecdict-sqlite3'
 import type { I_app_env } from './env.ts'
@@ -35,10 +41,21 @@ interface I_service__word {
 }
 
 export
+interface I_service__llm_trans {
+    own_chat(userid: ObjectId, chat_id: ObjectId): Promise<null | WithId<I_doc__chat<ObjectId, Date>>>
+    new_msg(chat: WithId<I_doc__chat<ObjectId, Date>>, content: string): AsyncGenerator<string, void, void>
+    // new_chat(userid: ObjectId, title: string): Promise<ObjectId>
+    // chat_list(userid: ObjectId): Promise<WithId<I_doc__chat<ObjectId, Date>>[]>
+    // msg_list(chat: WithId<I_doc__chat<ObjectId, Date>>): Promise<WithId<I_doc__chat_msg<ObjectId, Date>>[]>
+    // drop_chat(chat: WithId<I_doc__chat<ObjectId, Date>>): Promise<void>
+}
+
+export
 interface I_app_service {
     env: I_app_env
     session: I_service__session_maker
     auth: I_service__auth
     lookup: I_service__lookup
     word: I_service__word
+    llm_trans: I_service__llm_trans
 }

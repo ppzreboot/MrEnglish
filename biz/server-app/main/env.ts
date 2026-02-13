@@ -42,6 +42,10 @@ function read_env(): I_app_env {
     if (!is_real_string(mw_apikey))
         throw Error('ENV Error: mw_apikey - ' + mw_apikey)
 
+    const deepseek_apikey = Deno.env.get('deepseek_apikey')
+    if (!is_real_string(deepseek_apikey))
+        throw Error('ENV Error: deepseek_apikey - ' + deepseek_apikey)
+
     return {
         app_mode,
         port,
@@ -49,6 +53,8 @@ function read_env(): I_app_env {
 
         github_oauth_client_id,
         github_oauth_client_secret,
+
+        deepseek_apikey,
 
         mongo_db_name,
         mongo_db_uri,

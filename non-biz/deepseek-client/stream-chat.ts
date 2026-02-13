@@ -35,6 +35,7 @@ async function* stream_chat(
 
 	const decoder = new TextDecoder()
 	let buffer = '' // 保留最后一行(可能还没传完)
+	// SSE 事件以 \n\n 结束，不会导致 buffer 丢失最后一行
 	for await (const chunk of res.body) {
 		buffer += decoder.decode(chunk, { stream: true })
 		const lines = buffer.split('\n')
