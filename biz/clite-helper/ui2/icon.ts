@@ -53,3 +53,34 @@ const SVG__speak = (type: 0 | 1 | 2, props?: I_props) =>
 			h('path', { d: 'M19.364 18.364a9 9 0 0 0 0-12.728' })
 		,
 	])
+
+export
+const SVG__collapse_menu = (props?: I_props) =>
+	SVG(props, [
+		h('path', { d: 'M10 5h11' }),
+		h('path', { d: 'M10 12h11' }),
+		h('path', { d: 'M10 19h11' }),
+		h('path', { d: 'm3 10 3-3-3-3' }),
+		h('path', { d: 'm3 20 3-3-3-3' }),
+	])
+
+export
+const SVG__temp_chat = (props?: I_props) =>
+	SVG(props, [
+		h('path', { d: 'M10.1 2.182a10 10 0 0 1 3.8 0' }),
+		h('path', { d: 'M13.9 21.818a10 10 0 0 1-3.8 0' }),
+		h('path', { d: 'M17.609 3.72a10 10 0 0 1 2.69 2.7' }),
+		h('path', { d: 'M2.182 13.9a10 10 0 0 1 0-3.8' }),
+		h('path', { d: 'M20.28 17.61a10 10 0 0 1-2.7 2.69' }),
+		h('path', { d: 'M21.818 10.1a10 10 0 0 1 0 3.8' }),
+		h('path', { d: 'M3.721 6.391a10 10 0 0 1 2.7-2.69' }),
+		h('path', { d: 'm6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98' }),
+	])
+
+export
+const SVG__new_chat = (props?: I_props) =>
+	SVG(props, [
+		h('path', { d: 'M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719' }),
+		h('path', { d: 'M8 12h8' }),
+		h('path', { d: 'M12 8v8' }),
+	])
