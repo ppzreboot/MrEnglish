@@ -1,7 +1,11 @@
 import type { I_clite_pages } from '@ppz/clite/common'
 
 export
-type I_page_key = 'home' | 'trans' | 'vocabulary' | 'setting'
+type I_page_key
+	= 'home'
+	| 'vocabulary'
+	| 'setting'
+	| 'trans'
 
 export
 const pages: I_clite_pages<I_page_key> = {
@@ -9,21 +13,25 @@ const pages: I_clite_pages<I_page_key> = {
 		key: 'home',
 		path: '/',
 		title: '查单词',
+		show_in_nav: true,
 	},
 	trans: {
 		key: 'trans',
 		path: '/trans',
 		title: '翻译',
+		show_in_nav: true,
 	},
 	vocabulary: {
 		key: 'vocabulary',
 		path: '/vocabulary',
 		title: '单词本',
+		show_in_nav: true,
 	},
 	setting: {
 		key: 'setting',
 		path: '/setting',
 		title: '设置',
+		show_in_nav: true,
 	},
 }
 
