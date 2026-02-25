@@ -1,6 +1,8 @@
 import z from 'zod'
+import { ObjectId } from 'mongodb'
 
 import { pages } from '@biz/common/page'
+import { format_request_query } from '@biz/s/throw'
 import { respond_page } from '@biz/s/response'
 import { layout } from '@ppz/clite/server'
 import { I_c } from '@biz/s/schema'
@@ -10,11 +12,22 @@ import clite_meta from '../../.clite/.meta.ts'
 
 export
 const controller__trans_page: I_c = async ctx => {
-	await throw_login(ctx)
+	const userid = await throw_login(ctx)
+	const chatid = format_request_query<ObjectId | null>('trans_chat_page', () => {
+		const chatid = ctx.url.searchParams.get('id')
+		if (chatid === null)
+			return [true, null]
+		return [true, new ObjectId(chatid)]
+	})
+	const chat = chatid === null
+		? null
+		: await ctx.service.llm_trans.own_chat(userid, chatid)
 	return respond_page({
 		page_meta: pages.trans,
 		clite_meta,
-		opts: {},
+		opts: {
+			chat,
+		},
 	})
 }
 

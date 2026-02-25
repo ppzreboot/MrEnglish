@@ -1,3 +1,4 @@
+import { pages } from '@biz/common/page'
 import './index.css'
 
 /** 此页面用于展示无 superfine 时的页面逻辑 */
@@ -28,5 +29,6 @@ function main() {
 			alert('unknown error')
 			return
 		}
+		location.href = pages.trans.path + '?id=' + json.data
 	})
 }

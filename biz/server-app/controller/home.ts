@@ -3,7 +3,7 @@ import { respond_page } from '@biz/s/response'
 import { I_c } from '@biz/s/schema'
 import { I_page_opts__home, pages } from '@biz/common/page'
 import { is_valid_en_phrase } from '@biz/common/util'
-import { format_request_input } from '@biz/s/throw'
+import { format_request_query } from '@biz/s/throw'
 import { str2obj_id } from '@biz/s/util'
 import clite_meta from '../.clite/.meta.ts'
 import { throw_login } from './_inner/throw-login.ts'
@@ -53,7 +53,7 @@ const home_controller: I_c = async ctx => {
 export
 const star_controller: I_c = async ctx => {
     const userid = await throw_login(ctx)
-    const { word_oid, star } = await format_request_input<{ word_oid: ObjectId, star: boolean}>('star word', () => {
+    const { word_oid, star } = await format_request_query<{ word_oid: ObjectId, star: boolean}>('star word', () => {
         const word = ctx.url.searchParams.get('word')
         const star = ctx.url.searchParams.get('star')
         

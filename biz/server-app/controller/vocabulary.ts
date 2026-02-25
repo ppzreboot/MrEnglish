@@ -38,7 +38,7 @@ export
 const voc_list_controller: I_c = async ctx => {
 	// await sleep(5000)
 	const userid = await throw_login(ctx)
-	const opts = await format_request_body(ctx.request, z_paged_list_opts)
+	const opts = await format_request_body('voc_list_controller', ctx.request, z_paged_list_opts)
 	const list = await ctx.service.word.get_vocabulary(userid, page_size, opts)
 	return Response.json({
 		error: 0,
