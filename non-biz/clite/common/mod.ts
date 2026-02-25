@@ -1,14 +1,9 @@
 export
-type I_clite_page_meta<PK extends string> = {
+interface I_clite_page_meta<PK extends string> {
 	key: PK
 	path: string
-	show_in_nav: true
-
 	title: string
-} | {
-	key: PK
-	path: string
-	show_in_nav: false
+	show_in_nav: boolean
 }
 
 export

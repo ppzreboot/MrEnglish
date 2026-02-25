@@ -6,6 +6,7 @@ type I_page_key
 	| 'vocabulary'
 	| 'setting'
 	| 'trans'
+	| 'trans_new'
 
 export
 const pages: I_clite_pages<I_page_key> = {
@@ -20,6 +21,12 @@ const pages: I_clite_pages<I_page_key> = {
 		path: '/trans',
 		title: '翻译',
 		show_in_nav: true,
+	},
+	trans_new: {
+		key: 'trans_new',
+		path: '/trans/new',
+		title: '创建翻译会话',
+		show_in_nav: false,
 	},
 	vocabulary: {
 		key: 'vocabulary',

@@ -18,11 +18,11 @@ const init_service__llm_trans = (opts: {
 			})
 			return chat
 		},
-		async new_chat(userid, title, prompt) {
+		async new_chat(userid, title, char_setting) {
 			const result = await opts.app_db.llm_trans_chat.insertOne({
 				userid,
 				title,
-				system_prompt: prompt,
+				system_prompt: char_setting,
 				create_at: new Date(),
 			})
 			return result.insertedId

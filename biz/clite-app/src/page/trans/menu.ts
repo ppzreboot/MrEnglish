@@ -6,15 +6,17 @@ import {
 	type I_visible,
 } from '@biz/c/ui2'
 import { css } from 'goober'
+import { pages } from '@biz/common/page'
 
 export
 function Menu(visible: I_visible) {
 	return $Menu({}, [
 		h('div', { className: 'top-btns' }, [
-			h('button',
+			h('a',
 				{
 					className: 'icon-btn',
 					title: '新对话',
+					href: pages.trans_new.path,
 				},
 				SVG__new_chat(),
 			),

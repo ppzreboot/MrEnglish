@@ -1,0 +1,16 @@
+label {
+	display: flex;
+	flex-direction: column;
+}
+input {
+
+}
+textarea {
+	border: none;
+	outline: none;
+	color: inherit;
+	background-color: transparent;
+}
+button {
+
+}

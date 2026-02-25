@@ -17,6 +17,7 @@ import { setting_controller } from '../controller/setting.ts'
 import { logout_controller } from '../controller/login/logout.ts'
 import {
     controller__new_chat,
+    controller__new_chat_page,
     controller__trans_page,
     controller__new_msg,
 } from '../controller/llm-trans/mod.ts'
@@ -51,7 +52,8 @@ async function init(env: I_app_env): Promise<{
         ['GET' , '/api/star', star_controller],
         ['POST', '/api/vocabulary', voc_list_controller],
 
-        ['GET' , '/trans', controller__trans_page],
+        ['GET' , pages.trans.path, controller__trans_page],
+        ['GET' , pages.trans_new.path, controller__new_chat_page],
         ['POST', '/api/chat', controller__new_chat],
         ['POST', '/api/chat/msg', controller__new_msg],
     ]

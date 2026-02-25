@@ -7,7 +7,9 @@ export
 const Nav = () =>
 	h('nav', {}, [
 		h('ul', {},
-			page_list.map(p =>
+			page_list
+			.filter(p => p.show_in_nav)
+			.map(p =>
 				h('li', { key: p.key },
 					p.path === current_path
 						? h('h2', {}, text(p.title))
