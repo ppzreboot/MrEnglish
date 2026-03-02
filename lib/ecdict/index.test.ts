@@ -4,89 +4,89 @@ import Database from 'better-sqlite3'
 import { ecdict_sqlite3 } from './'
 
 test('ecdict-sqlite3 test', async t => {
-    const db = new Database('/Users/ppz/public/ecdict.db', {
-        readonly: true, // ecdict 只能读，不能删改
-        fileMustExist: true, // 数据库不存在时，explicitly 报错
-    })
+	const db = new Database('/Users/ppz/public/ecdict.db', {
+		readonly: true, // ecdict 只能读，不能删改
+		fileMustExist: true, // 数据库不存在时，explicitly 报错
+	})
 
-    const lookup = ecdict_sqlite3(db)
+	const lookup = ecdict_sqlite3(db)
 
-    await t.test('basic usage', async () => {
-        const result = await lookup('hello')
-        assert(result !== null)
-        assert(result.oxford)
-        assert(result.word === 'hello')
-    })
-    await t.test('Inflection - Past Tense - went', async () => {
-        const result = await lookup('wenT')
-        assert(result !== null)
-        assert(result.word === 'went')
-        assert(result.lemma !== null)
-        assert(result.lemma.lemma === 'go')
-        assert(result.lemma.type[0] === 'did')
-        assert(Object.entries(result.inflection).length === 0)
-    })
-    await t.test('Inflection - 词组 - gEt up', async () => {
-        const result = await lookup('get up')
-        assert(result !== null)
-        assert(result.word === 'get up')
-        assert(result.lemma === null)
-        assert(Object.entries(result.inflection).length === 0)
-    })
-    await t.test('Inflection - plural - heroes', async () => {
-        const result = await lookup('heRoes')
-        assert(result !== null)
-        assert(result.word === 'heroes')
-        assert(result.lemma !== null)
-        assert(result.lemma.lemma === 'hero')
-        assert(result.lemma.type[0] === 's')
-        assert(Object.entries(result.inflection).length === 0)
-    })
-    await t.test('Inflection - homograph - tear', async () => {
-        const result = await lookup('tear')
-        assert(result !== null)
-        assert(result.word === 'tear')
-        assert(result.lemma === null)
-        assert(result.inflection.did === 'tore')
-        assert(result.inflection.done === 'torn')
-        assert(result.inflection.ing === 'tearing')
-        assert(result.inflection.s === 'tears')
-        assert(result.inflection.does === 'tears')
-        assert(result.inflection.er === undefined)
-        assert(result.inflection.est === undefined)
-    })
-    await t.test('Inflection - found', async () => {
-        const result = await lookup('found')
-        assert(result !== null)
-        assert(result.word === 'found')
-        assert(result.lemma !== null)
-        assert(result.lemma.lemma === 'find')
-        assert(result.lemma.type.includes('did'))
-        assert(result.lemma.type.includes('done'))
-        assert(result.lemma.type.length === 2)
-        assert(result.inflection.did === 'founded')
-        assert(result.inflection.done === 'founded')
-    })
+	await t.test('basic usage', async () => {
+		const result = await lookup('hello')
+		assert(result !== null)
+		assert(result.oxford)
+		assert(result.word === 'hello')
+	})
+	await t.test('Inflection - Past Tense - went', async () => {
+		const result = await lookup('wenT')
+		assert(result !== null)
+		assert(result.word === 'went')
+		assert(result.lemma !== null)
+		assert(result.lemma.lemma === 'go')
+		assert(result.lemma.type[0] === 'did')
+		assert(Object.entries(result.inflection).length === 0)
+	})
+	await t.test('Inflection - 词组 - gEt up', async () => {
+		const result = await lookup('get up')
+		assert(result !== null)
+		assert(result.word === 'get up')
+		assert(result.lemma === null)
+		assert(Object.entries(result.inflection).length === 0)
+	})
+	await t.test('Inflection - plural - heroes', async () => {
+		const result = await lookup('heRoes')
+		assert(result !== null)
+		assert(result.word === 'heroes')
+		assert(result.lemma !== null)
+		assert(result.lemma.lemma === 'hero')
+		assert(result.lemma.type[0] === 's')
+		assert(Object.entries(result.inflection).length === 0)
+	})
+	await t.test('Inflection - homograph - tear', async () => {
+		const result = await lookup('tear')
+		assert(result !== null)
+		assert(result.word === 'tear')
+		assert(result.lemma === null)
+		assert(result.inflection.did === 'tore')
+		assert(result.inflection.done === 'torn')
+		assert(result.inflection.ing === 'tearing')
+		assert(result.inflection.s === 'tears')
+		assert(result.inflection.does === 'tears')
+		assert(result.inflection.er === undefined)
+		assert(result.inflection.est === undefined)
+	})
+	await t.test('Inflection - found', async () => {
+		const result = await lookup('found')
+		assert(result !== null)
+		assert(result.word === 'found')
+		assert(result.lemma !== null)
+		assert(result.lemma.lemma === 'find')
+		assert(result.lemma.type.includes('did'))
+		assert(result.lemma.type.includes('done'))
+		assert(result.lemma.type.length === 2)
+		assert(result.inflection.did === 'founded')
+		assert(result.inflection.done === 'founded')
+	})
 
-    await t.test('has lemma, no inflection type', async () => {
-        const result = await lookup('we')
-        assert(result !== null)
-        assert(result.lemma === null)
-    })
+	await t.test('has lemma, no inflection type', async () => {
+		const result = await lookup('we')
+		assert(result !== null)
+		assert(result.lemma === null)
+	})
 
-    await t.test('no definition', async () => {
-        const result = await lookup('csv')
-        assert(result !== null)
-        assert(result.definition.length === 0)
-    })
-    await t.test('allow invalid inflection type', async () => {
-        // 有些词条的 exchange 字段会有无效的 inflection type https://github.com/skywind3000/ECDICT/commit/82c9872576b23118d7c42e920c11beb77f510ae2
-        const result = await lookup('color')
-        assert(result !== null)
-        assert(Object.entries(result.inflection).every(([k]) => k !== 'undefined'))
-    })
+	await t.test('no definition', async () => {
+		const result = await lookup('csv')
+		assert(result !== null)
+		assert(result.definition.length === 0)
+	})
+	await t.test('allow invalid inflection type', async () => {
+		// 有些词条的 exchange 字段会有无效的 inflection type https://github.com/skywind3000/ECDICT/commit/82c9872576b23118d7c42e920c11beb77f510ae2
+		const result = await lookup('color')
+		assert(result !== null)
+		assert(Object.entries(result.inflection).every(([k]) => k !== 'undefined'))
+	})
 
-    await t.test('clean up', () => {
-        db.close()
-    })
+	await t.test('clean up', () => {
+		db.close()
+	})
 })
