@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "#/*": ["./lib/*"]
+      "#lib/*": ["./lib/*"],
+      "#service/*": ["./service/*"],
+      "#common/*": ["./common/*"]
     }
   },
   "include": [

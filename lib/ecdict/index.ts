@@ -2,6 +2,8 @@ import { Database } from 'better-sqlite3'
 import { I_lookup_from_ECDICT, I_ecdict_raw } from './type'
 import { format } from './format'
 
+export type { I_ecdict } from './type'
+
 export
 function ecdict_sqlite3(db: Database): I_lookup_from_ECDICT {
 	const stmt = db.prepare('select * from stardict where word=?')

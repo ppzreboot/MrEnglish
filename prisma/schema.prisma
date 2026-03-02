@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../service/db/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model mw_cache {
+  key       String   @id
+  content   Json
+  valid     Boolean
+  create_at DateTime @default(now())
+}

@@ -56,9 +56,9 @@ async function lookup_from_mw(apikey: string, word: string): Promise<I_mw_result
 }
 
 export
-function format_raw(word: string, raw: I_raw_mw_entry[]): I_formatted_meriam_webster_entry[] {
+function format_raw(word: string, raw: I_raw_mw_entry[]): null | I_formatted_meriam_webster_entry[] {
 	word = word.toLowerCase()
-	return raw
+	const entries = raw
 		.filter(item =>
 			item.fl &&
 			item.hwi.hw.split('*').join('').toLowerCase() === word
@@ -72,6 +72,9 @@ function format_raw(word: string, raw: I_raw_mw_entry[]): I_formatted_meriam_web
 			fl: item.fl!,
 			shortdef: item.shortdef,
 		}))
+	if (entries.length === 0)
+		return null
+	return entries
 }
 
 export
