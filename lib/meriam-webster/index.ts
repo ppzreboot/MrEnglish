@@ -23,17 +23,17 @@ type I_mw_result = I_mw_error | {
  * 即“已缓存”和“未缓存”一致
  */
 export
-async function lookup_from_mw(apikey: string, word: string): Promise<I_mw_result> {
+async function lookup_from_mw(api_key: string, word: string): Promise<I_mw_result> {
 	if (!check_en_word(word))
 		return { error: true, type: 'not a word', raw_body: 'PPz 未发送请求' }
 
-	const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/learners/json/${word}?key=${apikey}`)
+	const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/learners/json/${word}?key=${api_key}`)
 	const raw_body = await response.text()
 	if (raw_body === 'Invalid API key. Not subscribed for this reference.')
 		throw Error('Meriam Webster API key is not valid')
 
 	const json_body = JSON.parse(raw_body)
-	if (json_body instanceof Array && json_body.every(item => typeof(item) === 'string'))
+	if (json_body instanceof Array && json_body.every(item => typeof (item) === 'string'))
 		return {
 			error: true,
 			type: 'not a word',

@@ -13,3 +13,19 @@ model mw_cache {
   valid     Boolean
   create_at DateTime @default(now())
 }
+
+model user {
+  id         String      @id @default(uuid())
+  create_at  DateTime    @default(now())
+  identities identity[]
+}
+
+model identity {
+  provider    String   // e.g., 'github', 'google'
+  provider_id String   // e.g., '123456'
+  user_id     String
+  create_at   DateTime @default(now())
+  user        user     @relation(fields: [user_id], references: [id])
+
+  @@id([provider, provider_id])
+}
