@@ -22,8 +22,19 @@ const lookup_from_ecdict = ecdict_sqlite3(
 	})
 )
 
+const lookup_promises = new Map<string, Promise<I_lookup_result | null>>()
+
 export
-async function lookup(word: string): Promise<null | I_lookup_result> {
+function lookup(word: string): Promise<null | I_lookup_result> {
+	let promise = lookup_promises.get(word)
+	if (promise)
+		return promise
+	promise = _lookup(word).finally(() => lookup_promises.delete(word))
+	lookup_promises.set(word, promise)
+	return promise
+}
+
+async function _lookup(word: string): Promise<null | I_lookup_result> {
 	const ecdict_result = await lookup_from_ecdict(word)
 	if (ecdict_result === null) return null
 
@@ -45,7 +56,7 @@ async function lookup(word: string): Promise<null | I_lookup_result> {
 	if (mw_result.error) { // 没查到
 		console.log(`cache meriam-webster "${word}" as not found`)
 		// “不存在”也是数据
-		await db.mw_cache.create({
+		await db.mw_cache.create({ // 现在只允许单实例部署
 			data: {
 				key: word,
 				content: mw_result.raw_body,
@@ -58,7 +69,6 @@ async function lookup(word: string): Promise<null | I_lookup_result> {
 
 	// 查到了
 	console.log(`cache meriam-webster "${word}"`)
-	// 如果有两个人查同一个单词，这里会报错
 	await db.mw_cache.create({
 		data: {
 			key: word,

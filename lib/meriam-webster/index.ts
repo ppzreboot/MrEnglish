@@ -67,7 +67,7 @@ function format_raw(word: string, raw: I_raw_mw_entry[]): null | I_formatted_mer
 			hw: item.hwi.hw,
 			prs: item.hwi.prs?.map(prs => ({
 				ipa: prs.ipa,
-				audio: prs.sound?.audio,
+				audio: prs.sound?.audio, // 让前端转换 url
 			})),
 			fl: item.fl!,
 			shortdef: item.shortdef,
