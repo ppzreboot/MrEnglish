@@ -59,7 +59,7 @@ const session_manager = {
 		return token
 	},
 
-	get(token: string): I_session | undefined {
+	get(token: string) {
 		return sessions.get(token)
 	},
 
