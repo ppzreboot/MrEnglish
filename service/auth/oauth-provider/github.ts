@@ -1,18 +1,13 @@
+import { app_env } from '#service/env'
 import type { I_auth_provider } from './type'
-
-const client_id = process.env.GitHub_client_id!
-const client_secret = process.env.GitHub_client_secret!
-if (!client_id || !client_secret)
-	throw new Error('GitHub Client ID/Secret not configured')
 
 export
 const github_provider: I_auth_provider = {
 	key: 'github',
 
-	async get_auth_url(redirect_uri: string, state: string): Promise<string> {
+	async get_auth_url(state: string): Promise<string> {
 		const params = new URLSearchParams({
-			client_id,
-			redirect_uri,
+			client_id: app_env.GitHub_client_id,
 			state,
 		})
 		return `https://github.com/login/oauth/authorize?${params.toString()}`
@@ -27,8 +22,8 @@ const github_provider: I_auth_provider = {
 				Accept: 'application/json',
 			},
 			body: JSON.stringify({
-				client_id,
-				client_secret,
+				client_id: app_env.GitHub_client_id,
+				client_secret: app_env.GitHub_client_secret,
 				code,
 			}),
 		})

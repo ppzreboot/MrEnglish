@@ -5,11 +5,11 @@ import { user_service } from '#service/user'
 export default
 async function home_page() {
 	const cookie_store = await cookies()
-	const token = cookie_store.get('token')?.value
+	const session_token = cookie_store.get('session_token')?.value
 
 	let logged_in = false
-	if (token) {
-		const session = session_manager.get(token)
+	if (session_token) {
+		const session = session_manager.get(session_token)
 		if (session) {
 			const user = await user_service.get_by_id(session.user_id)
 			if (user)

@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import Database from 'better-sqlite3'
 import { z } from 'zod'
 import { ecdict_sqlite3 } from '#lib/ecdict'
@@ -10,13 +9,11 @@ import {
 } from '#lib/meriam-webster'
 import type { I_lookup_result } from '#common/entity'
 import { db } from '#service/db'
+import { app_env } from '#service/env'
 
-const ecdict_sqlite3_path = process.env.ECDict_SQLITE3!
-const MW_apikey = process.env.MW_apikey!
-
-console.log('opening ecdict sqlite3 at', ecdict_sqlite3_path)
+console.log('opening ecdict sqlite3 at', app_env.ECDict_SQLITE3)
 const lookup_from_ecdict = ecdict_sqlite3(
-	new Database(ecdict_sqlite3_path, {
+	new Database(app_env.ECDict_SQLITE3, {
 		readonly: true,
 		fileMustExist: true,
 	})
@@ -51,7 +48,7 @@ async function _lookup(word: string): Promise<null | I_lookup_result> {
 
 	// 缓存中，没有，就调用 meriam-webster API
 	console.log('caching meriam webster word', word)
-	const mw_result = await lookup_from_mw(MW_apikey, word)
+	const mw_result = await lookup_from_mw(app_env.MW_apikey, word)
 
 	if (mw_result.error) { // 没查到
 		console.log(`cache meriam-webster "${word}" as not found`)

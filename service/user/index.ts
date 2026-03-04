@@ -23,6 +23,7 @@ const user_service = {
 		// 2. 如果不存在，创建新用户和 identity
 		// 注意：这里没有处理“关联现有账户”的逻辑，默认每个新 provider_id 都是新用户
 		// 如果需要关联，需要先登录再绑定
+		console.log('create a new user')
 		const user = await db.user.create({
 			data: {
 				identities: {
