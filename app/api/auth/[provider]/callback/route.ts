@@ -50,7 +50,7 @@ async function GET(
 		secure: app_env.mode === 'pro', // https
 		sameSite: 'lax',
 		path: '/',
-		maxAge: 60 * 60 * 24 * 7, // TODO: 放在 .env 里
+		maxAge: app_env.session_max_age,
 	})
 
 	// Clear oauth state cookie

@@ -1,7 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import { db } from '#service/db'
+import { app_env } from '#service/env'
 
 const MAX_DEVICES = 3
+const session_duration = app_env.session_max_age * 1000
 
 export
 const session_manager = {
@@ -48,6 +50,14 @@ const session_manager = {
 		
 		if (!session)
 			return undefined
+
+		const is_expired = Date.now() - session.create_at.getTime() > session_duration
+		if (is_expired) {
+			await db.session.deleteMany({
+				where: { token },
+			})
+			return undefined
+		}
 		
 		return {
 			token: session.token,
@@ -57,12 +67,8 @@ const session_manager = {
 	},
 
 	async delete(token: string) {
-		try {
-			await db.session.delete({
-				where: { token },
-			})
-		} catch (error) {
-			// session 不存在，忽略
-		}
+		await db.session.delete({
+			where: { token },
+		})
 	},
 }
