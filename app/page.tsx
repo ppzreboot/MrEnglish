@@ -9,7 +9,7 @@ async function home_page() {
 
 	let logged_in = false
 	if (session_token) {
-		const session = session_manager.get(session_token)
+		const session = await session_manager.get(session_token)
 		if (session) {
 			const user = await user_service.get_by_id(session.user_id)
 			if (user)

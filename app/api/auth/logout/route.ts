@@ -8,7 +8,7 @@ async function POST(request: Request) {
 	const session_token = cookie_store.get('session_token')?.value
 
 	if (session_token)
-		session_manager.delete(session_token)
+		await session_manager.delete(session_token)
 
 	// 如果是表单提交（从 Server Component 页面），重定向回来源页面或首页
 	// 检查 Content-Type 或 Accept 头来区分 API 调用和表单提交

@@ -9,4 +9,7 @@ interface I_app_env {
 
 	GitHub_client_id: string
 	GitHub_client_secret: string
+
+	session_max_age: number
+	oauth2_state_max_age: number
 }

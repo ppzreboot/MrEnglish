@@ -1,76 +1,68 @@
 import { randomUUID } from 'node:crypto'
-
-interface I_session {
-	token: string
-	user_id: string
-	created_at: number
-}
-
-// 内存存储 Session
-// Token -> Session
-const sessions = new Map<string, I_session>()
-// UserID -> Set<Token> (用于限制设备数量)
-const user_tokens = new Map<string, Set<string>>()
+import { db } from '#service/db'
 
 const MAX_DEVICES = 3
 
 export
 const session_manager = {
-	create(user_id: string): string {
-		// check limit
-		const tokens = (() => {
-			const tokens = user_tokens.get(user_id)
-			if (tokens === undefined) {
-				const new_tokens = new Set<string>()
-				user_tokens.set(user_id, new_tokens)
-				return new_tokens
-			}
-
-			// 检查是否超过最大设备数
-			if (tokens.size >= MAX_DEVICES) {
-				let oldest_token: string | null = null
-				let min_time = Infinity
-
-				for (const t of tokens) {
-					const s = sessions.get(t)!
-					if (s.created_at < min_time) {
-						min_time = s.created_at
-						oldest_token = t
-					}
-				}
-
-				sessions.delete(oldest_token!)
-				tokens.delete(oldest_token!)
-			}
-
-			return tokens
-		})()
-
-		// 创建新 session
+	async create(user_id: string): Promise<string> {
 		const token = randomUUID()
-		const session: I_session = {
-			token,
-			user_id,
-			created_at: Date.now(),
-		}
-		sessions.set(token, session)
-		tokens.add(token)
+		
+		await db.$transaction(async (tx) => {
+			const user_sessions = await tx.session.findMany({
+				where: { user_id },
+				orderBy: { create_at: 'asc' }, // 最早的在前
+				select: { token: true },
+			})
+
+			if (user_sessions.length >= MAX_DEVICES) {
+				const count_to_delete = user_sessions.length - MAX_DEVICES + 1
+				if (count_to_delete > 0) {
+					const tokens_to_delete = user_sessions
+						.slice(0, count_to_delete)
+						.map(s => s.token)
+					
+					await tx.session.deleteMany({
+						where: {
+							token: { in: tokens_to_delete },
+						},
+					})
+				}
+			}
+
+			await tx.session.create({
+				data: {
+					token,
+					user_id,
+				},
+			})
+		})
 
 		return token
 	},
 
-	get(token: string) {
-		return sessions.get(token)
+	async get(token: string) {
+		const session = await db.session.findUnique({
+			where: { token },
+		})
+		
+		if (!session)
+			return undefined
+		
+		return {
+			token: session.token,
+			user_id: session.user_id,
+			created_at: session.create_at.getTime(),
+		}
 	},
 
-	delete(token: string) {
-		const session = sessions.get(token)
-		if (session) {
-			sessions.delete(token)
-			const tokens = user_tokens.get(session.user_id)!
-			tokens.delete(token)
-			if (tokens.size === 0)
-				user_tokens.delete(session.user_id)
+	async delete(token: string) {
+		try {
+			await db.session.delete({
+				where: { token },
+			})
+		} catch (error) {
+			// session 不存在，忽略
 		}
 	},
 }

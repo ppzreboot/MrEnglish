@@ -40,7 +40,7 @@ async function GET(
 
 	// Create session
 	console.log('new session for user', user)
-	const session_token = session_manager.create(user.id)
+	const session_token = await session_manager.create(user.id)
 
 	const response = NextResponse.redirect((() => {
 		let url: URL
