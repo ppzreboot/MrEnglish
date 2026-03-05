@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { user_service } from '#service/user'
 import { session_manager, get_oauth2_provider, is_oauth2_provider_key } from '#service/auth'
+import { clone_url } from '#service/util'
 import { app_env } from '#service/env'
 
 export
@@ -42,22 +43,7 @@ async function GET(
 	console.log('new session for user', user)
 	const session_token = await session_manager.create(user.id)
 
-	const response = NextResponse.redirect((() => {
-		let url: URL
-		const reverse_proxy_host = request.headers.get('x-forwarded-host')
-		if (reverse_proxy_host !== null) {
-			const protocal = request.headers.get('X-Forwarded-Proto')
-			if (protocal !== 'http' && protocal !== 'https') {
-				console.error(request.headers)
-				throw Error('weird request header')
-			}
-			url = new URL(`${protocal}://${reverse_proxy_host}`)
-		} else {
-			url = request.nextUrl.clone()
-		}
-		url.pathname = '/'
-		return url
-	})())
+	const response = NextResponse.redirect(clone_url(request))
 	// Set cookie
 	response.cookies.set('session_token', session_token, {
 		httpOnly: true,
