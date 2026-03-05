@@ -1,18 +1,19 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { user_service } from '#service/user'
-import { session_manager, get_auth_provider } from '#service/auth'
+import { session_manager, get_oauth2_provider, is_oauth2_provider_key } from '#service/auth'
 import { app_env } from '#service/env'
 
-export async function GET(
+export
+async function GET(
 	request: NextRequest,
 	ctx: RouteContext<'/api/auth/[provider]/callback'>,
 ) {
 	// Validate provider key
 	const { provider: provider_key } = await ctx.params
-	if (provider_key !== 'github')
+	if (!is_oauth2_provider_key(provider_key))
 		return NextResponse.json({ error: 'Invalid provider' }, { status: 400 })
-	const provider = get_auth_provider(provider_key)
+	const provider = get_oauth2_provider(provider_key)
 
 	// Get code and state from query parameters
 	const { searchParams } = new URL(request.url)

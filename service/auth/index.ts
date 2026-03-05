@@ -1,2 +1,2 @@
-export * from './oauth-provider'
+export * from './oauth2'
 export * from './session'
