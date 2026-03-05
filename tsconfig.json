@@ -19,7 +19,6 @@
       }
     ],
     "paths": {
-      "#lib/*": ["./lib/*"],
       "#service/*": ["./service/*"],
       "#common/*": ["./common/*"]
     }
