@@ -1,5 +1,5 @@
-import { make_github_provider } from '@ppz/oauth2/github'
-import type { I_auth_provider } from '@ppz/oauth2'
+import { make_github_provider } from '#lib/oauth2/github'
+import type { I_auth_provider } from '#lib/oauth2'
 import { app_env } from '#service/env'
 
 export

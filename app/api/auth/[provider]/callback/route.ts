@@ -27,8 +27,10 @@ async function GET(
 	const cookie_store = await cookies()
 	const cookie_name = 'oauth_state'
 	const stored_state = cookie_store.get(cookie_name)?.value
-	if (!stored_state || state !== stored_state)
+	if (!stored_state || state !== stored_state) {
+		console.error('cookie_state', stored_state, 'query_state', state)
 		return NextResponse.json({ error: 'Invalid state' }, { status: 400 })
+	}
 
 	// id from provider
 	const provider_id = await provider.get_user_info(code)

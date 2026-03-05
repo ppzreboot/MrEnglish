@@ -20,6 +20,7 @@
     ],
     "paths": {
       "#service/*": ["./service/*"],
+      "#lib/*": ["./lib/*"],
       "#common/*": ["./common/*"]
     }
   },

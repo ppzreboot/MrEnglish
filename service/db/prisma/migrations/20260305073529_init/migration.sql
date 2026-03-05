@@ -12,6 +12,8 @@ CREATE TABLE "mw_cache" (
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
     "create_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "email" TEXT,
+    "password_hash" TEXT,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -34,6 +36,9 @@ CREATE TABLE "session" (
 
     CONSTRAINT "session_pkey" PRIMARY KEY ("token")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- AddForeignKey
 ALTER TABLE "identity" ADD CONSTRAINT "identity_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

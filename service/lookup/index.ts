@@ -1,12 +1,12 @@
 import Database from 'better-sqlite3'
 import { z } from 'zod'
-import { ecdict_sqlite3 } from '@ppz/ecdict'
+import { ecdict_sqlite3 } from '#lib/ecdict'
 import {
 	type I_mw_error,
 	type I_raw_mw_entry,
 	lookup_from_mw,
 	format_raw,
-} from '@ppz/meriam-webster'
+} from '#lib/meriam-webster'
 import type { I_lookup_result } from '#common/entity'
 import { db } from '#service/db'
 import { app_env } from '#service/env'

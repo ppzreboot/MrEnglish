@@ -1,8 +1,0 @@
-{
-	"name": "@ppz/oauth2",
-	"version": "0.0.0",
-	"exports": {
-		".": "./index.ts",
-		"./github": "./github.ts"
-	}
-}

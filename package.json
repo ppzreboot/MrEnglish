@@ -7,9 +7,6 @@
     "build": "next build",
     "start": "next start"
   },
-  "workspaces": [
-    "lib/*"
-  ],
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
