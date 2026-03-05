@@ -22,6 +22,6 @@ async function POST(request: NextRequest) {
 		response = NextResponse.json({ success: true })
 	}
 
-	response.cookies.delete('token')
+	response.cookies.delete('session_token')
 	return response
 }

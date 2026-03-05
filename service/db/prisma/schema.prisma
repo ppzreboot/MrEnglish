@@ -15,10 +15,12 @@ model mw_cache {
 }
 
 model user {
-  id         String      @id @default(uuid())
-  create_at  DateTime    @default(now())
-  identities identity[]
-  sessions   session[]
+  id            String      @id @default(uuid())
+  create_at     DateTime    @default(now())
+  email         String?     @unique
+  password_hash String?
+  identities    identity[]
+  sessions      session[]
 }
 
 model identity {
