@@ -1,62 +1,45 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { user_service } from '#service/user'
-import { session_manager, get_oauth2_provider, is_oauth2_provider_key } from '#service/auth'
-import { clone_url } from '#service/util'
-import { app_env } from '#service/env'
+import { is_oauth2_provider_key } from '#service/auth/oauth2'
+import { clone_url } from '#service/util/clone-url'
+import { cookie_manager } from '#service/auth/cookie'
+import { oauth2_login } from '#service/auth/login'
+import { error400 } from '#service/util/respond'
 
 export
 async function GET(
 	request: NextRequest,
 	ctx: RouteContext<'/api/auth/[provider]/callback'>,
 ) {
-	// Validate provider key
-	const { provider: provider_key } = await ctx.params
-	if (!is_oauth2_provider_key(provider_key))
-		return NextResponse.json({ error: 'Invalid provider' }, { status: 400 })
-	const provider = get_oauth2_provider(provider_key)
-
-	// Get code and state from query parameters
-	const { searchParams } = new URL(request.url)
-	const code = searchParams.get('code')
-	const state = searchParams.get('state')
-	if (!code || !state)
-		return NextResponse.json({ error: 'Missing code or state' }, { status: 400 })
-
-	// validate oauth state
-	const cookie_store = await cookies()
-	const cookie_name = 'oauth_state'
-	const stored_state = cookie_store.get(cookie_name)?.value
-	if (!stored_state || state !== stored_state) {
-		console.error('cookie_state', stored_state, 'query_state', state)
-		return NextResponse.json({ error: 'Invalid state' }, { status: 400 })
+	// validate provider key
+	const { provider } = await ctx.params
+	if (!is_oauth2_provider_key(provider)) {
+		console.error('Invalid oauth2 provider', provider)
+		return error400()
 	}
 
-	// id from provider
-	const provider_id = await provider.get_user_info(code)
+	// get code and state from query parameters
+	const { searchParams } = new URL(request.url)
+	const code = searchParams.get('code')
+	const query_state = searchParams.get('state')
+	if (!code || !query_state) {
+		console.error('Missing code or state', code, query_state)
+		return error400()
+	}
 
-	// retrieve user (create one if not exist)
-	const user = await user_service.retrieve_by_provider({
-		provider: provider_key,
-		provider_id,
-	})
+	// validate oauth state
+	const cookie_state = await cookie_manager.oauth2_state.get()
+	if (cookie_state === null || query_state !== cookie_state) {
+		console.error('invalid oauth state: cookie_state', cookie_state, 'query_state', query_state)
+		return error400()
+	}
 
-	// Create session
-	console.log('new session for user', user)
-	const session_token = await session_manager.create(user.id)
+	// login
+	const session_token = await oauth2_login(provider, code)
 
+	// make response
 	const response = NextResponse.redirect(clone_url(request))
-	// Set cookie
-	response.cookies.set('session_token', session_token, {
-		httpOnly: true,
-		secure: app_env.mode === 'pro', // https
-		sameSite: 'lax',
-		path: '/',
-		maxAge: app_env.session_max_age,
-	})
-
-	// Clear oauth state cookie
-	response.cookies.delete(cookie_name)
-
+	// respond session token in cookies
+	cookie_manager.session_token.set(response, session_token)
+	// respond
 	return response
 }

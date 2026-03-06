@@ -12,4 +12,7 @@ interface I_app_env {
 
 	session_max_age: number
 	oauth2_state_max_age: number
+
+	resend_apikey: string
+	email_from: string
 }

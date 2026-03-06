@@ -2,13 +2,12 @@ import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { session_manager } from '#service/auth'
 import { user_service } from '#service/user'
+import { BindEmailForm } from './bind-email-form'
+import { LogoutButton } from './logout-button'
 
+/** 仅用 searchParams.bound：绑定成功后跳转到 /settings?bound=1 用于展示成功提示。错误由表单组件通过接口 JSON 展示。 */
 export default
-async function settings_page({
-	searchParams,
-}: {
-	searchParams: Promise<{ error?: string; bound?: string }>
-}) {
+async function settings_page(props: { searchParams: Promise<{ bound?: string }> }) {
 	const cookie_store = await cookies()
 	const session_token = cookie_store.get('session_token')?.value
 	if (!session_token) redirect('/login')
@@ -17,9 +16,8 @@ async function settings_page({
 	const user = await user_service.get_by_id(session.user_id)
 	if (!user) redirect('/login')
 
-	const params = await searchParams
-	const error = params.error
-	const bound = params.bound
+	const query = await props.searchParams
+	const bound = query.bound
 
 	return (
 		<div className="min-h-screen p-8 max-w-lg mx-auto">
@@ -31,64 +29,21 @@ async function settings_page({
 					<p className="text-neutral-600 dark:text-neutral-400">
 						已绑定：<span className="font-mono">{user.email}</span>
 						<br />
-						<span className="text-sm">可使用该邮箱 + 密码登录。</span>
+						<span className="text-sm">可使用该邮箱验证码登录。</span>
 					</p>
 				) : (
 					<>
-						{error === 'bind_missing' && (
-							<p className="text-amber-600 dark:text-amber-400 text-sm mb-2">请填写邮箱和密码。</p>
-						)}
-						{error === 'email_taken' && (
-							<p className="text-amber-600 dark:text-amber-400 text-sm mb-2">该邮箱已被其他账号使用。</p>
-						)}
 						{bound === '1' && (
-							<p className="text-green-600 dark:text-green-400 text-sm mb-2">绑定成功，可使用邮箱+密码登录。</p>
+							<p className="text-green-600 dark:text-green-400 text-sm mb-2">绑定成功，可使用邮箱验证码登录。</p>
 						)}
-						<form action="/api/settings/bind-email" method="POST" className="space-y-3">
-							<div>
-								<label htmlFor="bind-email" className="block text-sm font-medium mb-1">邮箱</label>
-								<input
-									id="bind-email"
-									name="email"
-									type="email"
-									required
-									className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-md bg-inherit"
-									placeholder="your@email.com"
-								/>
-							</div>
-							<div>
-								<label htmlFor="bind-password" className="block text-sm font-medium mb-1">密码</label>
-								<input
-									id="bind-password"
-									name="password"
-									type="password"
-									required
-									minLength={6}
-									className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-md bg-inherit"
-									placeholder="至少 6 位"
-								/>
-							</div>
-							<button
-								type="submit"
-								className="bg-neutral-800 dark:bg-neutral-200 text-white dark:text-black px-4 py-2 rounded-md hover:opacity-90"
-							>
-								绑定邮箱
-							</button>
-						</form>
+						<BindEmailForm />
 					</>
 				)}
 			</section>
 
 			<section>
 				<h2 className="text-lg font-medium mb-4">账号</h2>
-				<form action="/api/auth/logout" method="POST">
-					<button
-						type="submit"
-						className="bg-red-500/90 text-white px-4 py-2 rounded-md hover:bg-red-500"
-					>
-						退出登录
-					</button>
-				</form>
+				<LogoutButton />
 			</section>
 		</div>
 	)

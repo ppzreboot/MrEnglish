@@ -15,12 +15,17 @@ model mw_cache {
 }
 
 model user {
-  id            String      @id @default(uuid())
-  create_at     DateTime    @default(now())
-  email         String?     @unique
-  password_hash String?
-  identities    identity[]
-  sessions      session[]
+  id         String      @id @default(uuid())
+  create_at  DateTime    @default(now())
+  email      String?     @unique
+  identities identity[]
+  sessions   session[]
+}
+
+model email_verification_code {
+  email     String   @id
+  code      String
+  expire_at DateTime
 }
 
 model identity {

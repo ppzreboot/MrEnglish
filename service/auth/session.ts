@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { db } from '#service/db'
 import { app_env } from '#service/env'
+import { cookie_manager } from './cookie'
 
 const MAX_DEVICES = 3
 const session_duration = app_env.session_max_age * 1000
@@ -43,26 +44,27 @@ const session_manager = {
 		return token
 	},
 
-	async get(token: string) {
+	async get() {
+		const session_token = await cookie_manager.session_token.get()
+		if (session_token === null)
+			return null
 		const session = await db.session.findUnique({
-			where: { token },
+			where: { token: session_token },
 		})
-		
-		if (!session)
-			return undefined
+		if (session === null)
+			return null
 
 		const is_expired = Date.now() - session.create_at.getTime() > session_duration
 		if (is_expired) {
 			await db.session.deleteMany({
-				where: { token },
+				where: { token: session_token },
 			})
-			return undefined
+			return null
 		}
 		
 		return {
 			token: session.token,
 			user_id: session.user_id,
-			created_at: session.create_at.getTime(),
 		}
 	},
 

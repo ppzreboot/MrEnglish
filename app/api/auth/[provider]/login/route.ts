@@ -1,28 +1,22 @@
 import { NextResponse } from 'next/server'
-import { get_oauth2_provider, is_oauth2_provider_key } from '#service/auth'
-import { app_env } from '#service/env'
+import { get_oauth2_provider, is_oauth2_provider_key } from '#service/auth/oauth2'
+import { error400 } from '#service/util/respond'
+import { cookie_manager } from '#service/auth/cookie'
 
 export
 async function GET(
 	_: Request,
 	{ params }: RouteContext<'/api/auth/[provider]/login'>,
 ) {
-	const { provider: provider_key } = await params
-	if (!is_oauth2_provider_key(provider_key))
-		return NextResponse.json({ error: 'Invalid provider' }, { status: 400 })
-	const provider = get_oauth2_provider(provider_key)
+	const { provider } = await params
+	if (!is_oauth2_provider_key(provider)) {
+		console.error('Invalid oauth2 provider', provider)
+		return error400()
+	}
 
-	const state = Math.random().toString(36).substring(7)
-	const url = await provider.get_auth_url(state)
+	const oauth2_state = Math.random().toString(36).substring(7)
+	const url = await get_oauth2_provider(provider).get_auth_url(oauth2_state)
 	const response = NextResponse.redirect(url)
-
-	response.cookies.set('oauth_state', state, {
-		httpOnly: true,
-		secure: app_env.mode === 'pro',
-		sameSite: 'lax',
-		path: '/',
-		maxAge: 120, // 2 minute
-	})
-
+	cookie_manager.oauth2_state.set(response, oauth2_state)
 	return response
 }
