@@ -12,6 +12,7 @@ import { db } from '#service/db'
 import { app_env } from '#service/env'
 
 console.log('opening ecdict sqlite3 at', app_env.ECDict_SQLITE3)
+// 有空改为懒加载
 const lookup_from_ecdict = ecdict_sqlite3(
 	new Database(app_env.ECDict_SQLITE3, {
 		readonly: true,
@@ -21,6 +22,7 @@ const lookup_from_ecdict = ecdict_sqlite3(
 
 const lookup_promises = new Map<string, Promise<I_lookup_result | null>>()
 
+/** !! 在 nextjs 中，这种单例方案不可用 */
 export
 function lookup(word: string): Promise<null | I_lookup_result> {
 	let promise = lookup_promises.get(word)
