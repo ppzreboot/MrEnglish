@@ -19,7 +19,7 @@ async function oauth2_login(provider: I_oauth2_provider_key, code: string) {
 export
 async function email_login(code: string, email: string) {
 	// 验证验证码
-	const ok = await verify_email_code(code, email)
+	const ok = await verify_email_code(email, code, 'login')
 	if (!ok)
 		// 有可能是用户输入错误，这是正常现象，用 body 而不是 status code 表达异常
 		return { error: '验证码错误或已过期' }

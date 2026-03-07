@@ -21,7 +21,7 @@ async function POST(request: NextRequest) {
 		return error400()
 
 	return db.$transaction(async tx => {
-		const ok = await verify_email_code(body.data.email, body.data.code)
+		const ok = await verify_email_code(body.data.email, body.data.code, 'bind_email')
 		if (!ok)
 			return fail_json('验证码错误或已过期')
 		const existing = await tx.user.findUnique({

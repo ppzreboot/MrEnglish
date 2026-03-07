@@ -3,7 +3,7 @@ import { type NextRequest } from 'next/server'
 import { create_and_send_email_code } from '#service/email'
 import { user_service } from '#service/user'
 import { parse_json_body } from '#service/util/parse-body'
-import { error400, success_json } from '#service/util/respond'
+import { error400, fail_json, success_json } from '#service/util/respond'
 import { zod_email } from '#service/util/zod'
 
 export
@@ -19,6 +19,8 @@ async function POST(request: NextRequest) {
 		// 未注册邮箱不发验证码，但返回成功以免泄露该邮箱是否已注册
 		return success_json()
 
-	await create_and_send_email_code(body.data.email)
+	const error = await create_and_send_email_code(body.data.email, 'login')
+	if (error !== null)
+		return fail_json(error)
 	return success_json()
 }

@@ -32,8 +32,8 @@ export function Bind_email_form() {
 				return
 			}
 			set_sent(true)
-		} catch(err) {
-			console.error(err)
+		} catch (err) {
+			set_error(err instanceof Error ? err.message : '发送失败')
 		} finally {
 			set_sending(false)
 		}

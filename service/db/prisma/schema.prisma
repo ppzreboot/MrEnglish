@@ -23,9 +23,12 @@ model user {
 }
 
 model email_verification_code {
-  email     String   @id
+  email     String   // 收件邮箱
+  purpose   String   // 'login' | 'bind_email'
   code      String
-  expire_at DateTime
+  create_at DateTime @default(now())
+
+  @@id([email, purpose])
 }
 
 model identity {
