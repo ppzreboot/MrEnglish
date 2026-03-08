@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Email_login_form } from './email-login-form'
+import { Email_login_form } from './_ui/email-login-form'
 
 export const metadata: Metadata = {
 	title: '登录',

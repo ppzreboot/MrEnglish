@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { session_manager } from '#service/auth/session'
 import { user_service } from '#service/user'
-import { Bind_email_form } from './bind-email-form'
-import { LogoutButton } from './logout-button'
+import { Bind_email_form } from './_ui/bind-email-form'
+import { LogoutButton } from './_ui/logout-button'
 
 export default
 async function Settings_page(props: { searchParams: Promise<{ bound?: string }> }) {

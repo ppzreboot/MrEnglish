@@ -1,6 +1,6 @@
 'use client'
 
-import { ffetch } from '#common/http'
+import { ffetch } from '#common/api/client'
 
 export function LogoutButton() {
 	return (

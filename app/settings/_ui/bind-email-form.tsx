@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ffetch } from '#common/http'
+import { ffetch } from '#common/api/client'
 import { is_email } from '#common/utils/check'
 
 export function Bind_email_form() {

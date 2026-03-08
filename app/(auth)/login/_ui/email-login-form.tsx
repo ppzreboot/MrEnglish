@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { email_code_length, is_email } from '#common/utils/check'
-import { ffetch } from '#common/http'
+import { ffetch } from '#common/api/client'
 
 export function Email_login_form() {
 	const [email, set_email] = useState('')
