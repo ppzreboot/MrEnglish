@@ -50,7 +50,7 @@ const api = {
 				path: '/settings/email/verify',
 				params: RT<null>,
 				data: RT<{ email: string; code: string }>,
-				error: RT<'wrong_code'>,
+				error: RT<'wrong_code' | 'email_taken'>,
 				success: RT<null>,
 			}),
 		}
