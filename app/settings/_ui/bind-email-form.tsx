@@ -46,8 +46,8 @@ export function Bind_email_form() {
 			params: null,
 			data: { email, code },
 		})
-		if (result.error !== null) {
-			set_error(result.error)
+		if (result.error !== 'wrong_code') {
+			set_error('验证码错误或已过期')
 			return
 		}
 	}

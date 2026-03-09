@@ -2,6 +2,14 @@ import { I_api_spec, I_api_input, I_api_output } from '#lib/api-spec/_common'
 
 export * from './_common'
 
+/** 定义单条 API spec，做编译期校验 */
+export
+function spec<P extends null | Record<string, string>, D, E extends null | string, S>(
+	s: I_api_spec<P, D, E, S>,
+): I_api_spec<P, D, E, S> {
+	return s
+}
+
 export
 async function call_api<P extends null | Record<string, string>, D, E extends null | string, S>(
 	spec: I_api_spec<P, D, E, S>,
@@ -20,6 +28,7 @@ async function call_api<P extends null | Record<string, string>, D, E extends nu
 	const res = await fetch(path, {
 		method: spec.method,
 		body,
+		// credentials: 'include',
 		headers: {
 			'Content-Type': 'application/json',
 		}

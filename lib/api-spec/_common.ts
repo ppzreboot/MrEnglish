@@ -1,7 +1,10 @@
 export
 function runtime_type<T>(t: T) { return t }
 
-export { runtime_type as RT }
+export {
+	/** Runtime Type */
+	runtime_type as RT
+}
 
 export
 type I_runtime_type<T> = typeof runtime_type<T>
