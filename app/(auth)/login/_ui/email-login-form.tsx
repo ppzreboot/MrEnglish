@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { email_code_length, is_email } from '#common/utils/check'
-import { ffetch } from '#common/api/client'
+import { call_api } from '#lib/api-spec/client'
+import { api } from '#common/api'
 
 export function Email_login_form() {
 	const [email, set_email] = useState('')
@@ -25,9 +26,9 @@ export function Email_login_form() {
 		set_sending(true)
 
 		try {
-			await ffetch('/api/auth/email/send-code', {
-				method: 'POST',
-				body: { email },
+			await call_api(api.auth.login.email.send_code, {
+				params: { email },
+				data: null,
 			})
 			set_sent(true)
 		} catch (err) {
@@ -48,11 +49,11 @@ export function Email_login_form() {
 		}
 
 		set_error(null)
-		const result = await ffetch('/api/auth/email/verify', {
-			method: 'POST',
-			body: { email, code },
+		const result = await call_api(api.auth.login.email.verify, {
+			params: null,
+			data: { email, code },
 		})
-		if (result.error) {
+		if (result.error !== null) {
 			set_error(result.error)
 			return
 		}

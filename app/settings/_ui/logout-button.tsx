@@ -1,15 +1,18 @@
 'use client'
 
-import { ffetch } from '#common/api/client'
+import { call_api } from '#lib/api-spec/client'
+import { api } from '#common/api'
 
-export function LogoutButton() {
+export
+function LogoutButton() {
 	return (
 		<button
 			type='button'
 			className='bg-red-500/90 text-white px-4 py-2 rounded-md hover:bg-red-500'
 			onClick={async () => {
-				await ffetch('/api/auth/logout', {
-					method: 'POST',
+				await call_api(api.auth.logout, {
+					params: null,
+					data: null,
 				})
 				window.location.href = '/'
 			}}
