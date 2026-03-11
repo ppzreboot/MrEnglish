@@ -5,7 +5,6 @@ import { session_manager } from '#service/auth/session'
 import { user_service } from '#service/user'
 import { verify_email_code } from '#service/email'
 import { db } from '#service/db'
-import { parse_input } from '#service/util/parse-input'
 import { error400, error401, fail, empty_success } from '#service/util/respond'
 import { zod_email } from '#service/util/zod'
 
@@ -14,10 +13,12 @@ const POST = API(api.settings.email.verify, async input => {
 	const session = await session_manager.get()
 	if (session === null)
 		return error401()
-	const body = parse_input(await input.data(), z.object({
-		email: zod_email,
-		code: z.string().length(6),
-	}))
+	const body = await input.data(
+		z.object({
+			email: zod_email,
+			code: z.string().length(6),
+		})
+	)
 	if (!body.ok)
 		return error400()
 

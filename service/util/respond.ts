@@ -2,21 +2,21 @@ import { NextResponse } from 'next/server'
 
 export
 function success_json(data?: unknown) {
-	return NextResponse.json({ error: null, data })
+	return NextResponse.json(success(data))
 }
 export
 function success<D>(data: D) {
-	return { error: null, data}
+	return { ok: true as const, data}
 }
 
 export
 function empty_success() {
-	return { error: null, data: undefined }
+	return success(undefined)
 }
 
 export
 function fail<E>(error: E) {
-	return { error, data: null }
+	return { ok: false as const, error }
 }
 
 export

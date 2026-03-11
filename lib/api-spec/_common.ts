@@ -19,13 +19,9 @@ export
 type I_api_output<
 	E extends string,
 	S extends Exclude<unknown, null>,
-> = {
-	error: E
-	data: null
-} | {
-	error: null
-	data: S
-}
+> =
+	| { ok: false, error: E }
+	| { ok: true, data: S }
 
 export
 type I_http_method = 'GET' | 'POST' | 'PUT' | 'DELETE'

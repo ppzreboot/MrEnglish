@@ -3,16 +3,16 @@ import { API } from '#lib/api-spec/server'
 import { api } from '#common/api'
 import { create_and_send_email_code } from '#service/email'
 import { user_service } from '#service/user'
-import { parse_input } from '#service/util/parse-input'
 import { fail, empty_success, error400 } from '#service/util/respond'
 import { zod_email } from '#service/util/zod'
 
-// 这种方案不好，还是从 api_spec 中“取出类型”比较好
 export
 const POST = API(api.auth.login.email.send_code, async input => {
-	const body = parse_input(await input.data(), z.object({
-		email: zod_email,
-	}))
+	const body = await input.data(
+		z.object({
+			email: zod_email,
+		})
+	)
 	if (!body.ok)
 		return error400()
 

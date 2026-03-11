@@ -53,9 +53,14 @@ export function Email_login_form() {
 			params: null,
 			data: { email, code },
 		})
-		if (result.error === 'wrong_code') {
-			set_error('验证码错误或已过期')
-			return
+		if (!result.ok) {
+			switch (result.error) {
+				case 'wrong_code':
+					set_error('验证码错误或已过期')
+					return
+				default:
+					throw Error('unknown error')
+			}
 		}
 		window.location.href = '/'
 	}
