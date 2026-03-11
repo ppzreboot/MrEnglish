@@ -4,14 +4,24 @@ export * from './_common'
 
 /** 定义单条 API spec，做编译期校验 */
 export
-function spec<P extends null | Record<string, string>, D, E extends null | string, S>(
+function spec<
+	P extends null | Record<string, string>,
+	D,
+	E extends string & (string extends E ? never : unknown),
+	S extends Exclude<unknown, null>,
+>(
 	s: I_api_spec<P, D, E, S>,
 ): I_api_spec<P, D, E, S> {
 	return s
 }
 
 export
-async function call_api<P extends null | Record<string, string>, D, E extends null | string, S>(
+async function call_api<
+	P extends null | Record<string, string>,
+	D,
+	E extends string & (string extends E ? never : unknown),
+	S extends Exclude<unknown, null>,
+>(
 	spec: I_api_spec<P, D, E, S>,
 	input: I_api_input<P, D>,
 ) {

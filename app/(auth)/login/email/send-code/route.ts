@@ -1,14 +1,16 @@
 import { z } from 'zod'
-import { type NextRequest } from 'next/server'
+import { API } from '#lib/api-spec/server'
+import { api } from '#common/api'
 import { create_and_send_email_code } from '#service/email'
 import { user_service } from '#service/user'
-import { parse_json_body } from '#service/util/parse-body'
-import { error400, fail_json, success_json } from '#service/util/respond'
+import { parse_input } from '#service/util/parse-input'
+import { fail, empty_success, error400 } from '#service/util/respond'
 import { zod_email } from '#service/util/zod'
 
+// 这种方案不好，还是从 api_spec 中“取出类型”比较好
 export
-async function POST(request: NextRequest) {
-	const body = await parse_json_body(request, z.object({
+const POST = API(api.auth.login.email.send_code, async input => {
+	const body = parse_input(await input.data(), z.object({
 		email: zod_email,
 	}))
 	if (!body.ok)
@@ -17,10 +19,10 @@ async function POST(request: NextRequest) {
 	const user = await user_service.get_by_email(body.data.email)
 	if (!user)
 		// 未注册邮箱不发验证码，但返回成功以免泄露该邮箱是否已注册
-		return success_json()
+		return empty_success()
 
 	const error = await create_and_send_email_code(body.data.email, 'login')
 	if (error !== null)
-		return fail_json(error)
-	return success_json()
-}
+		return fail('429')
+	return empty_success()
+})

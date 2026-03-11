@@ -1,14 +1,15 @@
 import { z } from 'zod'
-import { type NextRequest } from 'next/server'
-import { parse_json_body } from '#service/util/parse-body'
-import { error400, fail_json, success_json } from '#service/util/respond'
+import { API } from '#lib/api-spec/server'
+import { api } from '#common/api'
+import { parse_input } from '#service/util/parse-input'
+import { error400, fail, success_json } from '#service/util/respond'
 import { email_login } from '#service/auth/login'
 import { zod_email } from '#service/util/zod'
 import { cookie_manager } from '#service/auth/cookie'
 
 export
-async function POST(request: NextRequest) {
-	const body = await parse_json_body(request, z.object({
+const POST = API(api.auth.login.email.verify, async input => {
+	const body = parse_input(await input.data(), z.object({
 		email: zod_email,
 		code: z.string().length(6),
 	}))
@@ -16,8 +17,8 @@ async function POST(request: NextRequest) {
 		return error400()
 	const result = await email_login(body.data.code, body.data.email)
 	if (result.error !== null)
-		return fail_json(result.error)
+		return fail(result.error)
 	const response = success_json()
 	cookie_manager.session_token.set(response, result.token)
 	return response
-}
+})

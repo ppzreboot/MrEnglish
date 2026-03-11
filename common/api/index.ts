@@ -11,7 +11,7 @@ const api = {
 					params: RT<null>,
 					data: RT<{ email: string }>,
 					error: RT<'429'>,
-					success: RT<null>,
+					success: RT<undefined>,
 				}),
 				verify: spec({
 					method: 'POST',
@@ -22,7 +22,7 @@ const api = {
 						code: string
 					}>,
 					error: RT<'wrong_code'>,
-					success: RT<null>,
+					success: RT<undefined>,
 				}),
 			}
 		},
@@ -31,8 +31,8 @@ const api = {
 			path: '/logout',
 			params: RT<null>,
 			data: RT<null>,
-			error: RT<null>,
-			success: RT<null>,
+			error: RT<never>,
+			success: RT<undefined>,
 		}),
 	},
 	settings: {
@@ -43,7 +43,7 @@ const api = {
 				params: RT<null>,
 				data: RT<{ email: string }>,
 				error: RT<'429'>,
-				success: RT<null>,
+				success: RT<undefined>,
 			}),
 			verify: spec({
 				method: 'POST',
@@ -51,7 +51,7 @@ const api = {
 				params: RT<null>,
 				data: RT<{ email: string; code: string }>,
 				error: RT<'wrong_code' | 'email_taken'>,
-				success: RT<null>,
+				success: RT<undefined>,
 			}),
 		}
 	},
