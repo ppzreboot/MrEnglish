@@ -8,7 +8,7 @@ import { error400 } from '#service/util/respond'
 export
 async function GET(
 	request: NextRequest,
-	ctx: RouteContext<'/api/auth/[provider]/callback'>,
+	ctx: RouteContext<'/login/[provider]/callback'>,
 ) {
 	// validate provider key
 	const { provider } = await ctx.params

@@ -1,18 +1,18 @@
+import { type NextRequest } from 'next/server'
 import { z } from 'zod'
-import { API } from '#lib/api-spec/server'
-import { api } from '#common/api'
 import { session_manager } from '#service/auth/session'
 import { create_and_send_email_code } from '#service/email'
 import { error400, error401, fail, empty_success } from '#service/util/respond'
 import { zod_email } from '#service/util/zod'
+import { parse_input } from '#service/util/parse-input'
 
 export
-const POST = API(api.settings.email.send_code, async input => {
+async function POST(req: NextRequest) {
 	const session = await session_manager.get()
 	if (session === null)
 		return error401()
 
-	const result = await input.data(
+	const result = parse_input(await req.json(),
 		z.object({
 			email: zod_email,
 		})
@@ -24,4 +24,4 @@ const POST = API(api.settings.email.send_code, async input => {
 	if (error !== null)
 		return fail(error)
 	return empty_success()
-})
+}

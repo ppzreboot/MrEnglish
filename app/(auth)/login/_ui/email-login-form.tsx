@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import { email_code_length, is_email } from '#common/utils/check'
-import { call_api } from '#lib/api-spec/client'
-import { api } from '#common/api'
+import { call_api } from '#common/api'
 
 export function Email_login_form() {
 	const [email, set_email] = useState('')
@@ -26,13 +25,19 @@ export function Email_login_form() {
 		set_sending(true)
 
 		try {
-			await call_api(api.auth.login.email.send_code, {
-				params: null,
-				data: { email },
-			})
-			set_sent(true)
-		} catch (err) {
-			set_error(err instanceof Error ? err.message : '发送失败')
+			const result = await call_api(
+				'POST',
+				'/login/email/send-code',
+				{
+					type: 'body',
+					data: { email },
+				},
+			)
+			if (result.ok) {
+				set_sent(true)
+			} else {
+				set_error('太频繁')
+			}
 		} finally {
 			set_sending(false)
 		}
@@ -49,20 +54,19 @@ export function Email_login_form() {
 		}
 
 		set_error(null)
-		const result = await call_api(api.auth.login.email.verify, {
-			params: null,
-			data: { email, code },
-		})
-		if (!result.ok) {
-			switch (result.error) {
-				case 'wrong_code':
-					set_error('验证码错误或已过期')
-					return
-				default:
-					throw Error('unknown error')
+		const result = await call_api(
+			'POST',
+			'/login/email/verify',
+			{
+				type: 'body',
+				data: { email, code },
 			}
+		)
+		if (result.ok) {
+			window.location.href = '/'
+		} else {
+			set_error('验证码错误或已过期')
 		}
-		window.location.href = '/'
 	}
 
 	return (

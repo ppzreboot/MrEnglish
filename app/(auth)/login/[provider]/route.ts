@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { get_oauth2_provider, is_oauth2_provider_key } from '#service/auth/oauth2'
 import { error400 } from '#service/util/respond'
 import { cookie_manager } from '#service/auth/cookie'
 
 export
 async function GET(
-	_: Request,
-	{ params }: RouteContext<'/api/auth/[provider]/login'>,
+	_: NextRequest,
+	{ params }: RouteContext<'/login/[provider]'>,
 ) {
 	const { provider } = await params
 	if (!is_oauth2_provider_key(provider)) {

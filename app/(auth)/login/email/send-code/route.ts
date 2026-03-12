@@ -1,14 +1,14 @@
+import { type NextRequest } from 'next/server'
 import { z } from 'zod'
-import { API } from '#lib/api-spec/server'
-import { api } from '#common/api'
+import { parse_input } from '#service/util/parse-input'
 import { create_and_send_email_code } from '#service/email'
 import { user_service } from '#service/user'
 import { fail, empty_success, error400 } from '#service/util/respond'
 import { zod_email } from '#service/util/zod'
 
 export
-const POST = API(api.auth.login.email.send_code, async input => {
-	const body = await input.data(
+async function POST(req: NextRequest) {
+	const body = parse_input(await req.json(),
 		z.object({
 			email: zod_email,
 		})
@@ -25,4 +25,4 @@ const POST = API(api.auth.login.email.send_code, async input => {
 	if (error !== null)
 		return fail('429')
 	return empty_success()
-})
+}

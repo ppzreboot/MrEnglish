@@ -1,14 +1,14 @@
+import { type NextRequest } from 'next/server'
 import { z } from 'zod'
-import { API } from '#lib/api-spec/server'
-import { api } from '#common/api'
 import { error400, fail, success_json } from '#service/util/respond'
 import { email_login } from '#service/auth/login'
+import { parse_input } from '#service/util/parse-input'
 import { zod_email } from '#service/util/zod'
 import { cookie_manager } from '#service/auth/cookie'
 
 export
-const POST = API(api.auth.login.email.verify, async input => {
-	const body = await input.data(
+async function POST(req: NextRequest) {
+	const body = parse_input(await req.json(),
 		z.object({
 			email: zod_email,
 			code: z.string().length(6),
@@ -22,4 +22,4 @@ const POST = API(api.auth.login.email.verify, async input => {
 	const response = success_json()
 	cookie_manager.session_token.set(response, result.token)
 	return response
-})
+}

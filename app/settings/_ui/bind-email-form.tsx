@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { call_api } from '#lib/api-spec/client'
-import { api } from '#common/api'
+import { call_api } from '#common/api'
 import { is_email } from '#common/utils/check'
 
 export function Bind_email_form() {
@@ -24,10 +23,14 @@ export function Bind_email_form() {
 			return
 		}
 		try {
-			const result = await call_api(api.settings.email.send_code, {
-				params: null,
-				data: { email },
-			})
+			const result = await call_api(
+				'POST',
+				'/settings/email/send-code',
+				{
+					type: 'body',
+					data: { email },
+				},
+			)
 			if (!result.ok) {
 				set_error(result.error)
 				return
@@ -42,10 +45,14 @@ export function Bind_email_form() {
 
 	async function on_verify() {
 		set_error(null)
-		const result = await call_api(api.settings.email.verify, {
-			params: null,
-			data: { email, code },
-		})
+		const result = await call_api(
+			'POST',
+			'/settings/email/verify',
+			{
+				type: 'body',
+				data: { email, code },
+			},
+		)
 		if (!result.ok) {
 			set_error('验证码错误或已过期')
 			return
