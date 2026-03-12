@@ -22,7 +22,7 @@ async function login_page() {
 					</div>
 				</div>
 				<a
-					href='/api/auth/github/login'
+					href='/login/github'
 					className='block w-full text-center bg-black dark:bg-white text-white dark:text-black py-3 rounded-lg hover:opacity-90 transition-opacity'
 				>
 					Login with GitHub

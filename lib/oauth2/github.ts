@@ -5,7 +5,7 @@ function make_github_provider(client_id: string, client_secret: string): I_auth_
 
 	async function get_auth_url(state: string): Promise<string> {
 		const params = new URLSearchParams({
-			client_id: client_id,
+			client_id,
 			state,
 		})
 		return `https://github.com/login/oauth/authorize?${params.toString()}`
