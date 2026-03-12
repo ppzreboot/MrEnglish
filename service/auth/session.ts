@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto'
+import { user_service } from '#service/user'
 import { db } from '#service/db'
 import { app_env } from '#service/env'
 import { cookie_manager } from './cookie'
@@ -66,6 +67,18 @@ const session_manager = {
 			token: session.token,
 			user_id: session.user_id,
 		}
+	},
+
+	async get_user() {
+		const session = await this.get()
+		if (session === null)
+			return null // 未登录
+		const user = await user_service.get_by_id(session.user_id)
+		if (user === null) {
+			await this.delete(session.token)
+			return undefined // 异常用户
+		}
+		return user // 已登录用户
 	},
 
 	async delete(token: string) {

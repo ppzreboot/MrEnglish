@@ -1,18 +1,13 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { session_manager } from '#service/auth/session'
-import { user_service } from '#service/user'
-import { Bind_email_form } from './_ui/bind-email-form'
 import { LogoutButton } from './_ui/logout-button'
 
 export default
-async function Settings_page(props: { searchParams: Promise<{ bound?: string }> }) {
-	const session = await session_manager.get()
-	if (!session) redirect('/login')
-	const user = await user_service.get_by_id(session.user_id)
-	if (!user) redirect('/login')
-
-	const query = await props.searchParams
-	const bound = query.bound
+async function Settings_page() {
+	const user = await session_manager.get_user()
+	if (!user)
+		return redirect('/login')
 
 	return (
 		<div className='min-h-screen p-8 max-w-lg mx-auto'>
@@ -25,14 +20,18 @@ async function Settings_page(props: { searchParams: Promise<{ bound?: string }> 
 						已绑定：<span className='font-mono'>{user.email}</span>
 						<br />
 						<span className='text-sm'>可使用该邮箱验证码登录。</span>
+						<br />
+						<Link href='/settings/email' className='text-sm text-neutral-500 hover:underline'>
+							更换邮箱
+						</Link>
 					</p>
 				) : (
-					<>
-						{bound === '1' && (
-							<p className='text-green-600 dark:text-green-400 text-sm mb-2'>绑定成功，可使用邮箱验证码登录。</p>
-						)}
-						<Bind_email_form />
-					</>
+					<Link
+						href='/settings/email'
+						className='text-neutral-600 dark:text-neutral-400 hover:underline'
+					>
+						去绑定邮箱 →
+					</Link>
 				)}
 			</section>
 

@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { call_api } from '#common/api'
 import { is_email } from '#common/utils/check'
 
-export function Bind_email_form() {
+export function Bind_email_form(props: { on_success?: () => void }) {
+	const { on_success } = props
 	const [email, set_email] = useState('')
 	const [code, set_code] = useState('')
 	const [sent, set_sent] = useState(false)
@@ -57,6 +58,7 @@ export function Bind_email_form() {
 			set_error('验证码错误或已过期')
 			return
 		}
+		on_success?.()
 	}
 
 	return (
