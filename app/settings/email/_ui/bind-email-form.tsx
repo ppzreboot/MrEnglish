@@ -10,6 +10,7 @@ export function Bind_email_form(props: { on_success?: () => void }) {
 	const [code, set_code] = useState('')
 	const [sent, set_sent] = useState(false)
 	const [sending, set_sending] = useState(false)
+	const [verifying, set_verifying] = useState(false)
 	const [error, set_error] = useState<string | null>(null)
 
 	async function on_send_code() {
@@ -17,10 +18,12 @@ export function Bind_email_form(props: { on_success?: () => void }) {
 		set_error(null)
 		if (!email) {
 			set_error('邮箱不能为空')
+			set_sending(false)
 			return
 		}
 		if (!is_email(email)) {
 			set_error('邮箱格式不正确')
+			set_sending(false)
 			return
 		}
 		try {
@@ -33,7 +36,7 @@ export function Bind_email_form(props: { on_success?: () => void }) {
 				},
 			)
 			if (!result.ok) {
-				set_error(result.error)
+				set_error(result.error ?? '发送失败')
 				return
 			}
 			set_sent(true)
@@ -46,19 +49,26 @@ export function Bind_email_form(props: { on_success?: () => void }) {
 
 	async function on_verify() {
 		set_error(null)
-		const result = await call_api(
-			'POST',
-			'/settings/email/verify',
-			{
-				type: 'body',
-				data: { email, code },
-			},
-		)
-		if (!result.ok) {
-			set_error('验证码错误或已过期')
-			return
+		set_verifying(true)
+		try {
+			const result = await call_api(
+				'POST',
+				'/settings/email/verify',
+				{
+					type: 'body',
+					data: { email, code },
+				},
+			)
+			if (!result.ok) {
+				set_error('验证码错误或已过期')
+				return
+			}
+			on_success?.()
+		} catch (err) {
+			set_error(err instanceof Error ? err.message : '验证失败')
+		} finally {
+			set_verifying(false)
 		}
-		on_success?.()
 	}
 
 	return (
@@ -81,9 +91,10 @@ export function Bind_email_form(props: { on_success?: () => void }) {
 					<button
 						type='button'
 						onClick={() => on_verify()}
-						className='bg-neutral-800 dark:bg-neutral-200 text-white dark:text-black px-4 py-2 rounded-md hover:opacity-90'
+						disabled={verifying}
+						className='bg-neutral-800 dark:bg-neutral-200 text-white dark:text-black px-4 py-2 rounded-md hover:opacity-90 disabled:opacity-50'
 					>
-						确认绑定
+						{verifying ? '验证中…' : '确认绑定'}
 					</button>
 					<button
 						type='button'
@@ -110,6 +121,7 @@ export function Bind_email_form(props: { on_success?: () => void }) {
 					<button
 						type='button'
 						onClick={() => on_send_code()}
+						disabled={sending}
 						className='bg-neutral-800 dark:bg-neutral-200 text-white dark:text-black px-4 py-2 rounded-md hover:opacity-90 disabled:opacity-50'
 					>
 						{sending ? '发送中…' : '发送验证码'}

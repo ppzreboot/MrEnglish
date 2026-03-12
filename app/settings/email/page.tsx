@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { session_manager } from '#service/auth/session'
 import { Bind_email_form } from './_ui/bind-email-form'

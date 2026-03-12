@@ -76,9 +76,9 @@ const session_manager = {
 		const user = await user_service.get_by_id(session.user_id)
 		if (user === null) {
 			await this.delete(session.token)
-			return undefined // 异常用户
+			return null // 会话对应用户已不存在，视为未登录
 		}
-		return user // 已登录用户
+		return user
 	},
 
 	async delete(token: string) {
