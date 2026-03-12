@@ -26,7 +26,7 @@ async function call_api(
 	const res = await fetch(path, {
 		method,
 		body,
-		// credentials: 'include',
+		credentials: 'include',
 		headers: {
 			'Content-Type': 'application/json',
 		}
